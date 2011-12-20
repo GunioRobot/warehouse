@@ -31,7 +31,7 @@ module WillPaginate
     def offset
       (current_page - 1) * per_page
     end
-    
+
   protected
 
     # delegate missing stuff to the collection array

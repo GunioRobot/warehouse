@@ -7,7 +7,7 @@ class CreateChangesets < ActiveRecord::Migration
       t.datetime :changed_at
       t.integer :repository_id
     end
-    
+
     add_index :changesets, :repository_id
   end
 

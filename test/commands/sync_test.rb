@@ -3,7 +3,7 @@ Warehouse::Command.configure(ActiveRecord::Base.configurations['test'].symbolize
 
 context "Command Syncing" do
   setup do
-    @backend = stub(:fs => stub) 
+    @backend = stub(:fs => stub)
     @command = Warehouse::Command.new
     @changes = []
     @command.stubs(:connection).returns(:changes => @changes)
@@ -35,7 +35,7 @@ context "Command Syncing" do
     @command.expects(:latest_revision_for).with(@repo).returns 100
     @command.send(:paginated_revisions, @repo, 5).should == (75..79).to_a
   end
-  
+
   specify "should list all revisions" do
     @command.expects(:recorded_revision_for).with(@repo).returns 75
     @command.expects(:latest_revision_for).with(@repo).returns 100
@@ -64,22 +64,22 @@ context "Command Syncing" do
     @backend.expects(:youngest_rev).returns(75)
     @command.send(:latest_revision_for, @repo).should == 75
   end
-  
+
   specify "should update user activity" do
     @changesets_where = stub
     @changesets_where.expects(:select).with(:id.COUNT).returns 15
     @changesets = stub
     @changesets.expects(:where).with(:repository_id => @repo[:id], :author => @user[:login]).returns(@changesets_where)
-    
+
     @permissions_where = stub
     @permissions_where.expects(:update).with(:last_changed_at => @changeset[:changed_at], :changesets_count => 15).returns(77)
     @permissions = stub
     @permissions.expects(:where).with(:user_id => @user[:id], :repository_id => @repo[:id]).returns(@permissions_where)
-    
+
     @command.stubs(:connection).returns(:permissions => @permissions, :changesets => @changesets)
     @command.send(:update_user_activity, @repo, @user, @changeset[:changed_at]).should == 77
   end
-  
+
   specify "should create changeset from revision" do
     @changesets = stub
     @changesets.expects(:<<).returns(@changeset[:id])
@@ -89,10 +89,10 @@ context "Command Syncing" do
     @backend.fs.expects(:prop).with(Svn::Core::PROP_REVISION_LOG,    5).returns(@changeset[:message])
     @backend.fs.expects(:prop).with(Svn::Core::PROP_REVISION_DATE,   5).returns(@changeset[:changed_at].localtime)
     @command.expects(:create_change_from_changeset).with(@backend, @changeset, {:all => [], :diffable => []})
-    
+
     @command.send(:create_changeset, @repo, @changeset[:revision]).should == @changeset
   end
-  
+
   %w(A D M MVP).each do |name|
     specify "should create change with #{name}" do
       @changes.clear
@@ -100,7 +100,7 @@ context "Command Syncing" do
       @changes.should == [{:changeset_id => 1, :name => name, :path => "/foo"}]
     end
   end
-  
+
   %w(MV CP).each do |change_type|
     specify "should create change with #{change_type}" do
       @changes.clear
@@ -108,7 +108,7 @@ context "Command Syncing" do
       @changes.should == [{:changeset_id => 1, :name => change_type, :path => 1, :from_path => 2, :from_revision => 3}]
     end
   end
-  
+
   specify "should process changeset changes" do
     @root           = stub
     @base_root      = stub
@@ -124,9 +124,9 @@ context "Command Syncing" do
     @changed_editor.stubs(:deleted_files).returns(['/copied/file', '/deleted/file'])
     @changed_editor.stubs(:copied_dirs).returns([%w(a /copied b), %w(a /original b)])
     @changed_editor.stubs(:copied_files).returns([%w(a /copied/file b), %w(a /original/file b)])
-    
+
     @changes = {:all => []}
-    
+
     @base_root.expects :dir_delta
     @command.expects(:process_change_path_and_save).with(@backend, @changeset, 'A',  '/foo', @changes)
     @command.expects(:process_change_path_and_save).with(@backend, @changeset, 'A',  '/foo/bar.txt', @changes)
@@ -138,14 +138,14 @@ context "Command Syncing" do
     @command.expects(:process_change_path_and_save).with(@backend, @changeset, 'MV', %w(a /copied/file b), @changes)
     @command.expects(:process_change_path_and_save).with(@backend, @changeset, 'CP', %w(a /original b), @changes)
     @command.expects(:process_change_path_and_save).with(@backend, @changeset, 'CP', %w(a /original/file b), @changes)
-    
+
     @command.send(:create_change_from_changeset, @backend, @changeset, @changes)
   end
 end
 
 context "Command Clearing" do
   setup do
-    @backend = stub(:fs => stub) 
+    @backend = stub(:fs => stub)
     @command = Warehouse::Command.new
   end
   specify "should fail early for bad repo subdomain" do
@@ -159,7 +159,7 @@ context "Command Clearing" do
       changesets = connection[:changesets]
       changes    = connection[:changes]
       if repo
-        changesets = changesets.where(:repository_id => repo) 
+        changesets = changesets.where(:repository_id => repo)
         changes    = changes.where(:changeset_id => changesets.select(:id))
       end
       connection.transaction { [changes, changesets].each { |ds| ds.delete } }

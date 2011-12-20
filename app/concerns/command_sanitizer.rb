@@ -1,6 +1,6 @@
 module CommandSanitizer
   # Replaces :args from objects in the args hash.
-  # 
+  #
   #   This replaces the given :bar with user.bar
   #     sanitize_command("foo :bar", user => ['bar'])
   def sanitize_command(cmd, objects = {})
@@ -9,13 +9,13 @@ module CommandSanitizer
       key.to_a.each { |key| memo.update key => obj }
       memo
     end
-    
+
     cmd.gsub /:\w+/ do |arg|
       key = arg[1..-1]
       args[key] ? args[key].send(key).to_s : arg
     end.strip
   end
-  
+
   def execute_command(cmd, objects = {})
     sanitized = sanitize_command(cmd, objects)
     result = []

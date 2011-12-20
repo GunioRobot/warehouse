@@ -1,12 +1,12 @@
---- 
+---
 name: Graphviz (DOT)
-fileTypes: 
+fileTypes:
 - dot
 - DOT
 scopeName: source.dot
 uuid: 1A53D54E-6B1D-11D9-A006-000D93589AF6
 foldingStartMarker: \{
-patterns: 
+patterns:
 - name: storage.type.dot
   match: \b(node|edge|graph|digraph|subgraph|strict)\b
 - name: support.constant.attribute.node.dot
@@ -16,30 +16,30 @@ patterns:
 - name: support.constant.attribute.graph.dot
   match: \b(bgcolor|center|clusterrank|color|comment|compound|concentrate|fillcolor|fontname|fontpath|fontsize|label|labeljust|labelloc|layers|margin|mclimit|nodesep|nslimit|nslimit1|ordering|orientation|page|pagedir|quantum|rank|rankdir|ranksep|ratio|remincross|rotate|samplepoints|searchsize|size|style|URL)\b
 - name: string.quoted.double.dot
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.dot
   begin: "\""
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.dot
   end: "\""
-  patterns: 
+  patterns:
   - name: constant.character.escape.dot
     match: \\.
 - name: comment.line.double-slash.dot
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.comment.dot
   match: (//).*$\n?
 - name: comment.line.number-sign.dot
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.comment.dot
   match: (#).*$\n?
 - name: comment.block.dot
-  captures: 
-    "0": 
+  captures:
+    "0":
       name: punctuation.definition.comment.dot
   begin: /\*
   end: \*/

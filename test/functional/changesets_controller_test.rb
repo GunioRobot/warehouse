@@ -30,7 +30,7 @@ context "Changesets Controller" do
     get :index
     assert_template 'index'
   end
-  
+
   specify "should show changesets for admin user" do
     Repository.any_instance.stubs(:public?).returns(false)
     User.any_instance.stubs(:admin?).returns(true)
@@ -39,7 +39,7 @@ context "Changesets Controller" do
     get :index
     assert_template 'index'
   end
-  
+
   specify "should show all changesets for user with all paths" do
     Repository.any_instance.stubs(:public?).returns(false)
     User.any_instance.stubs(:admin?).returns(false)
@@ -81,23 +81,23 @@ context "Changesets Controller on root domain" do
     @request.host = "test.host"
     Repository.any_instance.stubs(:backend).returns(stub(:youngest_rev => 0))
   end
-  
+
   specify "should redirect anon users to public changesets" do
     get :index
     assert_redirected_to root_public_changesets_path
   end
-  
+
   specify "should allow anon users to public changesets" do
     get :public
     assert_template 'index'
   end
-  
+
   specify "should allow users to public changesets" do
     login_as :rick
     get :public
     assert_template 'index'
   end
-  
+
   specify "should allow users to changesets" do
     login_as :rick
     get :index

@@ -10,7 +10,7 @@ Example
   # from PostsController
   def index
     @posts = Post.find(:all, :limit => 25)
-    
+
     respond_to do |format|
       format.html
       format.atom
@@ -22,7 +22,7 @@ Example
   atom_feed(:url => formatted_people_url(:atom)) do |feed|
     feed.title("Address book")
     feed.updated(@people.first ? @people.first.created_at : Time.now.utc)
-  
+
     for post in @posts
       feed.entry(post) do |entry|
         entry.title(post.title)

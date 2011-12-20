@@ -8,7 +8,7 @@ class BookmarksController < ApplicationController
       format.js
     end
   end
-  
+
   def destroy
     @bookmark = current_repository.bookmarks.find params[:id]
     @bookmark.destroy

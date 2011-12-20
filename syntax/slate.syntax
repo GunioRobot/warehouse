@@ -1,31 +1,31 @@
---- 
+---
 name: Slate
-fileTypes: 
+fileTypes:
 - slate
 scopeName: source.slate
-repository: 
-  unary-selector: 
+repository:
+  unary-selector:
     match: \b([A-Za-z_][A-Za-z_0-9]+)\b
-  escaped-char: 
+  escaped-char:
     match: \\.
-  binary-selector: 
+  binary-selector:
     match: \b([=+-\/?<>,;^*]+[A-Za-z0-9_=+-\/?<>,;^*]+[=+-\/?<>,;^*]+)\b
-  nest_parens: 
+  nest_parens:
     begin: \(
     end: \)
-    patterns: 
+    patterns:
     - include: "#nest_parens"
-  keyword: 
+  keyword:
     name: variable.other.slate
     match: \b([A-Za-z_][A-Za-z_0-9]+:)\b
-  nest_curly: 
+  nest_curly:
     begin: \{
     end: \}
-    patterns: 
+    patterns:
     - include: "#nest_curly"
 uuid: A7676F36-C7D2-4C3E-8519-944577C66C6A
 foldingStartMarker: ^\s*[_A-z0-9]+@.+$
-patterns: 
+patterns:
 - name: keyword.control.slate
   match: \b(ifTrue:|ifFalse:|whileTrue:|whileFalse:|loop|ifNil:|ifNotNil:|ifNotNilDo:|if:|then:|else:|do:|\^|error:|warn:|signal)\b
 - name: keyword.operator.slate
@@ -35,78 +35,78 @@ patterns:
 - name: variable.language.slate
   match: \b(lobby|it|thisContext|here)\b
 - name: string.quoted.double.slate
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.slate
   begin: "\""
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.slate
   end: "\""
-  patterns: 
+  patterns:
   - name: constant.character.escape.slate
     match: \\.
 - name: string.quoted.single.slate
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.slate
   begin: "'"
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.slate
   end: "'"
-  patterns: 
+  patterns:
   - name: constant.character.escape.slate
     match: \\.
 - name: meta.array.slate
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.array.end.slate
   begin: \#\{
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.array.begin.slate
   end: \}
-  patterns: 
+  patterns:
   - include: "#nest_curly"
   - include: $self
 - name: meta.array.literal.slate
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.array.end.slate
   begin: \#\(
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.array.begin.slate
   end: \)
-  patterns: 
+  patterns:
   - include: "#nest_parens"
   comment: Should restrict contents to literals.
 - name: meta.block.compact.slate
   match: "#([[:lower:]]|_|[+=\\-/!%&*|><~?])(\\w|[+=\\-/!%&*|><~?:])*"
 - name: meta.block.slate
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.section.block.slate
-    "2": 
+    "2":
       name: variable.parameter.block.slate
   begin: (\[)(?:\s*\|\s*((?::\w+\s+)*:\w+)\s*\|)?
   end: (\])
-  patterns: 
+  patterns:
   - name: meta.block.header.slate
     match: \s+
   - name: meta.block.content.slate
-    captures: 
-      "1": 
+    captures:
+      "1":
         name: variable.other.local.slate
     begin: (?:\|(\s*(?:\w+\s+)*\w+\s*)?\||(?=[^\s|]))
     end: (?=\])
-    patterns: 
+    patterns:
     - include: $base
 - name: meta.definition.slate
   begin: "define: #(\\w+)"
-  beginCaptures: 
-    "1": 
+  beginCaptures:
+    "1":
       name: entity.name.type.slate
   end: \s
 - name: variable.parameter.slate
@@ -118,13 +118,13 @@ patterns:
 - name: constant.numeric.slate
   match: \b[+-]?([0-9]+[Rr][0-9A-Za-z]+([.][0-9A-Za-z]+)?|[0-9]+([.][0-9]+)?)\b
 - name: constant.character.slate
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.constant.slate
   match: (\$)(\S|\\[\\ntsbre0avf])
 - name: constant.other.slate
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.constant.slate
   match: (#)\S+
 - name: support.class.slate
@@ -135,15 +135,15 @@ patterns:
   match: \s+$
 - include: "#keyword"
 - name: meta.function.unary.slate
-  endCaptures: 
-    "1": 
+  endCaptures:
+    "1":
       name: entity.name.function.slate
   begin: (\w+)@
-  beginCaptures: 
-    "1": 
+  beginCaptures:
+    "1":
       name: variable.parameter.function.slate
   end: ($|\[)
-  patterns: 
+  patterns:
   - include: $self
 foldingStopMarker: ^.*(\])[A-z ]*\.$
 keyEquivalent: ^~S

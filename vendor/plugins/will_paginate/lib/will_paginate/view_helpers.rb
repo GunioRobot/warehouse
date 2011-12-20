@@ -13,21 +13,21 @@ module WillPaginate
           :next_label   => 'Next &raquo;',
           :inner_window => 4, # links around the current page
           :outer_window => 1  # links around beginning and end
-        
+
         inner_window, outer_window = options.delete(:inner_window).to_i, options.delete(:outer_window).to_i
         min = page - inner_window
         max = page + inner_window
-        
+
         # adjust lower or upper limit if other is out of bounds
         if max > total_pages then min -= max - total_pages
         elsif min < 1  then max += 1 - min
         end
-        
+
         current   = min..max
         beginning = 1..(1 + outer_window)
         tail      = (total_pages - outer_window)..total_pages
         visible   = [current, beginning, tail].map(&:to_a).sum
-        
+
         # build the list of the links
         links = (1..total_pages).inject([]) do |list, n|
           if visible.include? n
@@ -38,16 +38,16 @@ module WillPaginate
           end
           list
         end
-        
+
         # next and previous buttons
         prev, succ  = page - 1, page + 1
         links.unshift link_or_span(prev, prev.zero?,         'disabled', options.delete(:prev_label))
         links.push    link_or_span(succ, succ > total_pages, 'disabled', options.delete(:next_label))
-        
+
         content_tag :div, links.join, options
       end
     end
-    
+
   protected
 
     def link_or_span(page, condition_for_span, span_class = nil, text = page.to_s)

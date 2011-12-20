@@ -7,7 +7,7 @@ begin
 rescue LoadError
   OpenID::Util.log('WARNING: no SSL support found.  Will not be able to fetch HTTPS URLs!')
   HAS_OPENSSL = false
-  require 'net/http'  
+  require 'net/http'
 else
   HAS_OPENSSL = true
 end
@@ -52,22 +52,22 @@ module OpenID
   class Fetcher
 
     # Fetch the content of url, following redirects, and return the
-    # final url and page data.  Return nil on failure.    
+    # final url and page data.  Return nil on failure.
     def get(url)
       raise NotImplementedError
     end
-    
+
     # Post the body string to url. Return the resulting url and page data.
-    # Return nil on failure    
+    # Return nil on failure
     def post(url, body)
       raise NotImplementedError
     end
-    
+
   end
-  
+
   # Implemetation of OpenID::Fetcher that uses ruby's Net::HTTP
   class StandardFetcher < Fetcher
-    
+
     attr_accessor :ca_path
 
     def initialize(read_timeout=20, open_timeout=20)
@@ -75,8 +75,8 @@ module OpenID
       @open_timeout = open_timeout
       @ca_path = nil
     end
-    
-    def get(url)    
+
+    def get(url)
       resp, final_url = do_get(url)
       if resp.nil?
         nil
@@ -84,7 +84,7 @@ module OpenID
         [final_url, resp.body]
       end
     end
-  
+
     def post(url, body)
       begin
         uri = URI.parse(url)
@@ -99,8 +99,8 @@ module OpenID
     end
 
     protected
-    
-    # return a Net::HTTP object ready for use    
+
+    # return a Net::HTTP object ready for use
     def get_http_obj(uri)
       http = Net::HTTP.new(uri.host, uri.port)
       http.read_timeout = @read_timeout
@@ -118,16 +118,16 @@ module OpenID
             OpenID::Util.log('WARNING: making https request without verifying server certificate.')
             http.verify_mode = OpenSSL::SSL::VERIFY_NONE
           end
-          
+
         end
 
       end
 
       return http
     end
-    
+
     # do a GET following redirects limit deep
-    
+
     def do_get(url, limit=5)
       if limit == 0
         return nil
@@ -154,7 +154,7 @@ module OpenID
         end
       end
     end
-    
+
   end
-  
+
 end

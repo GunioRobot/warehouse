@@ -9,15 +9,15 @@ class Change < ActiveRecord::Base
   def node
     @node ||= changeset.repository.node(path, revision)
   end
-  
+
   def diffable?
     node ? node.diffable? : false
   end
-  
+
   def backend
     changeset.repository.backend
   end
-  
+
   def modified?
     name =~ /m/i
   end

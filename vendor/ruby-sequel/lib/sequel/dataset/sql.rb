@@ -3,7 +3,7 @@ module Sequel
     # The Dataset SQL module implements all the dataset methods concerned with
     # generating SQL statements for retrieving and manipulating records.
     module SQL
-      # Returns a valid SQL fieldname as a string. Field names specified as 
+      # Returns a valid SQL fieldname as a string. Field names specified as
       # symbols can include double underscores to denote a dot separator, e.g.
       # :posts__id will be converted into posts.id.
       def field_name(field)
@@ -23,7 +23,7 @@ module Sequel
       def quoted_field_name(name)
         name
       end
-      
+
       ALIASED_REGEXP = /^(.*)\s(.*)$/.freeze
       QUALIFIED_REGEXP = /^(.*)\.(.*)$/.freeze
 
@@ -34,7 +34,7 @@ module Sequel
         if field =~ QUALIFIED_REGEXP
           # field is already qualified
           field
-        else 
+        else
           # check if the table is aliased
           if table =~ ALIASED_REGEXP
             table = $2
@@ -46,7 +46,7 @@ module Sequel
       WILDCARD = '*'.freeze
       COMMA_SEPARATOR = ", ".freeze
 
-      # Converts an array of field names into a comma seperated string of 
+      # Converts an array of field names into a comma seperated string of
       # field names. If the array is empty, a wildcard (*) is returned.
       def field_list(fields)
         if fields.empty?
@@ -85,12 +85,12 @@ module Sequel
       FALSE = "'f'".freeze
 
       # Returns a literal representation of a value to be used as part
-      # of an SQL expression. The stock implementation supports literalization 
+      # of an SQL expression. The stock implementation supports literalization
       # of String (with proper escaping to prevent SQL injections), numbers,
       # Symbol (as field references), Array (as a list of literalized values),
-      # Time (as an SQL TIMESTAMP), Date (as an SQL DATE), Dataset (as a 
+      # Time (as an SQL TIMESTAMP), Date (as an SQL DATE), Dataset (as a
       # subquery) and nil (AS NULL).
-      # 
+      #
       #   dataset.literal("abc'def") #=> "'abc''def'"
       #   dataset.literal(:items__id) #=> "items.id"
       #   dataset.literal([1, 2, 3]) => "(1, 2, 3)"
@@ -118,7 +118,7 @@ module Sequel
       AND_SEPARATOR = " AND ".freeze
       QUESTION_MARK = '?'.freeze
 
-      # Formats a where clause. If parenthesize is true, then the whole 
+      # Formats a where clause. If parenthesize is true, then the whole
       # generated clause will be enclosed in a set of parentheses.
       def expression_list(expr, parenthesize = false)
         case expr
@@ -133,7 +133,7 @@ module Sequel
         when Proc:
           fmt = proc_to_sql(expr)
         else
-          # if the expression is compound, it should be parenthesized in order for 
+          # if the expression is compound, it should be parenthesized in order for
           # things to be predictable (when using #or and #and.)
           parenthesize |= expr =~ /\).+\(/
           fmt = expr
@@ -161,7 +161,7 @@ module Sequel
       def order(*order)
         clone_merge(:order => order)
       end
-      
+
       alias_method :order_by, :order
 
       # Returns a copy of the dataset with the order reversed. If no order is
@@ -189,16 +189,16 @@ module Sequel
         new_order
       end
 
-      # Returns a copy of the dataset with the results grouped by the value of 
+      # Returns a copy of the dataset with the results grouped by the value of
       # the given fields
       def group(*fields)
         clone_merge(:group => fields)
       end
-      
+
       alias_method :group_by, :group
 
-      # Returns a copy of the dataset with the given conditions imposed upon it.  
-      # If the query has been grouped, then the conditions are imposed in the 
+      # Returns a copy of the dataset with the given conditions imposed upon it.
+      # If the query has been grouped, then the conditions are imposed in the
       # HAVING clause. If not, then they are imposed in the WHERE clause. Filter
       # accepts a Hash (formated into a list of equality expressions), an Array
       # (formatted ala ActiveRecord conditions), a String (taken literally), or
@@ -212,7 +212,7 @@ module Sequel
       #     "SELECT * FROM items WHERE price < 100"
       #   dataset.filter {price < 100}.sql #=>
       #     "SELECT * FROM items WHERE (price < 100)"
-      # 
+      #
       # Multiple filter calls can be chained for scoping:
       #
       #   software = dataset.filter(:category => 'software')
@@ -232,7 +232,7 @@ module Sequel
         end
       end
 
-      # Adds an alternate filter to an existing filter using OR. If no filter 
+      # Adds an alternate filter to an existing filter using OR. If no filter
       # exists an error is raised.
       def or(*cond, &block)
         clause = (@opts[:group] ? :having : :where)
@@ -247,7 +247,7 @@ module Sequel
         end
       end
 
-      # Adds an further filter to an existing filter using AND. If no filter 
+      # Adds an further filter to an existing filter using AND. If no filter
       # exists an error is raised. This method is identical to #filter except
       # it expects an existing filter.
       def and(*cond, &block)
@@ -276,7 +276,7 @@ module Sequel
         clone_merge(clause => cond)
       end
 
-      # Returns a copy of the dataset with the where conditions changed. Raises 
+      # Returns a copy of the dataset with the where conditions changed. Raises
       # if the dataset has been grouped. See also #filter.
       def where(*cond, &block)
         if @opts[:group]
@@ -286,7 +286,7 @@ module Sequel
         end
       end
 
-      # Returns a copy of the dataset with the having conditions changed. Raises 
+      # Returns a copy of the dataset with the having conditions changed. Raises
       # if the dataset has not been grouped. See also #filter
       def having(*cond, &block)
         unless @opts[:group]
@@ -302,7 +302,7 @@ module Sequel
         clone_merge(:union => dataset, :union_all => all)
       end
 
-      # Adds an INTERSECT clause using a second dataset object. If all is true 
+      # Adds an INTERSECT clause using a second dataset object. If all is true
       # the clause used is INTERSECT ALL, which may return duplicate rows.
       def intersect(dataset, all = false)
         clone_merge(:intersect => dataset, :intersect_all => all)
@@ -349,17 +349,17 @@ module Sequel
 
       # Returns a LEFT OUTER joined dataset.
       def left_outer_join(table, expr); join_table(:left_outer, table, expr); end
-      
+
       # Returns a RIGHT OUTER joined dataset.
       def right_outer_join(table, expr); join_table(:right_outer, table, expr); end
-      
+
       # Returns an OUTER joined dataset.
       def full_outer_join(table, expr); join_table(:full_outer, table, expr); end
-      
+
       # Returns an INNER joined dataset.
       def inner_join(table, expr); join_table(:inner, table, expr); end
       alias join inner_join
-      
+
 
       # Inserts multiple values. If a block is given it is invoked for each
       # item in the given array before inserting it.
@@ -375,7 +375,7 @@ module Sequel
       # options.
       def select_sql(opts = nil)
         opts = opts ? @opts.merge(opts) : @opts
-        
+
         if sql = opts[:sql]
           return sql
         end
@@ -386,7 +386,7 @@ module Sequel
         sql = opts[:distinct] ? \
           "SELECT DISTINCT #{select_fields} FROM #{select_source}" : \
           "SELECT #{select_fields} FROM #{select_source}"
-        
+
         if join = opts[:join]
           sql << join
         end
@@ -430,7 +430,7 @@ module Sequel
       alias sql select_sql
 
       # Formats an INSERT statement using the given values. If a hash is given,
-      # the resulting statement includes field names. If no values are given, 
+      # the resulting statement includes field names. If no values are given,
       # the resulting statement includes a DEFAULT VALUES clause.
       #
       #   dataset.insert_sql() #=> 'INSERT INTO items DEFAULT VALUES'
@@ -480,7 +480,7 @@ module Sequel
         opts = opts ? @opts.merge(opts) : @opts
 
         if opts[:group]
-          raise SequelError, "Can't update a grouped dataset" 
+          raise SequelError, "Can't update a grouped dataset"
         elsif (opts[:from].size > 1) or opts[:join]
           raise SequelError, "Can't update a joined dataset"
         end
@@ -501,7 +501,7 @@ module Sequel
       end
 
       # Formats a DELETE statement using the given options and dataset options.
-      # 
+      #
       #   dataset.filter {price >= 100}.delete_sql #=>
       #     "DELETE FROM items WHERE (price >= 100)"
       def delete_sql(opts = nil)
@@ -523,7 +523,7 @@ module Sequel
       end
 
       # Returns a table reference for use in the FROM clause. If the dataset has
-      # only a :from option refering to a single table, only the table name is 
+      # only a :from option refering to a single table, only the table name is
       # returned. Otherwise a subquery is returned.
       def to_table_reference(idx = nil)
         if opts.keys == [:from] && opts[:from].size == 1
@@ -553,7 +553,7 @@ module Sequel
           clone_merge(:limit => l)
         end
       end
-      
+
       SELECT_COUNT = {:select => ["COUNT(*)".lit], :order => nil}.freeze
 
       # Returns the number of records in the dataset.

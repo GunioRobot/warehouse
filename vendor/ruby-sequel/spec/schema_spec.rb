@@ -2,7 +2,7 @@ require File.join(File.dirname(__FILE__), 'spec_helper')
 
 class SchemaDummyDatabase < Sequel::Database
   attr_reader :sqls
-  
+
   def execute(sql)
     @sqls ||= []
     @sqls << sql
@@ -13,7 +13,7 @@ context "DB#create_table" do
   setup do
     @db = SchemaDummyDatabase.new
   end
-  
+
   specify "should accept the table name" do
     @db.create_table(:cats) {}
     @db.sqls.should == ['CREATE TABLE cats ();']
@@ -26,7 +26,7 @@ context "DB#create_table" do
     end
     @db.sqls.should == ['CREATE TABLE cats (id integer, name text);']
   end
-  
+
   specify "should accept method calls as data types" do
     @db.create_table(:cats) do
       integer :id
@@ -61,7 +61,7 @@ context "DB#create_table" do
     end
     @db.sqls.should == ["CREATE TABLE cats (id integer DEFAULT 123, name text DEFAULT 'abc''def');"]
   end
-  
+
   specify "should accept not null definition" do
     @db.create_table(:cats) do
       integer :id
@@ -69,7 +69,7 @@ context "DB#create_table" do
     end
     @db.sqls.should == ["CREATE TABLE cats (id integer, name text NOT NULL);"]
   end
-  
+
   specify "should accept unique definition" do
     @db.create_table(:cats) do
       integer :id
@@ -77,14 +77,14 @@ context "DB#create_table" do
     end
     @db.sqls.should == ["CREATE TABLE cats (id integer, name text UNIQUE);"]
   end
-  
+
   specify "should accept [SET|ENUM](...) types" do
     @db.create_table(:cats) do
       set :color, :elements => ['black', 'tricolor', 'grey']
     end
     @db.sqls.should == ["CREATE TABLE cats (color set('black', 'tricolor', 'grey'));"]
   end
-  
+
   specify "should accept varchar size" do
     @db.create_table(:cats) do
       varchar :name
@@ -103,7 +103,7 @@ context "DB#create_table" do
     end
     @db.sqls.should == ["CREATE TABLE cats (project_id integer REFERENCES projects);"]
   end
-  
+
   specify "should accept foreign keys with ON DELETE clause" do
     @db.create_table(:cats) do
       foreign_key :project_id, :table => :projects, :on_delete => :restrict
@@ -137,7 +137,7 @@ context "DB#create_table" do
     @db.sqls.should == ["CREATE TABLE cats (project_id integer REFERENCES projects ON DELETE SET DEFAULT);"]
     @db.sqls.clear
   end
-  
+
   specify "should accept index definitions" do
     @db.create_table(:cats) do
       integer :id
@@ -154,7 +154,7 @@ context "DB#create_table" do
     end
     @db.sqls.should == ["CREATE TABLE cats (id integer);", "CREATE INDEX cats_id_index ON cats (id);", "CREATE INDEX cats_name_index ON cats (name);"]
   end
-  
+
   specify "should accept custom index names" do
     @db.create_table(:cats) do
       integer :id
@@ -170,7 +170,7 @@ context "DB#create_table" do
     end
     @db.sqls.should == ["CREATE TABLE cats (id integer);", "CREATE UNIQUE INDEX cats_id_index ON cats (id);"]
   end
-  
+
   specify "should accept compound index definitions" do
     @db.create_table(:cats) do
       integer :id

@@ -7,7 +7,7 @@ module Sequel
   class Database
     attr_reader :opts, :pool
     attr_accessor :logger
-    
+
     # Constructs a new instance of a database connection with the specified
     # options hash.
     #
@@ -15,7 +15,7 @@ module Sequel
     def initialize(opts = {}, &block)
       Model.database_opened(self)
       @opts = opts
-      
+
       # Determine if the DB is single threaded or multi threaded
       @single_threaded = opts[:single_threaded] || @@single_threaded
       # Construct pool
@@ -28,23 +28,23 @@ module Sequel
 
       @logger = opts[:logger]
     end
-    
+
     def connect
       raise NotImplementedError, "#connect should be overriden by adapters"
     end
-    
+
     def disconnect
       raise NotImplementedError, "#disconnect should be overriden by adapters"
     end
-    
+
     def multi_threaded?
       !@single_threaded
     end
-    
+
     def single_threaded?
       @single_threaded
     end
-    
+
     def uri
       uri = URI::Generic.new(
         self.class.adapter_scheme.to_s,
@@ -62,12 +62,12 @@ module Sequel
       uri.to_s
     end
     alias url uri # Because I don't care much for the semantic difference.
-    
+
     # Returns a blank dataset
     def dataset
       ds = Sequel::Dataset.new(self)
     end
-    
+
     def fetch(sql, *args, &block)
       ds = dataset
       sql = sql.gsub('?') {|m|  ds.literal(args.shift)}
@@ -80,36 +80,36 @@ module Sequel
       end
     end
     alias_method :>>, :fetch
-    
-    # Converts a query block into a dataset. For more information see 
+
+    # Converts a query block into a dataset. For more information see
     # Dataset#query.
     def query(&block)
       dataset.query(&block)
     end
-    
+
     # Returns a new dataset with the from method invoked. If a block is given,
     # it is used as a filter on the dataset.
     def from(*args, &block)
       ds = dataset.from(*args)
       block ? ds.filter(&block) : ds
     end
-    
+
     # Returns a new dataset with the select method invoked.
     def select(*args); dataset.select(*args); end
-    
+
     def [](*args)
       (String === args.first) ? fetch(*args) : from(*args)
     end
-    
+
     def execute(sql)
       raise NotImplementedError
     end
-    
+
     # Executes the supplied SQL statement. The SQL can be supplied as a string
-    # or as an array of strings. If an array is give, comments and excessive 
+    # or as an array of strings. If an array is give, comments and excessive
     # white space are removed. See also Array#to_sql.
     def <<(sql); execute((Array === sql) ? sql.to_sql : sql); end
-    
+
     # Acquires a database connection, yielding it to the passed block.
     def synchronize(&block)
       @pool.hold(&block)
@@ -120,15 +120,15 @@ module Sequel
       @pool.hold {|conn|}
       true
     end
-    
+
     include Dataset::SQL
     include Schema::SQL
-    
+
     # default serial primary key definition. this should be overriden for each adapter.
     def serial_primary_key_options
       {:primary_key => true, :type => :integer, :auto_increment => true}
     end
-    
+
     # Creates a table. The easiest way to use this method is to provide a
     # block:
     #   DB.create_table :posts do
@@ -141,12 +141,12 @@ module Sequel
       g = Schema::Generator.new(self, name, &block)
       create_table_sql_list(*g.create_info).each {|sta| execute(sta)}
     end
-    
+
     # Drops a table.
     def drop_table(*names)
       execute(names.map {|n| drop_table_sql(n)}.join)
     end
-    
+
     # Performs a brute-force check for the existance of a table. This method is
     # usually overriden in descendants.
     def table_exists?(name)
@@ -158,14 +158,14 @@ module Sequel
     rescue
       false
     end
-    
+
     SQL_BEGIN = 'BEGIN'.freeze
     SQL_COMMIT = 'COMMIT'.freeze
     SQL_ROLLBACK = 'ROLLBACK'.freeze
 
-    # A simple implementation of SQL transactions. Nested transactions are not 
-    # supported - calling #transaction within a transaction will reuse the 
-    # current transaction. May be overridden for databases that support nested 
+    # A simple implementation of SQL transactions. Nested transactions are not
+    # supported - calling #transaction within a transaction will reuse the
+    # current transaction. May be overridden for databases that support nested
     # transactions.
     def transaction
       @pool.hold do |conn|
@@ -189,7 +189,7 @@ module Sequel
     end
 
     @@adapters = Hash.new
-    
+
     # Sets the adapter scheme for the Database class. Call this method in
     # descendnants of Database to allow connection using a URL. For example the
     # following:
@@ -202,7 +202,7 @@ module Sequel
     def self.set_adapter_scheme(scheme)
       @scheme = scheme
       @@adapters[scheme.to_sym] = self
-      
+
       # Define convenience method for this database class
       db_class = self
       Sequel.meta_def(scheme) do |*args|
@@ -221,12 +221,12 @@ module Sequel
         db_class.new(opts)
       end
     end
-    
+
     # Returns the scheme for the Database class.
     def self.adapter_scheme
       @scheme
     end
-    
+
     # Converts a uri to an options hash. These options are then passed
     # to a newly created database object.
     def self.uri_to_options(uri)
@@ -238,7 +238,7 @@ module Sequel
         :database => (uri.path =~ /\/(.*)/) && ($1)
       }
     end
-    
+
     # call-seq:
     #   Sequel::Database.connect(conn_string)
     #   Sequel.connect(conn_string)
@@ -254,9 +254,9 @@ module Sequel
       raise SequelError, "Invalid database scheme" unless c
       c.new(c.uri_to_options(uri).merge(more_opts || {}))
     end
-    
+
     @@single_threaded = false
-    
+
     def self.single_threaded=(value)
       @@single_threaded = value
     end

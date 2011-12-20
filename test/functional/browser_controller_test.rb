@@ -29,7 +29,7 @@ context "Browser Controller Permissions" do
       alias_method_chain :repository_member_required, :testing
     end
   end
-  
+
   specify "should accept anonymous public repo" do
     @controller.stubs(:current_repository).returns(repositories(:sample))
     @controller.stubs(:current_user).returns(nil)
@@ -38,7 +38,7 @@ context "Browser Controller Permissions" do
     get :index, :paths => []
     assert_match /^passed/, @response.body
   end
-  
+
   specify "should accept anonymous to public repo" do
     @controller.stubs(:current_repository).returns(repositories(:sample))
     @controller.stubs(:current_user).returns(nil)
@@ -47,7 +47,7 @@ context "Browser Controller Permissions" do
     get :index, :paths => []
     assert_match /^passed/, @response.body
   end
-  
+
   specify "should accept full admin to repo" do
     @controller.stubs(:current_repository).returns(repositories(:sample))
     @controller.stubs(:current_user).returns(users(:rick))
@@ -56,7 +56,7 @@ context "Browser Controller Permissions" do
     get :index, :paths => []
     assert_match /^passed/, @response.body
   end
-  
+
   specify "should accept member to repo" do
     @controller.stubs(:current_repository).returns(repositories(:sample))
     @controller.stubs(:current_user).returns(stub(:id => users(:rick).id, :admin? => false))
@@ -65,7 +65,7 @@ context "Browser Controller Permissions" do
     get :index, :paths => []
     assert_match /^passed/, @response.body
   end
-  
+
   specify "should require valid path for member to repo" do
     Permission.update_all ['path = ?', 'public']
     @controller.stubs(:current_repository).returns(repositories(:sample))
@@ -75,7 +75,7 @@ context "Browser Controller Permissions" do
     get :index, :paths => []
     assert_match /^error/, @response.body
   end
-  
+
   specify "should accept exact path for member to repo" do
     Permission.update_all ['path = ?', 'public']
     @controller.stubs(:current_repository).returns(repositories(:sample))
@@ -85,7 +85,7 @@ context "Browser Controller Permissions" do
     get :index, :paths => %w(public)
     assert_match /^passed/, @response.body
   end
-  
+
   specify "should accept sub path for member to repo" do
     Permission.update_all ['path = ?', 'public']
     @controller.stubs(:current_repository).returns(repositories(:sample))
@@ -95,7 +95,7 @@ context "Browser Controller Permissions" do
     get :index, :paths => %w(public/foo)
     assert_match /^passed/, @response.body
   end
-  
+
   specify "should accept sub file for member to repo" do
     Permission.update_all ['path = ?', 'public']
     @controller.stubs(:current_repository).returns(repositories(:sample))

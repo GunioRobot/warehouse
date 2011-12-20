@@ -6,9 +6,9 @@ class Sequel::Dataset
   #   DB[:items].filter {:price < 100}
   #   DB[:items].filter {:category == 'ruby' && :date < 3.days.ago}
   #
-  # Block filters can refer to literals, variables, constants, arguments, 
-  # instance variables or anything else in order to create parameterized 
-  # queries. Block filters can also refer to other dataset objects as 
+  # Block filters can refer to literals, variables, constants, arguments,
+  # instance variables or anything else in order to create parameterized
+  # queries. Block filters can also refer to other dataset objects as
   # sub-queries. Block filters are pretty much limitless!
   #
   # Block filters are based on ParseTree. If you do not have the ParseTree
@@ -54,7 +54,7 @@ class Sequel::Dataset
         "(#{literal(l)} = #{literal(r)})"
       end
     end
-    
+
     # Formats a string matching expression. The stock implementation supports
     # matching against strings only using the LIKE operator. Specific adapters
     # can override this method to provide support for regular expressions.
@@ -73,20 +73,20 @@ class Sequel::Dataset
     #   dataset.filter {:category => category.to_s}
     #   dataset.filter {:x > y[0..3]}
     #
-    # This method depends on the Ruby2Ruby gem. If you do not have Ruby2Ruby 
+    # This method depends on the Ruby2Ruby gem. If you do not have Ruby2Ruby
     # installed, this method will raise an error.
     def ext_expr(e, b)
       eval(RubyToRuby.new.process(e), b)
     end
 
-    # Translates a method call parse-tree to SQL expression. The following 
+    # Translates a method call parse-tree to SQL expression. The following
     # operators are recognized and translated to SQL expressions: >, <, >=, <=,
     # ==, =~, +, -, *, /, %:
     #
     #   :x == 1 #=> "(x = 1)"
     #   (:x + 100) < 200 #=> "((x + 100) < 200)"
     #
-    # The in, in?, nil and nil? method calls are intercepted and passed to 
+    # The in, in?, nil and nil? method calls are intercepted and passed to
     # #compare_expr.
     #
     #   :x.in [1, 2, 3] #=> "(x IN (1, 2, 3))"
@@ -153,15 +153,15 @@ class Sequel::Dataset
         end
       end
     end
-    
+
     def fcall_expr(e, b)
       ext_expr(e, b)
     end
-    
+
     def vcall_expr(e, b)
       eval(e[1].to_s, b)
     end
-    
+
     def iter_expr(e, b)
       if e[1] == [:fcall, :proc]
         eval_expr(e[3], b) # inline proc
@@ -169,7 +169,7 @@ class Sequel::Dataset
         ext_expr(e, b) # method call with inline proc
       end
     end
-    
+
     # Evaluates a parse-tree into an SQL expression.
     def eval_expr(e, b)
       case e[0]
@@ -222,7 +222,7 @@ class Sequel::Dataset
         raise SequelError, "Invalid expression tree: #{e.inspect}"
       end
     end
-    
+
     def pt_expr(e, b)
       case e[0]
       when :not # negation: !x, (x != y), (x !~ y)

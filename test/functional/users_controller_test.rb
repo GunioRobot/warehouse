@@ -14,28 +14,28 @@ context "Users Controller" do
     @response   = ActionController::TestResponse.new
     @request.host = "sample.test.host"
   end
-  
+
   specify "should allow user to update self" do
     login_as :justin
     put :update, :user => {:email => 'justin2@wh.com'}
     assert_redirected_to root_path
     users(:justin).email.should == 'justin2@wh.com'
   end
-  
+
   specify "should not allow user to update admin setting" do
     login_as :justin
     put :update, :user => {:email => 'justin2@wh.com', :admin => '1'}
     assert_redirected_to root_path
     users(:justin).should.not.be.admin
   end
-  
+
   specify "should allow admin to update user admin setting" do
     login_as :rick
     put :update, :id => 2, :user => {:email => 'justin2@wh.com', :admin => '1'}
     assert_redirected_to root_path
     users(:justin).should.be.admin
   end
-  
+
   specify "should not allow user for update with id" do
     login_as :justin
     put :update, :id => 1
@@ -121,7 +121,7 @@ context "Users Controller Access" do
     get :index, :id => 2
     assert_match /^error/, @response.body
   end
-  
+
   specify "should allow admin for update" do
     login_as :rick
     put :update, :id => 2

@@ -9,7 +9,7 @@ module Warehouse
         index[plugin_name.to_s]
       end
     end
-    
+
     self.hook_path = RAILS_ENV == 'test' ? 'test/hooks' : 'vendor/plugins/hooks'
 
     def self.for(repository)
@@ -31,7 +31,7 @@ module Warehouse
       end
       discovered
     end
-    
+
     def self.define(name, &block)
       hook_class = Class.new(Base)
       hook_class.option :prefix, "(Optional) Regular expression matching on the updated files' paths to determine if the current commit should use this hook. "
@@ -44,15 +44,15 @@ module Warehouse
 
     class Proxy
       attr_reader :klass
-    
+
       def self.process!(klass, &block)
         new(klass).instance_eval &block
       end
-    
+
       def initialize(klass)
         @klass = klass
       end
-      
+
       private
         def method_missing(name, *args, &block)
           if klass.respond_to?(name)

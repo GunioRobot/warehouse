@@ -1,8 +1,8 @@
---- 
+---
 name: OpenGL
 scopeName: source.open-gl
 uuid: D5C78F2A-43D6-4598-BB92-1761EDF2C768
-patterns: 
+patterns:
 - name: support.type.open-gl
   match: \b(GL(u?int(ptr)?|float|enum|boolean|bitfield|u?byte|u?short|sizei(ptr)?|clamp[fd]|double|void|char))\b
 - name: support.constant.open-gl

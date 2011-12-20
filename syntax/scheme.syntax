@@ -1,45 +1,45 @@
---- 
+---
 name: Scheme
-fileTypes: 
+fileTypes:
 - scm
 - sch
 scopeName: source.scheme
-repository: 
-  illegal: 
+repository:
+  illegal:
     name: invalid.illegal.parenthesis.scheme
     match: "[()]"
-  quote-sexp: 
+  quote-sexp:
     begin: (?<=\()\s*(quote)\b\s*
     contentName: string.other.quote.scheme
-    beginCaptures: 
-      "1": 
+    beginCaptures:
+      "1":
         name: keyword.control.quote.scheme
     end: (?=[\s)])|(?<=\n)
-    patterns: 
+    patterns:
     - include: "#quoted"
     comment: "\n\
       \t\t\t\tSomething quoted with (quote \xC2\xABthing\xC2\xBB).  In this case \xC2\xABthing\xC2\xBB\n\
       \t\t\t\twill not be evaluated, so we are considering it a string.\n\
       \t\t\t"
-  quote: 
-    patterns: 
+  quote:
+    patterns:
     - name: constant.other.symbol.scheme
-      captures: 
-        "1": 
+      captures:
+        "1":
           name: punctuation.section.quoted.symbol.scheme
       match: "(?x)\n\
         \t\t\t\t\t\t(')\\s*\n\
         \t\t\t\t\t\t([[:alnum:]][[:alnum:]!$%&*+-./:<=>?@^_~]*)\n\
         \t\t\t\t\t"
     - name: constant.other.empty-list.schem
-      captures: 
-        "1": 
+      captures:
+        "1":
           name: punctuation.section.quoted.empty-list.scheme
-        "2": 
+        "2":
           name: meta.expression.scheme
-        "3": 
+        "3":
           name: punctuation.section.expression.begin.scheme
-        "4": 
+        "4":
           name: punctuation.section.expression.end.scheme
       match: "(?x)\n\
         \t\t\t\t\t\t(')\\s*\n\
@@ -47,11 +47,11 @@ repository:
         \t\t\t\t\t"
     - name: string.other.quoted-object.scheme
       begin: (')\s*
-      beginCaptures: 
-        "1": 
+      beginCaptures:
+        "1":
           name: punctuation.section.quoted.scheme
       end: (?=[\s()])|(?<=\n)
-      patterns: 
+      patterns:
       - include: "#quoted"
       comment: quoted double-quoted string or s-expression
     comment: "\n\
@@ -63,12 +63,12 @@ repository:
       \t\t\t\tsymbols, and quoted empty lists are considered constant.other\n\
       \t\t\t\t\n\
       \t\t\t"
-  language-functions: 
-    patterns: 
+  language-functions:
+    patterns:
     - name: keyword.control.scheme
       match: |-
         (?x)
-        						(?<=(\s|\()) # preceded by space or ( 
+        						(?<=(\s|\()) # preceded by space or (
         						( do|or|and|else|quasiquote|begin|if|case|set!|
         						  cond|let|unquote|define|let\*|unquote-splicing|delay|
         						  letrec)
@@ -170,24 +170,24 @@ repository:
         \t\t\t\t\t\t)\n\
         \t\t\t\t\t\t(?=(\\s|\\()) # followed by space or (\n\
         \t\t\t\t\t"
-  quoted: 
-    patterns: 
+  quoted:
+    patterns:
     - include: "#string"
     - name: meta.expression.scheme
-      endCaptures: 
-        "1": 
+      endCaptures:
+        "1":
           name: punctuation.section.expression.end.scheme
       begin: (\()
-      beginCaptures: 
-        "1": 
+      beginCaptures:
+        "1":
           name: punctuation.section.expression.begin.scheme
       end: (\))
-      patterns: 
+      patterns:
       - include: "#quoted"
     - include: "#quote"
     - include: "#illegal"
-  constants: 
-    patterns: 
+  constants:
+    patterns:
     - name: constant.language.boolean.scheme
       match: "#[t|f]"
     - name: constant.numeric.scheme
@@ -198,46 +198,46 @@ repository:
       match: (?<=[\(\s])(#o)[0-7]+
     - name: constant.numeric.scheme
       match: (?<=[\(\s])(#b)[01]+
-  comment: 
+  comment:
     name: comment.line.semicolon.scheme
-    captures: 
-      "1": 
+    captures:
+      "1":
         name: punctuation.definition.comment.semicolon.scheme
     match: (;).*$\n?
-  string: 
+  string:
     name: string.quoted.double.scheme
-    endCaptures: 
-      "1": 
+    endCaptures:
+      "1":
         name: punctuation.definition.string.end.scheme
     begin: (")
-    beginCaptures: 
-      "1": 
+    beginCaptures:
+      "1":
         name: punctuation.definition.string.begin.scheme
     end: (")
-    patterns: 
+    patterns:
     - name: constant.character.escape.scheme
       match: \\.
-  sexp: 
+  sexp:
     name: meta.expression.scheme
-    endCaptures: 
-      "1": 
+    endCaptures:
+      "1":
         name: punctuation.section.expression.end.scheme
-      "2": 
+      "2":
         name: meta.after-expression.scheme
     begin: (\()
-    beginCaptures: 
-      "1": 
+    beginCaptures:
+      "1":
         name: punctuation.section.expression.begin.scheme
     end: (\))(\n)?
-    patterns: 
+    patterns:
     - include: "#comment"
     - name: meta.declaration.procedure.scheme
-      captures: 
-        "1": 
+      captures:
+        "1":
           name: keyword.control.scheme
-        "2": 
+        "2":
           name: entity.name.function.scheme
-        "3": 
+        "3":
           name: variable.parameter.function.scheme
       begin: "(?x)\n\
         \t\t\t\t\t\t(?<=\\()       # preceded by (\n\
@@ -251,15 +251,15 @@ repository:
         \t\t\t\t\t\t\\)\n\
         \t\t\t\t\t"
       end: (?=\))
-      patterns: 
+      patterns:
       - include: "#comment"
       - include: "#sexp"
       - include: "#illegal"
     - name: meta.declaration.procedure.scheme
-      captures: 
-        "1": 
+      captures:
+        "1":
           name: keyword.control.scheme
-        "2": 
+        "2":
           name: variable.parameter.scheme
       begin: "(?x)\n\
         \t\t\t\t\t\t(?<=\\() # preceded by (\n\
@@ -272,7 +272,7 @@ repository:
         \t\t\t\t\t\t(\\)) # closing paren\n\
         \t\t\t\t\t"
       end: (?=\))
-      patterns: 
+      patterns:
       - include: "#comment"
       - include: "#sexp"
       - include: "#illegal"
@@ -281,14 +281,14 @@ repository:
         \t\t\t\t\t\tparticularly troubling\n\
         \t\t\t\t\t"
     - name: meta.declaration.variable.scheme
-      captures: 
-        "1": 
+      captures:
+        "1":
           name: keyword.control.scheme
-        "2": 
+        "2":
           name: variable.other.scheme
       begin: (?<=\()(define)\s([[:alnum:]][[:alnum:]!$%&*+-./:<=>?@^_~]*)\s*.*?
       end: (?=\))
-      patterns: 
+      patterns:
       - include: "#comment"
       - include: "#sexp"
       - include: "#illegal"
@@ -318,7 +318,7 @@ foldingStartMarker: |-
   	    ( [^()\n]++ | \( \g<par> \)? )*+
   	  )
   	$
-patterns: 
+patterns:
 - include: "#comment"
 - include: "#sexp"
 - include: "#string"

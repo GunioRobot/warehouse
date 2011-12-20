@@ -10,41 +10,41 @@ module Warehouse
           end
         end
       end
-      
+
       attr_reader :repo
       attr_reader :repo_path
       attr_reader :revision
-      
+
       def changed_at
         @changed_at ||= Time.parse(svnlook(:date))
       end
-      
+
       def author
         @author ||= svnlook :author
       end
-      
+
       def dirs_changed
         @dirs_changed ||= svnlook 'dirs-changed'
       end
-      
+
       def log
         @log ||= svnlook :log
       end
-      
+
       def diff
         @diff ||= svnlook :diff
       end
-      
+
       def changed
         @changed ||= svnlook :changed
       end
-      
+
       def initialize(repo, repo_path, revision)
         @repo      = repo
         @repo_path = repo_path
         @revision  = revision
       end
-      
+
       protected
         def svnlook(cmd)
           `#{Warehouse.svnlook_path} #{cmd} #{@repo_path} -r #{@revision}`.strip

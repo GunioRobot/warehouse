@@ -247,7 +247,7 @@ EOF
 
   def test_good_rel
     cases = [
-             "<html><head><link rel=openid.server>",             
+             "<html><head><link rel=openid.server>",
              "<html><head><link rel=openid.server />",
              "<html><head><link hubbard rel=openid.server>",
              "<html><head><link hubbard rel=openid.server></link>",
@@ -255,7 +255,7 @@ EOF
              "<html><head><link / rel=openid.server>",
              "<html><head><link rel='openid.server'>"
             ]
-    
+
     results = []
     cases.each do |c|
       parse_link_attrs(c) { |x| results << x }

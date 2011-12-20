@@ -24,44 +24,44 @@ module ActiveReload
     def cancel(value, options = {})
       @cancel = [value, options]
     end
-    
+
     def submit(value, options = {})
       @submit = [value, options]
     end
 
     def text_field_tag(label, id, value, options = {})
-      @template.content_tag('p', 
+      @template.content_tag('p',
         @template.content_tag('label', label, :for => id) +
         @template.text_field_tag(id, value, options))
     end
 
     def password_field_tag(label, id, value, options = {})
-      @template.content_tag('p', 
+      @template.content_tag('p',
         @template.content_tag('label', label, :for => id) +
         @template.password_field_tag(id, value, options))
     end
-    
+
     def check_box(label, desc, method, options = {}, checked_value = "1", unchecked_value = "0")
-      @template.content_tag('p', 
+      @template.content_tag('p',
         @template.content_tag('label', label, :for => "#{@object_name}_#{method}") +
-        super(method, options, checked_value, unchecked_value) + ' ' + 
+        super(method, options, checked_value, unchecked_value) + ' ' +
         desc)
     end
-    
+
     def select(label, method, choices, options = {}, html_options = {})
       @template.content_tag('p',
         @template.content_tag('label', label, :for => "#{@object_name}_#{method}") +
         super(method, choices, options, html_options))
     end
-    
+
     def hidden_field(method, options = {})
       @hidden_fields << super
     end
-    
+
     def buttons
       hidden = @hidden_fields.any? ? @hidden_fields.join("\n") : ''
       @template.content_tag('p',
-        hidden + 
+        hidden +
         cancel_image(*(@cancel ? @cancel : [default_images[:cancel], {}])) +
         submit_image(*(@submit ? @submit : [default_images[:submit], {}])),
         :class => 'btns')
@@ -71,7 +71,7 @@ module ActiveReload
       def submit_image(img, options = {})
         @template.tag('input', { :type => 'image', :class => 'submit', :src => "/images/app/btns/#{img}" }.merge(options))
       end
-      
+
       def cancel_image(img, options = {})
         @template.image_tag("/images/app/btns/#{img}", {:class => 'cancelbtn'}.merge(options))
       end
@@ -81,7 +81,7 @@ module ActiveReload
     def cache_current_sheets(*default_sheets)
       sheets = default_sheets + @current_sheets.to_a
       return if sheets.blank?
-      sheets.collect do |s| 
+      sheets.collect do |s|
         next unless s.last
         "Sheet.Cache['#{escape_javascript s.first}'] = new Sheet('#{escape_javascript s.first}', '#{escape_javascript s.last.to_s}');"
       end.join("\n")
@@ -98,7 +98,7 @@ module ActiveReload
       options = args.last.is_a?(Hash) ? args.pop : {}
       options[:html] ||= {}
       options[:html][:style] = "display:none"
-      
+
       case record_or_name
         when String, Symbol
           object_name = record_or_name
@@ -117,10 +117,10 @@ module ActiveReload
       concat(form_remote_tag(options), block.binding)
       sheet_form_helper(options, &block)
     end
-    
+
     def remote_sheet_form_for(record_or_name, *args, &block)
       options = args.last.is_a?(Hash) ? args.pop : {}
-      
+
       case record_or_name
         when String, Symbol
           object_name = record_or_name
@@ -134,7 +134,7 @@ module ActiveReload
       concat(form_remote_tag(options), block.binding)
       sheet_form_helper(options, SheetFormBuilder.new(object_name, object, self, options, block), &block)
     end
-    
+
     private
       def sheet_form_helper(options = {}, sheet_form = nil, &block)
         id = options[:html] ? options[:html][:id] : options[:id]

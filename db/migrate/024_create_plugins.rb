@@ -4,7 +4,7 @@ class CreatePlugins < ActiveRecord::Migration
       t.string :name
       t.text :options
       t.boolean :active
-      t.timestamps 
+      t.timestamps
     end
   end
 

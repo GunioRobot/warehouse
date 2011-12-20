@@ -10,7 +10,7 @@ class Test::Unit::TestCase
   self.use_transactional_fixtures = true
   self.use_instantiated_fixtures  = false
   fixtures :all
-  
+
   protected
     def login_as(user)
       @controller.stubs(:current_user).returns(user ? users(user) : nil)

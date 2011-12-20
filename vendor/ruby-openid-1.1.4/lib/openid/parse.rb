@@ -16,8 +16,8 @@ def parse_link_attrs(data)
     end
   rescue
     return
-  end  
+  end
 end
 
-            
-            
+
+

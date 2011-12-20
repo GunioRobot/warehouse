@@ -24,7 +24,7 @@ module Warehouse
       end
       discovered
     end
-    
+
     def self.load(path = nil)
       discover(path).each do |plugin|
         if !loaded.include?(plugin) && plugin.active?
@@ -39,7 +39,7 @@ module Warehouse
     def self.find_in(path)
       Dir[File.join(path, '*')].select { |d| File.directory?(d) && File.file?(File.join(d, 'lib', 'plugin.rb')) }.collect! { |d| File.basename(d) }
     end
-    
+
     def self.each_tab
       loaded.each do |plugin|
         plugin.tabs.each do |tab|
@@ -47,7 +47,7 @@ module Warehouse
         end
       end
     end
-    
+
     def self.tabs?
       loaded.delete_if { |plugin| !plugin.active? }
       loaded.size > 0

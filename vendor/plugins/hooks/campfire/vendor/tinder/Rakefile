@@ -4,10 +4,10 @@ require File.join(File.dirname(__FILE__), 'lib', 'tinder', 'version')
 
 # RDOC_OPTS = ['--quiet', '--title', "Tinder",
 #     "--opname", "index.html",
-#     "--line-numbers", 
+#     "--line-numbers",
 #     "--main", "README",
 #     "--inline-source"]
-# 
+#
 # Generate all the Rake tasks
 
 hoe = Hoe.new('tinder', ENV['VERSION'] || Tinder::VERSION::STRING) do |p|

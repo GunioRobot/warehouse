@@ -20,13 +20,13 @@ class SessionsController < ApplicationController
       end
     end
   end
-  
+
   def destroy
     reset_session
     cookies[:login_token] = {:value => '', :expires => 1.year.ago, :domain => ".#{Warehouse.domain}", :path => '/'}
     redirect_to root_path
   end
-  
+
   def forget
     if !params[:email].blank? && @user = User.find_by_email(params[:email].downcase)
       @user.reset_token!
@@ -36,13 +36,13 @@ class SessionsController < ApplicationController
       status_message :error, "No user found for #{params[:email]}."
     end
   end
-  
+
   def reset
     if params[:token].blank? && !logged_in?
       status_message :error, "Invalid token for resetting your Open ID Identity"
       return
     end
-    
+
     self.current_user = User.find_by_token(params[:token]) unless params[:token].blank?
     return if request.get? && params[:open_id_complete].nil?
     if using_open_id?
@@ -57,7 +57,7 @@ class SessionsController < ApplicationController
     else
       cookies['use_svn'] = {:value => '1', :expires => 1.year.from_now.utc, :domain => ".#{Warehouse.domain}", :path => '/'}
     end
-    unless performed? 
+    unless performed?
       current_user.reset_token!
       redirect_to root_path
     end

@@ -1,51 +1,51 @@
---- 
+---
 name: Logtalk
-fileTypes: 
+fileTypes:
 - lgt
 - config
 scopeName: source.logtalk
 uuid: C11FA1F2-6EDB-11D9-8798-000A95DAA580
 foldingStartMarker: (/\*|:-\s+(object|protocol|category)(?=[(]))
-patterns: 
+patterns:
 - name: comment.block.logtalk
-  captures: 
-    "0": 
+  captures:
+    "0":
       name: punctuation.definition.comment.logtalk
   begin: /\*
   end: \*/
 - name: comment.line.percentage.logtalk
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.comment.logtalk
   match: (%).*$\n?
-- captures: 
-    "1": 
+- captures:
+    "1":
       name: storage.type.opening.logtalk
-    "2": 
+    "2":
       name: punctuation.definition.storage.type.logtalk
-    "4": 
+    "4":
       name: entity.name.type.logtalk
   match: ((:-)\s+(object|protocol|category|module))(?:\()([^(,)]+)
 - name: storage.type.closing.logtalk
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.storage.type.logtalk
   match: (:-)\s+(end_(object|protocol|category))(?=[.])
 - name: storage.type.relations.logtalk
   match: \b(extends|i(nstantiates|mp(orts|lements))|specializes)(?=[(])
 - name: storage.modifier.others.logtalk
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.storage.modifier.logtalk
   match: (:-)\s+(dynamic|threaded)(?=[.])
 - name: storage.modifier.others.logtalk
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.storage.modifier.logtalk
   match: (:-)\s+(calls|e(ncoding|xport)|in(itialization|fo)|uses)(?=[(])
 - name: storage.modifier.others.logtalk
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.storage.modifier.logtalk
   match: (:-)\s+(a(lias|tomic)|info|d(ynamic|iscontiguous)|m(eta_predicate|ode|ultifile)|p(ublic|r(otected|ivate))|op|use(s|_module))(?=[(])
 - name: keyword.operator.message-sending.logtalk
@@ -117,27 +117,27 @@ patterns:
 - name: support.function.grammar-rule.logtalk
   match: \b(expand_term|term_expansion|phrase)(?=[(])
 - name: string.quoted.single.logtalk
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.logtalk
   begin: "'"
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.logtalk
   end: "'"
-  patterns: 
+  patterns:
   - name: constant.character.escape.logtalk
     match: \\.
 - name: string.quoted.double.logtalk
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.logtalk
   begin: "\""
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.logtalk
   end: "\""
-  patterns: 
+  patterns:
   - name: constant.character.escape.logtalk
     match: \\.
 - name: constant.numeric.logtalk

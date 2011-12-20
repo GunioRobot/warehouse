@@ -12,7 +12,7 @@ class PermissionsController < ApplicationController
     @invitees.delete_if { |i| @members.keys.include?(i) }
     render :action => 'index'
   end
-  
+
   def create
     @permission = current_repository.grant(params[:permission])
     if @permission.nil? || @permission.new_record?
@@ -29,7 +29,7 @@ class PermissionsController < ApplicationController
       index
     end
   end
-  
+
   def update
     @user = params[:user_id].blank? ? nil : User.find(params[:user_id])
     current_repository.permissions.set(@user, params[:permission])
@@ -37,14 +37,14 @@ class PermissionsController < ApplicationController
     flash[:notice] = "Permissions updated"
     redirect_to hosted_url(:permissions)
   end
-    
+
   def anon
     case request.method
       when :put    then update
       when :delete then destroy(:anon)
     end
   end
-  
+
   def destroy(anon = false)
     if params[:user_id]
       destroy_user_permissions
@@ -55,12 +55,12 @@ class PermissionsController < ApplicationController
     end
     after_permission_update
   end
-  
+
   protected
     def load_all_repositories
       @repositories = (admin? ? Repository : current_user.administered_repositories).find(:all, :conditions => ['repositories.id != ?', current_repository.id])
     end
-    
+
     def destroy_user_permissions
       @user = User.find(params[:user_id])
       Permission.transaction do
@@ -71,7 +71,7 @@ class PermissionsController < ApplicationController
         page[@user].hide
       end
     end
-    
+
     def destroy_anon_permissions
       Permission.transaction do
         current_repository.permissions.find_all_by_user_id(nil).each { |p| p.update_attribute :active, false }
@@ -81,7 +81,7 @@ class PermissionsController < ApplicationController
         page[:user_anon].hide
       end
     end
-    
+
     def destroy_single_permission
       @permission = current_repository.permissions.find params[:id]
       @permission.update_attribute :active, false
@@ -106,7 +106,7 @@ class PermissionsController < ApplicationController
       end
       false
     end
-    
+
     def after_permission_update
       current_repository.rebuild_permissions
       CacheKey.sweep_cache(request, current_repository)

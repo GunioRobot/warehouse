@@ -1,10 +1,10 @@
---- 
+---
 name: Txt2tags
-fileTypes: 
+fileTypes:
 - t2t
 scopeName: text.txt2tags
 uuid: B5A751C0-2CE4-41A5-99FB-7B673943DE60
-patterns: 
+patterns:
 - name: comment.block.txt2tags
   begin: ^%%%\s*$
   end: ^%%%\s*$\n?

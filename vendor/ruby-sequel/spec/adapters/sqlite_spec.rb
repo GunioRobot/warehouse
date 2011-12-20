@@ -11,31 +11,31 @@ context "An SQLite database" do
   setup do
     @db = Sequel('sqlite:/')
   end
-  
+
   specify "should provide a list of existing tables" do
     @db.tables.should == []
-    
+
     @db.create_table :testing do
       text :name
     end
     @db.tables.should include(:testing)
   end
-  
+
   specify "should support getting pragma values" do
     @db.pragma_get(:auto_vacuum).should == '0'
   end
-  
+
   specify "should support setting pragma values" do
     @db.pragma_set(:auto_vacuum, '1')
     @db.pragma_get(:auto_vacuum).should == '1'
   end
-  
+
   specify "should support getting and setting the auto_vacuum pragma" do
     @db.auto_vacuum = :full
     @db.auto_vacuum.should == :full
     @db.auto_vacuum = :none
     @db.auto_vacuum.should == :none
-    
+
     proc {@db.auto_vacuum = :invalid}.should raise_error(SequelError)
   end
 
@@ -46,10 +46,10 @@ context "An SQLite database" do
     @db.synchronous.should == :normal
     @db.synchronous = :full
     @db.synchronous.should == :full
-    
+
     proc {@db.synchronous = :invalid}.should raise_error(SequelError)
   end
-  
+
   specify "should support getting and setting the temp_store pragma" do
     @db.temp_store = :default
     @db.temp_store.should == :default
@@ -57,27 +57,27 @@ context "An SQLite database" do
     @db.temp_store.should == :file
     @db.temp_store = :memory
     @db.temp_store.should == :memory
-    
+
     proc {@db.temp_store = :invalid}.should raise_error(SequelError)
   end
-  
+
   specify "should be able to execute multiple statements at once" do
     @db.create_table :t do
       text :name
     end
-    
+
     @db << "insert into t (name) values ('abc');insert into t (name) values ('def')"
 
     @db[:t].count.should == 2
-    
+
     @db[:t].order(:name).map(:name).should == ['abc', 'def']
   end
-  
+
   specify "should be able to execute transactions" do
     @db.transaction do
       @db.create_table(:t) {text :name}
     end
-    
+
     @db.tables.should == [:t]
 
     proc {@db.transaction do
@@ -101,7 +101,7 @@ context "An SQLite database" do
         @db.create_table(:t) {text :name}
       end
     end
-    
+
     @db.tables.should == [:t]
 
     proc {@db.transaction do
@@ -113,7 +113,7 @@ context "An SQLite database" do
     # no commit
     @db.tables.should == [:t]
   end
-  
+
   specify "should provide disconnect functionality" do
     @db.tables
     @db.pool.size.should == 1
@@ -127,7 +127,7 @@ context "An SQLite dataset" do
     @d = SQLITE_DB[:items]
     @d.delete # remove all records
   end
-  
+
   specify "should return the correct records" do
     @d.to_a.should == []
     @d << {:name => 'abc', :value => 1.23}
@@ -139,7 +139,7 @@ context "An SQLite dataset" do
       {:name => 'def', :value => 7.89}
     ]
   end
-  
+
   specify "should return the correct record count" do
     @d.count.should == 0
     @d << {:name => 'abc', :value => 1.23}
@@ -152,24 +152,24 @@ context "An SQLite dataset" do
     id = @d << {:name => 'abc', :value => 1.23}
     id.should == @d.first[:id]
   end
-  
+
   specify "should update records correctly" do
     @d << {:name => 'abc', :value => 1.23}
     @d << {:name => 'abc', :value => 4.56}
     @d << {:name => 'def', :value => 7.89}
     @d.filter(:name => 'abc').update(:value => 5.3)
-    
+
     # the third record should stay the same
     @d[:name => 'def'][:value].should == 7.89
     @d.filter(:value => 5.3).count.should == 2
   end
-  
+
   specify "should delete records correctly" do
     @d << {:name => 'abc', :value => 1.23}
     @d << {:name => 'abc', :value => 4.56}
     @d << {:name => 'def', :value => 7.89}
     @d.filter(:name => 'abc').delete
-    
+
     @d.count.should == 1
     @d.first[:name].should == 'def'
   end
@@ -183,19 +183,19 @@ context "An SQLite dataset" do
     @d << {:name => 'def', :value => 4.56}
     @d << {:name => 'ghi', :value => 7.89}
   end
-  
+
   specify "should correctly return avg" do
     @d.avg(:value).should == ((1.23 + 4.56 + 7.89) / 3).to_s
   end
-  
+
   specify "should correctly return sum" do
     @d.sum(:value).should == (1.23 + 4.56 + 7.89).to_s
   end
-  
+
   specify "should correctly return max" do
     @d.max(:value).should == 7.89.to_s
   end
-  
+
   specify "should correctly return min" do
     @d.min(:value).should == 1.23.to_s
   end
@@ -209,7 +209,7 @@ context "SQLite::Dataset#delete" do
     @d << {:name => 'def', :value => 4.56}
     @d << {:name => 'ghi', :value => 7.89}
   end
-  
+
   specify "should return the number of records affected when filtered" do
     @d.count.should == 3
     @d.filter {:value < 3}.delete.should == 1
@@ -218,7 +218,7 @@ context "SQLite::Dataset#delete" do
     @d.filter {:value < 3}.delete.should == 0
     @d.count.should == 2
   end
-  
+
   specify "should return the number of records affected when unfiltered" do
     @d.count.should == 3
     @d.delete.should == 3
@@ -236,12 +236,12 @@ context "SQLite::Dataset#update" do
     @d << {:name => 'def', :value => 4.56}
     @d << {:name => 'ghi', :value => 7.89}
   end
-  
+
   specify "should return the number of records affected" do
     @d.filter(:name => 'abc').update(:value => 2).should == 1
-    
+
     @d.update(:value => 10).should == 3
-    
+
     @d.filter(:name => 'xxx').update(:value => 23).should == 0
   end
 end
@@ -250,14 +250,14 @@ context "An SQLite dataset in array tuples mode" do
   setup do
     @d = SQLITE_DB[:items]
     @d.delete # remove all records
-    
+
     Sequel.use_array_tuples
   end
-  
+
   teardown do
     Sequel.use_hash_tuples
   end
-  
+
   specify "should return the correct records" do
     @d.to_a.should == []
     @d << {:name => 'abc', :value => 1.23}
@@ -269,7 +269,7 @@ context "An SQLite dataset in array tuples mode" do
       Array.from_hash({:name => 'def', :value => 7.89})
     ]
   end
-end  
+end
 
 context "SQLite dataset" do
   setup do
@@ -285,11 +285,11 @@ context "SQLite dataset" do
     @d << {:name => 'def', :value => 4.56}
     @d << {:name => 'ghi', :value => 7.89}
   end
-  
+
   teardown do
     SQLITE_DB.drop_table :test
   end
-  
+
   specify "should be able to insert from a subquery" do
     SQLITE_DB[:test] << @d
     SQLITE_DB[:test].count.should == 3

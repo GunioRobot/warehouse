@@ -2,7 +2,7 @@ class ChangesController < ApplicationController
   def index
     redirect_to hosted_url(:changeset, params[:changeset_id])
   end
-  
+
   def show
     @changeset = current_repository.changesets.find_by_revision(params[:changeset_id])
     @change    = @changeset.changes.find(params[:id])

@@ -6,7 +6,7 @@ namespace :warehouse do
       say "Try running 'rake warehouse:setup'"
       return
     end
-    
+
     rel_path = "releases/warehouse-#{Warehouse.version}"
 
     Dir.chdir '../..'
@@ -19,27 +19,27 @@ namespace :warehouse do
     ln_sf File.expand_path("shared/public/avatars"), File.join(rel_path, 'public', 'avatars')
     ln_sf File.expand_path(rel_path), 'current'
     Dir.chdir rel_path
-    
+
     unless ENV['WAREHOUSE_FORCE']
       say "Upgraded to v#{Warehouse.version}"
       say "Be sure to restart the Rails application to see the changes take effect."
     end
   end
-  
+
   desc "Checks whether the current setup uses the recommended file/directory structure (see warehouse:setup)"
   task :check_structure => :init_highline do
     @app_root = Pathname.new(Dir.pwd)
-    
+
     @in_structure = \
-      (@app_root.dirname.basename.to_s == 'releases') && 
+      (@app_root.dirname.basename.to_s == 'releases') &&
       (@app_root.dirname.dirname + 'shared').exist?
   end
-  
+
   desc "Attempts to setup Warehouse with the recommended file/directory structure.  It lets you know what it's doing before making the change."
   task :setup => :check_structure do
     if @in_structure
       say "Warehouse is already setup correctly."
-    else      
+    else
       top_level = ENV['TOP_LEVEL'] || 'warehouse'
       rel_path = "releases/warehouse-#{Warehouse.version}"
       say "It doesn't look like Warehouse is setup in the recommended structure:"
@@ -68,18 +68,18 @@ namespace :warehouse do
         touch 'shared/config/database.yml'              unless File.exist?('shared/config/database.yml')
         mkdir_p 'shared/public/avatars'
         mv @app_root.to_s, rel_path
-        
+
         Dir.chdir rel_path
         ENV['WAREHOUSE_FORCE'] = '1'
         Rake::Task["warehouse:upgrade"].invoke
       end
     end
   end
-  
+
   desc "Bootstraps Warehouse by checking for various libs, creating your database.yml, and reloading the database schema."
   task :bootstrap => :check_structure do
     say "Bootstrapping Warehouse v#{Warehouse.version}..."
-    
+
     puts
     say "1) Check for subversion bindings and proper permissions"
     say "2) Create Database.yml config file"
@@ -94,7 +94,7 @@ namespace :warehouse do
       say "You do not have the ruby/svn bindings installed."
       raise
     end
-    
+
     say "checking for proper write permissions..."
     if File.writable?('config/initializers')
       say "... looks good!"
@@ -102,19 +102,19 @@ namespace :warehouse do
       say "The config/initializers directy should be writable to rails so Warehouse can store this copy's configuration."
       return
     end
-    
+
     puts
     say "Step 1 is complete, now to check your database.yml file."
     puts
 
     db_config = "config/database.yml"
     db_config = File.readlink(db_config) if File.symlink?(db_config)
-    
+
     if File.exist?(db_config)
       say "It looks like you already have a database.yml file."
       @restart = agree("Would you like to CLEAR it and start over? [y/n]")
     end
-    
+
     unless !@restart && File.exist?(db_config)
       if @restart || agree("Would you like to create a database.yml file? [y/n]")
         options = OpenStruct.new
@@ -171,9 +171,9 @@ namespace :warehouse do
     mkdir_p File.join(RAILS_ROOT, 'log')
     warehouse_path = File.join(RAILS_ROOT, 'config', 'initializers', 'warehouse.rb')
     rm warehouse_path if File.exist?(warehouse_path)
-    
+
     %w(environment db:schema:load tmp:create).each { |t| Rake::Task[t].invoke }
-    
+
     say '=' * 80
     puts
     say "Warehouse v#{Warehouse.version} is ready to roll."
@@ -185,7 +185,7 @@ namespace :warehouse do
     say "  The Active Reload Forum - http://forum.activereload.net"
     say "  ActiveReload on IRC (Freenode): #activereload"
   end
-  
+
   task :init_highline do
     unless $terminal
       RAILS_ENV = 'production'
@@ -195,7 +195,7 @@ namespace :warehouse do
       require "highline"
       require "forwardable"
       require 'lib/warehouse'
-      
+
       $terminal = HighLine.new
       class << self
         extend Forwardable

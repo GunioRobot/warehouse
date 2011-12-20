@@ -1,11 +1,11 @@
---- 
+---
 name: Cake
-fileTypes: 
+fileTypes:
 - thtml
 scopeName: source.php.cake
 uuid: 3DF2FE0B-94CC-4EE2-A50A-BD4823D1B09D
 foldingStartMarker: (/\*|\{|\()
-patterns: 
+patterns:
 - name: support.function.model.cake
   match: \b(bindModel|unbindModel|hasField|read|field|save|saveField|remove|del|delete|exists|hasAny|find|findAll|findCount|execute|query|validates|invalidate|invalidFields|isForeignKey|getDisplayField|generateList|getID|getLastInsertID|getInsertID|getNumRows|getAffectedRows|setDatasource|beforeFind|afterFind|beforeSave|afterSave|beforeDelete|afterDelete)\b
 - name: support.function.controller.cake

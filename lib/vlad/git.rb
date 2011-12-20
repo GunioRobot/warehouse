@@ -14,8 +14,8 @@ class Vlad::Git
     [ "rm -rf #{destination}",
       "#{git_cmd} clone #{repository} #{destination}",
       "cd #{destination}",
-      "#{git_cmd} checkout -f -b deployed-#{revision} #{revision}" 
-    ].join(" && ")  
+      "#{git_cmd} checkout -f -b deployed-#{revision} #{revision}"
+    ].join(" && ")
   end
 
   ##
@@ -25,9 +25,9 @@ class Vlad::Git
   def export(revision_or_source, destination)
     revision = revision_or_source
     revision = 'HEAD' if revision == "."
-      
+
     [ "mkdir -p #{destination}",
-      "#{git_cmd} archive --format=tar #{revision} | (cd #{destination} && tar xf -)" 
+      "#{git_cmd} archive --format=tar #{revision} | (cd #{destination} && tar xf -)"
     ].join(" && ")
   end
 

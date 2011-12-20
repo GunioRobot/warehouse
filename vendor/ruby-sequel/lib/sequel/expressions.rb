@@ -31,7 +31,7 @@ module Sequel
         @right = right.first
         self
       end
-      
+
       def nil?
         @op = :eql
         @right = nil
@@ -46,7 +46,7 @@ module Sequel
         @block = block
         @expressions = []
       end
-      
+
       # Converts the block into an array of expressions.
       def __to_a__
         instance_eval(&@block)

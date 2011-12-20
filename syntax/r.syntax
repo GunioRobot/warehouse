@@ -1,6 +1,6 @@
---- 
+---
 name: R
-fileTypes: 
+fileTypes:
 - R
 - r
 - s
@@ -9,10 +9,10 @@ fileTypes:
 scopeName: source.r
 uuid: B2E6B78D-6E70-11D9-A369-000D93B3A10E
 foldingStartMarker: (\(\s*$|\{\s*$)
-patterns: 
+patterns:
 - name: comment.line.number-sign.r
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.comment.r
   match: (#).*$\n?
 - name: storage.type.r
@@ -36,43 +36,43 @@ patterns:
 - name: keyword.other.r
   match: (\.\.\.|\$|:|\~)
 - name: string.quoted.double.r
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.r
   begin: "\""
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.r
   end: "\""
-  patterns: 
+  patterns:
   - name: constant.character.escape.r
     match: \\.
 - name: string.quoted.single.r
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.r
   begin: "'"
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.r
   end: "'"
-  patterns: 
+  patterns:
   - name: constant.character.escape.r
     match: \\.
 - name: meta.function.r
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: entity.name.function.r
-    "2": 
+    "2":
       name: keyword.operator.assignment.r
-    "3": 
+    "3":
       name: keyword.control.r
   match: ([a-zA-Z._][a-zA-Z0-9._]*)\s*(<-)\s*(function)
 - match: ([a-zA-Z._][a-zA-Z0-9._]*)\s*\(
-- captures: 
-    "1": 
+- captures:
+    "1":
       name: variable.parameter.r
-    "2": 
+    "2":
       name: keyword.operator.assignment.r
   match: ([a-zA-Z._][a-zA-Z0-9._]*)\s*(=)(?=[^=])
 - name: variable.other.r

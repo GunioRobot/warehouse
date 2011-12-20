@@ -2,7 +2,7 @@
   <h1 id="splash">Install Warehouse</h1>
   <div class="overlay-content">
     <h2>Thanks for installing Warehouse, enjoy!</h2>
-    
+
     <% if @repository.backend -%>
     <div class="overlay-form oform">
       <h3 style="padding:10px">Sync your repository</h3>
@@ -10,11 +10,11 @@
       <% if @repository.latest_revision >= 5000 %>
       <p style="line-height:140%;">
         It appears you have over 5000 changesets. Syncing from <code>rake</code> is much faster.
-        <pre><code>rake warehouse:sync REPO=<%=h @repository.subdomain %> RAILS_ENV=<%= RAILS_ENV %></code></pre> 
+        <pre><code>rake warehouse:sync REPO=<%=h @repository.subdomain %> RAILS_ENV=<%= RAILS_ENV %></code></pre>
       </p>
       <% else %>
       <p style="margin:10px 0">
-        Press the sync button now to get started syncing your repository.  Optionally, you can <%= link_to 'proceed on to your 
+        Press the sync button now to get started syncing your repository.  Optionally, you can <%= link_to 'proceed on to your
         repository', hosted_url(@repository, :browser) %>.
       </p>
       <% end %>
@@ -47,7 +47,7 @@ Event.addBehavior({
       onImported: function() {
         document.location = "<%= hosted_url(@repository, :browser) %>";
       },
-      
+
       onStep: function(progress) {
         $('pbar-percent').update(progress + "%");
         $('pbar').setStyle({width: progress + '%'});

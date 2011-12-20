@@ -30,7 +30,7 @@ Class.class_eval do
       klass.auto_include!
     end
   end
-  
+
   alias_method_chain :inherited, :mixins
 end
 
@@ -86,7 +86,7 @@ if USE_REPO_PATHS
         params[:repo] = repo if repo
       end
     end
-    
+
     alias_method_chain :recognize_path, :repo
   end
 end

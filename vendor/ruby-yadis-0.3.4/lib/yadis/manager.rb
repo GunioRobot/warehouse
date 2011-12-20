@@ -54,8 +54,8 @@ class Discovery
       rescue YADISParseError, YADISHTTPError
         manager = nil
       else
-        manager = self.create_manager(services, yadis_url)   
-      end     
+        manager = self.create_manager(services, yadis_url)
+      end
     end
 
     if manager
@@ -64,7 +64,7 @@ class Discovery
     else
       service = nil
     end
-    
+
     return service
   end
 
@@ -130,14 +130,14 @@ class Discovery
   # for more information about writing filters.
   def discover(filter=nil)
     y = YADIS.new(@url)
-    
+
     # a default filter which sends through everything.  you should
     # probably consider writing a custom filter and passing it in.
     unless filter
       filter = lambda {|s| s}
     end
 
-    return [y.uri, y.filter_services(filter)]    
+    return [y.uri, y.filter_services(filter)]
   end
 
 end

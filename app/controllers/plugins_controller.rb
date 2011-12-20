@@ -7,7 +7,7 @@ class PluginsController < ApplicationController
     @plugin  = Plugin.new
     @plugins = Warehouse::Plugins.discovered
   end
-  
+
   def update
     @plugin = Plugin.find(params[:id])
     @plugin.options = params[:plugin]

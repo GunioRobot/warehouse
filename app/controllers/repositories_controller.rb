@@ -4,7 +4,7 @@ class RepositoriesController < ApplicationController
   before_filter :login_required, :only   => :index
   before_filter :repository_admin_required,  :except => [:create, :index]
   before_filter :find_or_initialize_repository
-  
+
   cache_sweeper :repository_sweeper, :only => [:create, :update, :destroy]
 
   def index
@@ -14,7 +14,7 @@ class RepositoriesController < ApplicationController
       @repositories.uniq!
     end
   end
-  
+
   def create
     if @repository.save
       @repository.grant :user => current_user, :path => '/'
@@ -25,7 +25,7 @@ class RepositoriesController < ApplicationController
       render :action => 'show'
     end
   end
-  
+
   def update
     if @repository.save
       flash[:notice] = "Repository: #{@repository.name} saved successfully."
@@ -35,7 +35,7 @@ class RepositoriesController < ApplicationController
       render :action => 'show'
     end
   end
-  
+
   def sync
     progress, error = @repository.sync_revisions(10)
 
@@ -46,14 +46,14 @@ class RepositoriesController < ApplicationController
       render :text => error, :status => 500
     end
   end
-  
+
   def destroy
     @repository.destroy
     respond_to do |format|
       format.js
     end
   end
-  
+
   protected
     def find_or_initialize_repository
       @repository = params[:id] ? (admin? ? Repository : current_user.administered_repositories).find(params[:id]) : Repository.new

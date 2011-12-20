@@ -11,11 +11,11 @@
     x.report('hash') do
       N.times {DS.filter(:x => 100, :y => 200).sql}
     end
-  
+
     x.report('param') do
       N.times {DS.filter('(x = ?) AND (y = ?)', 200).sql}
     end
-  
+
     x.report('string') do
       N.times {DS.filter('(x = 100) AND (y = 200)').sql}
     end

@@ -1,9 +1,9 @@
 class BrowserController < ApplicationController
   before_filter :find_node
   before_filter :repository_member_required
-  
+
   caches_action_content :index
-  
+
   helper_method :current_revision, :current_changeset, :previous_changeset, :next_changeset
 
   expiring_attr_reader :current_changeset, :retrieve_current_changeset
@@ -17,7 +17,7 @@ class BrowserController < ApplicationController
   end
 
   alias blame index
-  
+
   def text
     if @node.dir?
       render :layout => false, :content_type => Mime::TEXT
@@ -45,7 +45,7 @@ class BrowserController < ApplicationController
       @revision = params[:rev][1..-1].to_i if params[:rev]
       @node     = current_repository.node(params[:paths] * '/', @revision)
     end
-    
+
     def retrieve_current_changeset
       current_repository.changesets.find_latest_changeset(@node.path, @revision)
     end
@@ -54,7 +54,7 @@ class BrowserController < ApplicationController
       return nil if current_changeset.nil?
       current_repository.changesets.find_by_path(@node.path, :conditions => ['changed_at < ?', current_changeset.changed_at], :order => 'changesets.changed_at desc')
     end
-    
+
     def retrieve_next_changeset
       return nil if current_changeset.nil?
       current_repository.changesets.find_by_path(@node.path, :conditions => ['changed_at > ?', current_changeset.changed_at], :order => 'changesets.changed_at')

@@ -12,11 +12,11 @@ context "Post Commit Hooks" do
     found_hooks.size.should == 1
     found_hooks.first[:id] == hooks(:sample_lighthouse).id
   end
-  
+
   specify "should index hooks for commit" do
     options = [{'a' => 1}, {'b' => 2}]
-    indexed = @command.send :indexed_hooks, 
-      [{:name => 'foo', :options => options[0].to_yaml}, 
+    indexed = @command.send :indexed_hooks,
+      [{:name => 'foo', :options => options[0].to_yaml},
        {:name => 'foo', :options => options[1].to_yaml}]
     indexed.size.should == 2
     indexed[0][0].should == Warehouse::Hooks::Foo

@@ -5,7 +5,7 @@ class CreateHooks < ActiveRecord::Migration
       t.string :name
       t.text :options
 
-      t.timestamps 
+      t.timestamps
     end
   end
 

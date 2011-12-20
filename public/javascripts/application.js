@@ -10,7 +10,7 @@ Permissions = {
     else
       new Ajax.Request(Warehouse.root + "/admin/users/" + user_id + "/permissions", {method:'delete'});
   },
-  
+
   remove: function(line) {
     if(line.readAttribute('id')) {
       if(!confirm("Are you sure you wish to remove this permission?")) return;
@@ -19,7 +19,7 @@ Permissions = {
       line.remove();
     }
   },
-  
+
   add: function(line) {
     var index   = line.parentNode.getElementsByTagName('p').length
     var newline = $(line).duplicate();
@@ -31,9 +31,9 @@ Permissions = {
     newpath.writeAttribute('name', 'permission[paths][' + index + '][path]')
     newsel.writeAttribute('name', 'permission[paths][' + index + '][full_access]')
     if(newid) newid.remove();
-    
+
     if(!Prototype.Browser.IE) {
-      Event.addBehavior.unload(); 
+      Event.addBehavior.unload();
       Event.addBehavior.load(Event.addBehavior.rules)
     }
   }
@@ -50,7 +50,7 @@ Importer.prototype = {
     }).merge(options || {});
     this.firstRun = true;
   },
-  
+
   step: function(progress) {
     if(this.firstRun) progress = this.options.get('startProgress');
     if(progress < 100) {
@@ -62,7 +62,7 @@ Importer.prototype = {
           this.step(prog);
           this.options.get('onStep').call(this, prog);
         }.bind(this),
-        
+
         on500: function() {
           $('import-progress').update('A 500 error occurred, please check your logs');
         }
@@ -75,14 +75,14 @@ Importer.prototype = {
 
 Element.addMethods({
   duplicate: function(element) {
-    element = $(element);    
+    element = $(element);
     var clone = element.cloneNode(true);
     element.parentNode.appendChild(clone);
     return clone;
   }
 });
 
-// Create OSX-style Sheets  
+// Create OSX-style Sheets
 var Sheet = Class.create();
 Sheet.Cache = [];
 Sheet.Current = null;
@@ -91,53 +91,53 @@ Sheet.prototype = {
     this.sheet = $(element);
     if(!this.sheet) return;
     this.sheetHeight = this.sheet.getHeight();
-    this.cancelBtn = this.sheet.down('.cancelbtn');    
+    this.cancelBtn = this.sheet.down('.cancelbtn');
     this.trigger = trigger;
     this.overlay;
     this.build(element);
     this.addObservers();
   },
-  
+
   addObservers: function() {
     [this.trigger].flatten().each(function(t) {
       $(t).observe('click', this.toggle.bind(this));
     }.bind(this));
     this.cancelBtn.observe('click', this.hide.bind(this));
   },
-  
+
   toggle: function(event) {
     event.stop();
     if(this.overlay.visible())
       this.hide();
-    else 
+    else
       this.show();
   },
-  
+
   hide: function(event) {
     if(event) event.stop();
     new Fx.Style(this.sheetContent, 'margin-top', {
       duration: (this.sheetHeight * 2) + 500,
       transition: Fx.Transitions.expoOut,
       onComplete: function() { this.overlay.hide(); }.bind(this)
-    })._start(0, -(this.sheet.getHeight()));    
+    })._start(0, -(this.sheet.getHeight()));
   },
-  
+
   show: function(event) {
     if(Sheet.Current && Sheet.Current.overlay.visible()) Sheet.Current.hide();
     Sheet.Current = this;
     Sheet.Current.overlay.show();
     this.sheet.show();
     new Fx.Style(this.sheetContent, 'margin-top', {
-      duration: (this.sheetHeight * 2), 
+      duration: (this.sheetHeight * 2),
       transition: Fx.Transitions.expoOut
     })._start(-(this.sheetHeight), 0);
   },
-  
+
   build: function(namespace) {
     this.overlay = new Element('div', {id: namespace + '-overlay'});
     this.overlay.hide();
     // Firefox wiggles the text if this is `fixed` so we make it absolute to prevent
-    // it from turning the page into water.  Not as useful as Safari and IE 7, but it 
+    // it from turning the page into water.  Not as useful as Safari and IE 7, but it
     // works good.
     var IE7 = navigator.userAgent.indexOf('MSIE 7') > -1
     if(!Prototype.Browser.WebKit && !IE7)
@@ -226,23 +226,23 @@ Date.parseUTC = function(value) {
 }
 
 Event.addBehavior({
-  
+
   'a.addpath:click': function(event) {
     var a = Event.findElement(event, 'a');
     Permissions.add(a.up());
     return false;
   },
-  
+
   'a.delpath:click': function() {
     Permissions.remove(this.up());
   },
-  
+
   'a#as-toggle:click': function(event) {
     Event.stop(event);
     var as = $('advanced-settings'); as.toggle();
     as.visible() ? this.update('Fewer settings&hellip;') : this.update('More settings&hellip;')
   },
-  
+
   '#settings-mail-type:change': function() {
     if($F(this) == 'smtp') {
       $('mail-sendmail').hide();
@@ -252,7 +252,7 @@ Event.addBehavior({
       $('mail-sendmail').show();
     }
   },
-  
+
   '#detail-view:click, #list-view:click': function() {
     if(this.id == 'list-view') {
       $('changesets').addClassName('list-view');
@@ -260,7 +260,7 @@ Event.addBehavior({
       $('changesets').removeClassName('list-view');
     }
   },
-  
+
   '#diff-with:change': function(event) {
     var activeValues = ['head', 'prev', 'next'];
     var curValue = $F(this);

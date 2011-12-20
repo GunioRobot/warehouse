@@ -14,7 +14,7 @@ class YADIS
   @@ca_path = nil
   attr_accessor :uri, :xrds_uri, :xrds
 
-  # Discover services for a given URI.  Please note that no normalization 
+  # Discover services for a given URI.  Please note that no normalization
   # will be done to the passed in URI, it should be a textually
   # valid URI string before calling discover.
   #
@@ -50,7 +50,7 @@ class YADIS
   # or YADISHTTPError is the URI cannot be fetched.
   def initialize(uri)
     http = NetHTTPFetcher.new
-    http.ca_path = @@ca_path if @@ca_path    
+    http.ca_path = @@ca_path if @@ca_path
     headers = {'Accept' => 'application/xrds+xml'}
 
     response = http.get(uri, headers)
@@ -100,7 +100,7 @@ class YADIS
     # product a list of filtered ServiceEndpoint objects.  filtered
     # will contain a list of nil or ServiceEnpoint (subclasses) objects.
     filtered = self.services.collect {|s| filter.call(s)}
-    
+
     # return all object in filtered that are not nil
     return filtered.find_all {|s| s}
   end

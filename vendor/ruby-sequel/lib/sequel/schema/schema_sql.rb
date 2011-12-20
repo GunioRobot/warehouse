@@ -6,7 +6,7 @@ module Sequel
       NO_ACTION = 'NO ACTION'.freeze
       SET_NULL = 'SET NULL'.freeze
       SET_DEFAULT = 'SET DEFAULT'.freeze
-    
+
       def on_delete_clause(action)
         case action
         when :restrict: RESTRICT
@@ -16,13 +16,13 @@ module Sequel
         else NO_ACTION
         end
       end
-      
+
       AUTOINCREMENT = 'AUTOINCREMENT'.freeze
 
       def auto_increment_sql
         AUTOINCREMENT
       end
-      
+
       COMMA_SEPARATOR = ', '.freeze
       UNIQUE = ' UNIQUE'.freeze
       NOT_NULL = ' NOT NULL'.freeze
@@ -45,17 +45,17 @@ module Sequel
         sql << " #{auto_increment_sql}" if column[:auto_increment]
         sql
       end
-  
+
       def column_list_sql(columns)
         columns.map {|c| column_definition_sql(c)}.join(COMMA_SEPARATOR)
       end
-    
+
       UNDERSCORE = '_'.freeze
 
       def default_index_name(table_name, columns)
         "#{table_name}_#{columns.join(UNDERSCORE)}_index"
       end
-    
+
       def index_definition_sql(table_name, index)
         fields = index[:columns].join(COMMA_SEPARATOR)
         index_name = index[:name] || default_index_name(table_name, index[:columns])
@@ -65,11 +65,11 @@ module Sequel
           "CREATE INDEX #{index_name} ON #{table_name} (#{fields});"
         end
       end
-    
+
       def index_list_sql_list(table_name, indexes)
         indexes.map {|i| index_definition_sql(table_name, i)}
       end
-  
+
       def create_table_sql_list(name, columns, indexes = nil)
         sql = ["CREATE TABLE #{name} (#{column_list_sql(columns)});"]
         if indexes && !indexes.empty?
@@ -77,7 +77,7 @@ module Sequel
         end
         sql
       end
-      
+
       def drop_table_sql(name)
         "DROP TABLE #{name};"
       end

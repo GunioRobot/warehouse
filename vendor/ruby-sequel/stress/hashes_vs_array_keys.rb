@@ -16,7 +16,7 @@ Benchmark::bm(30) do |x|
       rows << keys.inject({}) {|m, k| m[k] = values.shift; m}
     end
   end
-  
+
   rows = []
 
   x.report('create array with keys') do
@@ -31,7 +31,7 @@ Benchmark::bm(30) do |x|
   values = [rand] * 5
   values.keys = keys
   arrays = [values] * N
-  
+
   x.report('access hash') do
     hashes.each {|h| h[:a]}
   end
@@ -39,10 +39,10 @@ Benchmark::bm(30) do |x|
   x.report('access array with keys') do
     arrays.each {|a| a[:a]}
   end
-  
+
   require 'rubygems'
   require 'arrayfields'
-  
+
   rows = []
 
   x.report('create array with arrayfields') do

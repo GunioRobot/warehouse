@@ -14,7 +14,7 @@ module Warehouse
       def plugin_name
         @plugin_name ||= underscore(demodulize(name))
       end
-    
+
       def class_name_of(plugin_name)
         camelize plugin_name
       end
@@ -28,7 +28,7 @@ module Warehouse
         END
       end
       eval plugin_property_source * "\n"
-      
+
       def title(value = nil)
         @title   = value.to_s.strip if value
         @title ||= name.demodulize.titleize
@@ -37,11 +37,11 @@ module Warehouse
       def default_options
         @default_options ||= {}
       end
-      
+
       def option_formats
         @option_formats ||= {}
       end
-      
+
       def option_order
         @option_order ||= []
       end
@@ -54,7 +54,7 @@ module Warehouse
           def #{property}
             options[:#{property}].to_s.empty? ? #{default.inspect} : options[:#{property}]
           end
-        
+
           def #{property}=(value)
             options[:#{property}] = value#{" if value.to_s =~ #{format.inspect}" if format}
           end
@@ -63,7 +63,7 @@ module Warehouse
         default_options[property.to_sym] = default
         option_formats[property.to_sym]  = format if format
       end
-      
+
       def valid_options?(options)
         options.each do |key, value|
           if format = option_formats[key.to_sym]

@@ -4,22 +4,22 @@ context "A new Database" do
   setup do
     @db = Sequel::Database.new(1 => 2, :logger => 3)
   end
-  
+
   specify "should receive options" do
-    @db.opts.should == {1 => 2, :logger => 3}  
+    @db.opts.should == {1 => 2, :logger => 3}
   end
-  
+
   specify "should set the logger from opts[:logger]" do
     @db.logger.should == 3
   end
-  
+
   specify "should create a connection pool" do
     @db.pool.should be_a_kind_of(Sequel::ConnectionPool)
     @db.pool.max_size.should == 4
-    
+
     Sequel::Database.new(:max_connections => 10).pool.max_size.should == 10
   end
-  
+
   specify "should pass the supplied block to the connection pool" do
     cc = nil
     d = Sequel::Database.new {1234}
@@ -45,10 +45,10 @@ context "Database#uri" do
     @c = Class.new(Sequel::Database) do
       set_adapter_scheme :mau
     end
-    
+
     @db = Sequel('mau://user:pass@localhost:9876/maumau')
   end
-  
+
   specify "should return the connection URI for the database" do
     @db.uri.should == 'mau://user:pass@localhost:9876/maumau'
   end
@@ -61,7 +61,7 @@ context "Database.adapter_scheme" do
     @c = Class.new(Sequel::Database) do
       set_adapter_scheme :mau
     end
-    
+
     @c.adapter_scheme.should == :mau
   end
 end
@@ -71,29 +71,29 @@ context "Database#dataset" do
     @db = Sequel::Database.new
     @ds = @db.dataset
   end
-  
+
   specify "should provide a blank dataset through #dataset" do
     @ds.should be_a_kind_of(Sequel::Dataset)
     @ds.opts.should == {}
     @ds.db.should be(@db)
   end
-  
+
   specify "should provide a #from dataset" do
     d = @db.from(:mau)
     d.should be_a_kind_of(Sequel::Dataset)
     d.sql.should == 'SELECT * FROM mau'
-    
+
     e = @db[:miu]
     e.should be_a_kind_of(Sequel::Dataset)
     e.sql.should == 'SELECT * FROM miu'
   end
-  
+
   specify "should provide a filtered #from dataset if a block is given" do
     d = @db.from(:mau) {:x > 100}
     d.should be_a_kind_of(Sequel::Dataset)
     d.sql.should == 'SELECT * FROM mau WHERE (x > 100)'
   end
-  
+
   specify "should provide a #select dataset" do
     d = @db.select(:a, :b, :c).from(:mau)
     d.should be_a_kind_of(Sequel::Dataset)
@@ -115,11 +115,11 @@ context "Database#<<" do
     end
     @db = @c.new({})
   end
-  
+
   specify "should pass the supplied sql to #execute" do
     (@db << "DELETE FROM items").should == "DELETE FROM items"
   end
-  
+
   specify "should accept an array and convert it to SQL" do
     a = %[
       --
@@ -127,10 +127,10 @@ context "Database#<<" do
         b text, c integer);
       DROP TABLE old_items;
     ].split($/)
-    (@db << a).should == 
+    (@db << a).should ==
       "CREATE TABLE items (a integer, b text, c integer); DROP TABLE old_items;"
   end
-  
+
   specify "should remove comments and whitespace from arrays" do
     s = %[
       --
@@ -138,10 +138,10 @@ context "Database#<<" do
         b text, c integer); \r\n
       DROP TABLE old_items;
     ].split($/)
-    (@db << s).should == 
+    (@db << s).should ==
       "CREATE TABLE items (a integer, b text, c integer); DROP TABLE old_items;"
   end
-  
+
   specify "should not remove comments and whitespace from strings" do
     s = "INSERT INTO items VALUES ('---abc')"
     (@db << s).should == s
@@ -153,7 +153,7 @@ context "Database#synchronize" do
     @db = Sequel::Database.new(:max_connections => 1)
     @db.pool.connection_proc = proc {12345}
   end
-  
+
   specify "should wrap the supplied block in pool.hold" do
     stop = false
     c1, c2 = nil
@@ -178,12 +178,12 @@ context "Database#test_connection" do
     @test = nil
     @db.pool.connection_proc = proc {@test = rand(100)}
   end
-  
+
   specify "should call pool#hold" do
     @db.test_connection
     @test.should_not be_nil
   end
-  
+
   specify "should return true if successful" do
     @db.test_connection.should be_true
   end
@@ -198,12 +198,12 @@ end
 
 class DummyDatabase < Sequel::Database
   attr_reader :sql
-  
+
   def execute(sql)
     @sql ||= ""
     @sql << sql
   end
-  
+
   def transaction; yield; end
 
   def dataset
@@ -215,14 +215,14 @@ context "Database#create_table" do
   setup do
     @db = DummyDatabase.new
   end
-  
+
   specify "should construct proper SQL" do
     @db.create_table :test do
       primary_key :id, :integer, :null => false
       column :name, :text
       index :name, :unique => true
     end
-    @db.sql.should == 
+    @db.sql.should ==
       'CREATE TABLE test (id integer NOT NULL PRIMARY KEY AUTOINCREMENT, name text);CREATE UNIQUE INDEX test_name_index ON test (name);'
   end
 end
@@ -237,13 +237,13 @@ context "Database#drop_table" do
   setup do
     @db = Dummy2Database.new
   end
-  
+
   specify "should construct proper SQL" do
     @db.drop_table :test
-    @db.sql.should == 
+    @db.sql.should ==
       'DROP TABLE test;'
   end
-  
+
   specify "should accept multiple table names" do
     @db.drop_table :a, :bb, :ccc
     @db.sql.should ==
@@ -258,13 +258,13 @@ context "Database#table_exists?" do
     @db2 = DummyDatabase.new
     Sequel::Dataset.stub!(:first).and_return(nil)
   end
-  
+
   specify "should use Database#tables if available" do
     @db.table_exists?(:a).should be_true
     @db.table_exists?(:b).should be_true
     @db.table_exists?(:c).should be_false
   end
-  
+
   specify "should otherise try to select the first record from the table's dataset" do
     @db2.table_exists?(:a).should be_false
     @db2.table_exists?(:b).should be_true
@@ -287,29 +287,29 @@ context "Database#transaction" do
     @db = Dummy3Database.new
     @db.pool.connection_proc = proc {Dummy3Database::DummyConnection.new(@db)}
   end
-  
+
   specify "should wrap the supplied block with BEGIN + COMMIT statements" do
     @db.transaction {@db.execute 'DROP TABLE test;'}
     @db.sql.should == ['BEGIN', 'DROP TABLE test;', 'COMMIT']
   end
-  
+
   specify "should issue ROLLBACK if an exception is raised, and re-raise" do
     @db.transaction {@db.execute 'DROP TABLE test;'; raise RuntimeError} rescue nil
     @db.sql.should == ['BEGIN', 'DROP TABLE test;', 'ROLLBACK']
-    
+
     proc {@db.transaction {raise RuntimeError}}.should raise_error(RuntimeError)
   end
-  
+
   specify "should issue ROLLBACK if rollback! is called in the transaction" do
     @db.transaction do
       @db.drop_table(:a)
       rollback!
       @db.drop_table(:b)
     end
-    
+
     @db.sql.should == ['BEGIN', 'DROP TABLE a;', 'ROLLBACK']
   end
-  
+
   specify "should be re-entrant" do
     stop = false
     cc = nil
@@ -342,14 +342,14 @@ context "A Database adapter with a scheme" do
   specify "should be registered in adapters" do
     Sequel::Database.get_adapters[:ccc].should == CCC
   end
-  
+
   specify "should be instantiated when its scheme is specified" do
     c = Sequel::Database.connect('ccc://localhost/db')
     c.should be_a_kind_of(CCC)
     c.opts[:host].should == 'localhost'
     c.opts[:database].should == 'db'
   end
-  
+
   specify "should be accessible through Sequel.connect" do
     c = Sequel.connect 'ccc://localhost/db'
     c.should be_a_kind_of(CCC)
@@ -373,18 +373,18 @@ context "A Database adapter with a scheme" do
 
   specify "should register a convenience method on Sequel" do
     Sequel.should respond_to(:ccc)
-    
+
     # invalid parameters
     proc {Sequel.ccc('abc', 'def')}.should raise_error(SequelError)
-    
+
     c = Sequel.ccc('mydb')
     c.should be_a_kind_of(CCC)
     c.opts.should == {:database => 'mydb'}
-    
+
     c = Sequel.ccc('mydb', :host => 'localhost')
     c.should be_a_kind_of(CCC)
     c.opts.should == {:database => 'mydb', :host => 'localhost'}
-    
+
     c = Sequel.ccc
     c.should be_a_kind_of(CCC)
     c.opts.should == {}
@@ -420,17 +420,17 @@ context "A single threaded database" do
   teardown do
     Sequel::Database.single_threaded = false
   end
-  
+
   specify "should use a SingleThreadedPool instead of a ConnectionPool" do
     db = Sequel::Database.new(:single_threaded => true)
     db.pool.should be_a_kind_of(Sequel::SingleThreadedPool)
   end
-  
+
   specify "should be constructable using :single_threaded => true option" do
     db = Sequel::Database.new(:single_threaded => true)
     db.pool.should be_a_kind_of(Sequel::SingleThreadedPool)
   end
-  
+
   specify "should be constructable using Database.single_threaded = true" do
     Sequel::Database.single_threaded = true
     db = Sequel::Database.new
@@ -451,17 +451,17 @@ context "A single threaded database" do
       conn += 1
     end
   end
-  
+
   specify "should invoke connection_proc only once" do
     @db.pool.hold {|c| c.should == 1234568}
     @db.pool.hold {|c| c.should == 1234568}
   end
-  
+
   specify "should convert an Exception into a RuntimeError" do
     db = Sequel::Database.new(:single_threaded => true) do
       raise Exception
     end
-    
+
     proc {db.pool.hold {|c|}}.should raise_error(RuntimeError)
   end
 end
@@ -470,35 +470,35 @@ context "A database" do
   setup do
     Sequel::Database.single_threaded = false
   end
-  
+
   teardown do
     Sequel::Database.single_threaded = false
   end
-  
+
   specify "should be either single_threaded? or multi_threaded?" do
     db = Sequel::Database.new(:single_threaded => true)
     db.should be_single_threaded
     db.should_not be_multi_threaded
-    
+
     db = Sequel::Database.new(:max_options => 1)
     db.should_not be_single_threaded
     db.should be_multi_threaded
-    
+
     db = Sequel::Database.new
     db.should_not be_single_threaded
     db.should be_multi_threaded
-    
+
     Sequel::Database.single_threaded = true
-    
+
     db = Sequel::Database.new
     db.should be_single_threaded
     db.should_not be_multi_threaded
-    
+
     db = Sequel::Database.new(:max_options => 4)
     db.should be_single_threaded
     db.should_not be_multi_threaded
   end
-  
+
   specify "should accept a logger object" do
     db = Sequel::Database.new
     s = "I'm a logger"
@@ -513,7 +513,7 @@ context "Database#dataset" do
   setup do
     @db = Sequel::Database.new
   end
-  
+
   specify "should delegate to Dataset#query if block is provided" do
     @d = @db.query {select :x; from :y}
     @d.should be_a_kind_of(Sequel::Dataset)
@@ -529,38 +529,38 @@ context "Database#fetch" do
     end
     @db.meta_def(:dataset) {c.new(self)}
   end
-  
+
   specify "should create a dataset and invoke its fetch_rows method with the given sql" do
     sql = nil
     @db.fetch('select * from xyz') {|r| sql = r[:sql]}
     sql.should == 'select * from xyz'
   end
-  
+
   specify "should format the given sql with any additional arguments" do
     sql = nil
     @db.fetch('select * from xyz where x = ? and y = ?', 15, 'abc') {|r| sql = r[:sql]}
     sql.should == "select * from xyz where x = 15 and y = 'abc'"
-    
+
     # and Aman Gupta's example
     @db.fetch('select name from table where name = ? or id in (?)',
     'aman', [3,4,7]) {|r| sql = r[:sql]}
     sql.should == "select name from table where name = 'aman' or id in (3, 4, 7)"
   end
-  
+
   specify "should return the dataset if no block is given" do
     @db.fetch('select * from xyz').should be_a_kind_of(Sequel::Dataset)
-    
+
     @db.fetch('select a from b').map {|r| r[:sql]}.should == ['select a from b']
 
     @db.fetch('select c from d').inject([]) {|m, r| m << r; m}.should == \
       [{:sql => 'select c from d'}]
   end
-  
+
   specify "should return a dataset that always uses the given sql for SELECTs" do
     ds = @db.fetch('select * from xyz')
     ds.select_sql.should == 'select * from xyz'
     ds.sql.should == 'select * from xyz'
-    
+
     ds.filter! {:price < 100}
     ds.select_sql.should == 'select * from xyz'
     ds.sql.should == 'select * from xyz'
@@ -571,13 +571,13 @@ context "Database#[]" do
   setup do
     @db = Sequel::Database.new
   end
-  
+
   specify "should return a dataset when symbols are given" do
     ds = @db[:items]
     ds.class.should == Sequel::Dataset
     ds.opts[:from].should == [:items]
   end
-  
+
   specify "should return an enumerator when a string is given" do
     c = Class.new(Sequel::Dataset) do
       def fetch_rows(sql); yield({:sql => sql}); end

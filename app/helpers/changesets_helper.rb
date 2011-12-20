@@ -17,7 +17,7 @@ module ChangesetsHelper
     end
     diff_line_regex = %r{@@ -(\d+),?(\d*) \+(\d+),?(\d*) @@}
     lines = raw_diff.split("\n")
-        
+
     original_revision_num = lines[0].scan(%r{(\d+)}).flatten.first
     current_revision_num = lines[1].scan(%r{(\d+)}).flatten.first
     original_revision = nil
@@ -29,16 +29,16 @@ module ChangesetsHelper
       original_revision = link_to_node(original_revision_num, options[:path], original_revision_num)
       current_revision  = link_to_node(current_revision_num, options[:path], current_revision_num)
     end
-    
+
     th_pnum = content_tag('th', original_revision, :class => 'csnum')
-    th_cnum = content_tag('th', current_revision, :class => 'csnum')  
-    table_rows = []  
-        
+    th_cnum = content_tag('th', current_revision, :class => 'csnum')
+    table_rows = []
+
     lines = lines[2..lines.length].collect{ |line| h(line) }
-  
+
     ln = [0, 0]   # line counter
-    lines = lines.collect do |line|      
-      if line.starts_with?('-')        
+    lines = lines.collect do |line|
+      if line.starts_with?('-')
         [ln[0] += 1, '', ' ' + line[1..line.length], 'delete']
       elsif line.starts_with?('+')
         ['', ln[1] += 1, ' ' + line[1..line.length], 'insert']
@@ -50,16 +50,16 @@ module ChangesetsHelper
         nil
       else
         [ln[0] += 1, ln[1] += 1, line, nil]
-      end     
+      end
     end.compact
-    
+
     lines[1..lines.length].collect do |line|
       pnum = content_tag('td', line[0], :class => 'ln')
-      cnum = content_tag('td', line[1], :class => 'ln')    
+      cnum = content_tag('td', line[1], :class => 'ln')
       code = content_tag('td', line[2].gsub(/ /, '&nbsp;'), :class => 'code' + (line[3] ? " #{line[3]}" : ''))
       table_rows << content_tag('tr', pnum + cnum + code)
     end
-    
+
     %(
     <div class="diff-table">
     <table class="diff" cellspacing="0" cellpadding="0" id="#{options[:id]}">
@@ -80,7 +80,7 @@ module ChangesetsHelper
     </div>
     )
   end
-  
+
   def diff_for(change)
     unified_diff_for change.node, :id => dom_id(change) do |original_revision_num, current_revision_num|
       %(

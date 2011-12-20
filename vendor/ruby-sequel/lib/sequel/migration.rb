@@ -14,7 +14,7 @@ module Sequel
   #         text      :data
   #       end
   #     end
-  # 
+  #
   #     def down
   #       execute 'DROP TABLE sessions'
   #     end
@@ -31,20 +31,20 @@ module Sequel
     def initialize(db)
       @db = db
     end
-    
+
     # Adds the new migration class to the list of Migration descendants.
     def self.inherited(base)
       descendants << base
     end
-    
+
     # Returns the list of Migration descendants.
     def self.descendants
       @descendants ||= []
     end
-    
+
     def up; end #:nodoc:
     def down; end #:nodoc:
-    
+
     # Applies the migration to the supplied database in the specified
     # direction.
     def self.apply(db, direction)
@@ -63,14 +63,14 @@ module Sequel
     end
   end
 
-  # The Migrator module performs migrations based on migration files in a 
+  # The Migrator module performs migrations based on migration files in a
   # specified directory. The migration files should be named using the
   # following pattern (in similar fashion to ActiveRecord migrations):
-  # 
+  #
   #   <version>_<title>.rb
   #
   # For example, the following files are considered migration files:
-  #   
+  #
   #   001_create_sessions.rb
   #   002_add_data_column.rb
   #   ...
@@ -83,7 +83,7 @@ module Sequel
   # no current version is supplied, it is read from the database. The migrator
   # automatically creates a schema_info table in the database to keep track
   # of the current migration version. If no migration version is stored in the
-  # database, the version is considered to be 0. If no target version is 
+  # database, the version is considered to be 0. If no target version is
   # specified, the database is migrated to the latest version available in the
   # migration directory.
   #
@@ -108,14 +108,14 @@ module Sequel
       raise SequelError, "No target version available" if target.nil?
 
       direction = current < target ? :up : :down
-      
+
       classes = migration_classes(directory, target, current, direction)
-      
+
       db.transaction do
         classes.each {|c| c.apply(db, direction)}
         set_current_migration_version(db, target)
       end
-      
+
       target
     end
 
@@ -133,13 +133,13 @@ module Sequel
 
       # load migration files
       migration_files(directory, range).each {|fn| load(fn)}
-      
+
       # get migration classes
       classes = Migration.descendants
       classes.reverse! if direction == :down
       classes
     end
-    
+
     MIGRATION_FILE_PATTERN = '[0-9][0-9][0-9]_*.rb'.freeze
 
     # Returns any found migration files in the supplied directory.
@@ -152,7 +152,7 @@ module Sequel
       filtered = range ? files[range] : files
       filtered ? filtered.compact : []
     end
-    
+
     # Returns the latest version available in the specified directory.
     def self.latest_migration_version(directory)
       l = migration_files(directory).last
@@ -165,7 +165,7 @@ module Sequel
       r = schema_info_dataset(db).first
       r ? r[:version] : 0
     end
-    
+
     # Sets the current migration  version stored in the database.
     def self.set_current_migration_version(db, version)
       dataset = schema_info_dataset(db)
@@ -175,7 +175,7 @@ module Sequel
         dataset << {:version => version}
       end
     end
-    
+
     # Returns the dataset for the schema_info table. If no such table
     # exists, it is automatically created.
     def self.schema_info_dataset(db)

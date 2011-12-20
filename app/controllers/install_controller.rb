@@ -4,16 +4,16 @@ class InstallController < ApplicationController
   skip_before_filter :check_for_valid_domain
   skip_before_filter :check_for_repository
   before_filter :check_installed, :except => [:test_install, :settings]
-  
+
   before_filter :admin_required, :only => :settings
-  
+
   layout :choose_layout
 
   def index
     @repository = Repository.new(params[:repository])
     @user       = User.new(params[:user])
   end
-  
+
   def install
     index
     unless @repository.valid? && @user.valid?
@@ -28,9 +28,9 @@ class InstallController < ApplicationController
       @user.save!
       @repository.grant :user => @user, :path => '/'
     end
-    
+
     cookies[:login_token] = {:value => "#{@user.id};#{@user.token}", :expires => 1.year.from_now.utc, :domain => ".#{Warehouse.domain}", :path => '/'}
-    
+
   rescue
     @message = $!.message
     logger.warn $!.message
@@ -53,7 +53,7 @@ class InstallController < ApplicationController
       render :action => 'install'
     end
   end
-  
+
   protected
     def check_installed
       if installed? && session[:installing].nil?

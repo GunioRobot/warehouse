@@ -1,19 +1,19 @@
---- 
+---
 name: Eiffel
-fileTypes: 
+fileTypes:
 - e
 scopeName: source.eiffel
-repository: 
-  number: 
+repository:
+  number:
     match: "[0-9]+"
-  variable: 
+  variable:
     match: "[a-zA-Z0-9_]+"
 uuid: 34672373-DED9-45B8-AF7E-2E4B6C3D6B76
 foldingStartMarker: (class|once|do|external)
-patterns: 
+patterns:
 - name: comment.line.double-dash.eiffel
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.comment.eiffel
   match: (--).*$\n?
 - name: keyword.control.eiffel
@@ -32,15 +32,15 @@ patterns:
   begin: rescue
   end: end
 - name: string.quoted.double.eiffel
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.eiffel
   begin: "\""
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.eiffel
   end: "\""
-  patterns: 
+  patterns:
   - name: constant.character.escape.eiffel
     match: \\.
 - name: constant.numeric.eiffel
@@ -48,8 +48,8 @@ patterns:
 - name: storage.modifier.eiffel
   match: \b(deferred|expanded)\b
 - name: meta.definition.class.eiffel
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: storage.modifier.eiffel
   begin: |-
     ^\s*
@@ -57,22 +57,22 @@ patterns:
     					(class)\s+
     					(\w+)\s* # identifier
   end: (?=end)
-  patterns: 
+  patterns:
   - name: meta.definition.class.extends.java
-    captures: 
-      "1": 
+    captures:
+      "1":
         name: storage.modifier.java
     begin: \b(extends)\b\s+
     end: (?={|implements)
-    patterns: 
+    patterns:
     - include: "#all-types"
   - name: meta.definition.class.implements.java
-    captures: 
-      "1": 
+    captures:
+      "1":
         name: storage.modifier.java
     begin: \b(implements)\b\s+
     end: (?={|extends)
-    patterns: 
+    patterns:
     - include: "#all-types"
 foldingStopMarker: (ensure|end)
 keyEquivalent: ^~E

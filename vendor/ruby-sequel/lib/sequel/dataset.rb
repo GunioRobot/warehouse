@@ -9,7 +9,7 @@ module Sequel
   # A Dataset represents a view of a the data in a database, constrained by
   # specific parameters such as filtering conditions, order, etc. Datasets
   # can be used to create, retrieve, update and delete records.
-  # 
+  #
   # Query results are always retrieved on demand, so a dataset can be kept
   # around and reused indefinitely:
   #   my_posts = DB[:posts].filter(:author => 'david') # no records are retrieved
@@ -17,7 +17,7 @@ module Sequel
   #   ...
   #   p my_posts.all # records are retrieved again
   #
-  # In order to provide this functionality, dataset methods such as where, 
+  # In order to provide this functionality, dataset methods such as where,
   # select, order, etc. return modified copies of the dataset, so you can
   # use different datasets to access data:
   #   posts = DB[:posts]
@@ -67,13 +67,13 @@ module Sequel
     include Sequelizer
     include SQL
     include Convenience
-    
+
     attr_reader :db
     attr_accessor :opts
-    
+
     alias all to_a
     alias size count
-  
+
     # Constructs a new instance of a dataset with a database instance, initial
     # options and an optional record class. Datasets are usually constructed by
     # invoking Database methods:
@@ -88,21 +88,21 @@ module Sequel
       @opts = opts || {}
       @row_proc = nil
     end
-    
+
     # Returns a new instance of the dataset with with the give options merged.
     def clone_merge(opts)
       new_dataset = clone
       new_dataset.set_options(@opts.merge(opts))
       new_dataset
     end
-    
+
     def set_options(opts)
       @opts = opts
       @columns = nil
     end
-    
+
     NOTIMPL_MSG = "This method must be overriden in Sequel adapters".freeze
-    
+
     # Executes a select query and fetches records, passing each record to the
     # supplied block. Adapters should override this method.
     def fetch_rows(sql, &block)
@@ -112,7 +112,7 @@ module Sequel
       # end
       raise NotImplementedError, NOTIMPL_MSG
     end
-  
+
     # Inserts values into the associated table. Adapters should override this
     # method.
     def insert(*values)
@@ -121,7 +121,7 @@ module Sequel
       # end
       raise NotImplementedError, NOTIMPL_MSG
     end
-  
+
     # Updates values for the dataset. Adapters should override this method.
     def update(values, opts = nil)
       # @db.synchronize do
@@ -129,7 +129,7 @@ module Sequel
       # end
       raise NotImplementedError, NOTIMPL_MSG
     end
-  
+
     # Deletes the records in the dataset. Adapters should override this method.
     def delete(opts = nil)
       # @db.synchronize do
@@ -137,8 +137,8 @@ module Sequel
       # end
       raise NotImplementedError, NOTIMPL_MSG
     end
-    
-    # Returns the columns in the result set in their true order. The stock 
+
+    # Returns the columns in the result set in their true order. The stock
     # implementation returns the content of @columns. If @columns is nil,
     # a query is performed. Adapters are expected to fill @columns with the
     # column information when a query is performed.
@@ -146,12 +146,12 @@ module Sequel
       first unless @columns
       @columns || []
     end
-    
+
     # Inserts the supplied values into the associated table.
     def <<(*args)
       insert(*args)
     end
-    
+
     # Iterates over the records in the dataset
     def each(opts = nil, &block)
       fetch_rows(select_sql(opts), &block)
@@ -161,12 +161,12 @@ module Sequel
     def model_classes
       @opts[:models]
     end
-    
+
     # Returns the column name for the polymorphic key.
     def polymorphic_key
       @opts[:polymorphic_key]
     end
-    
+
     # Returns a naked dataset clone - i.e. a dataset that returns records as
     # hashes rather than model objects.
     def naked
@@ -174,7 +174,7 @@ module Sequel
       d.set_model(nil)
       d
     end
-    
+
     # Associates or disassociates the dataset with a model. If no argument or
     # nil is specified, the dataset is turned into a naked dataset and returns
     # records as hashes. If a model class specified, the dataset is modified
@@ -186,7 +186,7 @@ module Sequel
     #       ...
     #     end
     #   end
-    # 
+    #
     #   dataset.set_model(MyModel)
     #
     # You can also provide additional arguments to be passed to the model's
@@ -198,9 +198,9 @@ module Sequel
     #       ...
     #     end
     #   end
-    # 
+    #
     #   dataset.set_model(MyModel, :allow_delete => false)
-    #  
+    #
     # The dataset can be made polymorphic by specifying a column name as the
     # polymorphic key and a hash mapping column values to model classes.
     #
@@ -210,10 +210,10 @@ module Sequel
     # class corresponding to nil:
     #
     #   dataset.set_model(:kind, {nil => DefaultClass, 1 => Person, 2 => Business})
-    # 
-    # To disassociate a model from the dataset, you can call the #set_model 
+    #
+    # To disassociate a model from the dataset, you can call the #set_model
     # and specify nil as the class:
-    # 
+    #
     #   dataset.set_model(nil)
     #
     def set_model(key, *args)
@@ -244,10 +244,10 @@ module Sequel
       end
       self
     end
-    
+
     # Overrides the each method to pass the values through a filter. The filter
     # receives as argument a hash containing the column values for the current
-    # record. The filter should return a value which is then passed to the 
+    # record. The filter should return a value which is then passed to the
     # iterating block. In order to elucidate, here's a contrived example:
     #
     #   dataset.set_row_proc {|h| h.merge(:xxx => 'yyy')}
@@ -257,18 +257,18 @@ module Sequel
       @row_proc = filter
       update_each_method
     end
-    
+
     # Removes the row making proc.
     def remove_row_proc
       @row_proc = nil
       update_each_method
     end
-    
+
     STOCK_TRANSFORMS = {
       :marshal => [proc {|v| Marshal.load(v)}, proc {|v| Marshal.dump(v)}],
       :yaml => [proc {|v| YAML.load v if v}, proc {|v| v.to_yaml}]
     }
-    
+
     # Sets a value transform which is used to convert values loaded and saved
     # to/from the database. The transform should be supplied as a hash. Each
     # value in the hash should be an array containing two proc objects - one
@@ -285,7 +285,7 @@ module Sequel
     #   "INSERT INTO items (obj) VALUES ('\004\bi\002\322\004')"
     #
     # Another form of using transform is by specifying stock transforms:
-    # 
+    #
     #   dataset.transform(:obj => :marshal)
     #
     # The currently supported stock transforms are :marshal and :yaml.
@@ -307,7 +307,7 @@ module Sequel
       end
       update_each_method
     end
-    
+
     # Applies the value transform for data loaded from the database.
     def transform_load(r)
       @transform.each do |k, tt|
@@ -317,7 +317,7 @@ module Sequel
       end
       r
     end
-    
+
     # Applies the value transform for data saved to the database.
     def transform_save(r)
       @transform.each do |k, tt|
@@ -327,7 +327,7 @@ module Sequel
       end
       r
     end
-    
+
     # Updates the each method according to whether @row_proc and @transform are
     # set or not.
     def update_each_method
@@ -366,7 +366,7 @@ module Sequel
         end
       end
     end
-    
+
     # Extends the dataset with a destroy method, that calls destroy for each
     # record in the dataset.
     def extend_with_destroy

@@ -1,11 +1,11 @@
---- 
+---
 name: MEL
-fileTypes: 
+fileTypes:
 - as
 scopeName: source.mel
 uuid: 69554E52-391D-42BC-9F65-7A77444BA1CF
 foldingStartMarker: (/\*\*|\{\s*$)
-patterns: 
+patterns:
 - name: storage.type.mel
   match: \b(matrix|string|vector|float|int|void)\b
 - name: support.function.mel
@@ -21,45 +21,45 @@ patterns:
 - name: constant.numeric.mel
   match: \b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\.?[0-9]*)|(\.[0-9]+))((e|E)(\+|-)?[0-9]+)?)(L|l|UL|ul|u|U|F|f)?\b
 - name: string.quoted.double.mel
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.mel
   begin: "\""
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.mel
   end: "\""
-  patterns: 
+  patterns:
   - name: constant.character.escape.mel
     match: \\.
 - name: variable.other.mel
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.variable.mel
   match: (\$)[a-zA-Z_\x{7f}-\x{ff}][a-zA-Z0-9_\x{7f}-\x{ff}]*?\b
 - name: string.quoted.single.mel
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.mel
   begin: "'"
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.mel
   end: "'"
-  patterns: 
+  patterns:
   - name: constant.character.escape.mel
     match: \\.
 - name: constant.language.mel
   match: \b(false|true|yes|no|on|off)\b
 - name: comment.block.mel
-  captures: 
-    "0": 
+  captures:
+    "0":
       name: punctuation.definition.comment.mel
   begin: /\*
   end: \*/
 - name: comment.line.double-slash.mel
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.comment.mel
   match: (//).*$\n?
 - name: keyword.operator.mel
@@ -67,26 +67,26 @@ patterns:
 - name: keyword.operator.symbolic.mel
   match: "[-\\!\\%\\&\\*\\+\\=\\/\\?\\:]"
 - name: meta.preprocessor.mel
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.preprocessor.mel
   match: ^[ \t]*(#)[a-zA-Z]+
 - name: meta.function.mel
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.section.function.mel
   begin: ((?:global\s*)?proc)\s*(\w+\s*\[?\]?\s+|\s+)([A-Za-z_][A-Za-z0-9_]*)\s*(\()
-  beginCaptures: 
-    "1": 
+  beginCaptures:
+    "1":
       name: keyword.other.mel
-    "2": 
+    "2":
       name: storage.type.mel
-    "3": 
+    "3":
       name: entity.name.function.mel
-    "4": 
+    "4":
       name: punctuation.section.function.mel
   end: \)
-  patterns: 
+  patterns:
   - include: $self
 foldingStopMarker: (\*\*/|^\s*\})
 keyEquivalent: ^~M

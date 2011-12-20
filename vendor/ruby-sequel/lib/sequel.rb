@@ -2,7 +2,7 @@ require 'metaid'
 
 files = %w[
   core_ext array_keys error connection_pool pretty_table
-  dataset migration model schema database 
+  dataset migration model schema database
 ]
 dir = File.join(File.dirname(__FILE__), 'sequel')
 files.each {|f| require(File.join(dir, f))}
@@ -21,9 +21,9 @@ module Sequel #:nodoc:
     def connect(*args)
       Database.connect(*args)
     end
-    
+
     alias_method :open, :connect
-    
+
     def single_threaded=(value)
       Database.single_threaded = value
     end

@@ -6,14 +6,14 @@ context "Hooks" do
   specify "should define hook class with multiple methods" do
     begin
       Warehouse::Hooks.const_defined?(:HookMultipleMethods).should == false
-      
+
       Warehouse::Hooks.define :hook_multiple_methods do
         receiver { 'bob' }
         run      { "hi #{receiver}" }
       end
-      
+
       Warehouse::Hooks::HookMultipleMethods.new(stub(:repo => nil)).run.should == 'hi bob'
-      
+
       Warehouse::Hooks.const_defined?(:HookMultipleMethods).should == true
     ensure
       Warehouse::Hooks.send(:remove_const, :HookMultipleMethods) if Warehouse::Hooks.const_defined?(:HookMultipleMethods)
@@ -27,11 +27,11 @@ context "Base" do
       run { 'this was a test' }
     end
   end
-  
+
   teardown do
     Warehouse::Hooks.send :remove_const, :HookTest
   end
-  
+
   specify "should check validity of hook" do
     commit = stub(:dirs_changed => %w(foo/bar foo baz).join("\n"), :repo => nil)
     Warehouse::Hooks::HookTest.new(commit).should.be.valid
@@ -50,18 +50,18 @@ context "Discovered" do
     Warehouse::Hooks.discovered.clear
     Warehouse::Hooks.index.clear
   end
-  
+
   specify "should find discovered hooks" do
     Warehouse::Hooks.discover.should == [Warehouse::Hooks::Foo]
   end
-  
+
   specify "should replace with repository hook" do
     hook = Hook.new :name => 'foo'
     repository = stub
     repository.expects(:hooks).returns([hook])
     Warehouse::Hooks.for(repository).should == [hook]
   end
-  
+
   specify "should not replace with other repository hook" do
     hook = Hook.new :name => 'foo2'
     repository = stub
@@ -78,7 +78,7 @@ context "Commit" do
       2.times { commit.send(attr).should == 5 }
     end
   end
-  
+
   specify "should only run valid hooks" do
     ValidHook.any_instance.expects(:run!)
     Warehouse::Hooks::Commit.run nil, '', 1, [[ValidHook, {}], [InvalidHook, {}]]

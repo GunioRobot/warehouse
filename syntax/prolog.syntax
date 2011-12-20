@@ -1,28 +1,28 @@
---- 
+---
 name: Prolog
 fileTypes: []
 
 scopeName: source.prolog
 uuid: C0E2ADB0-1706-4A28-8DB7-263BDC8B5C5C
 foldingStartMarker: "%\\s*region \\w*"
-patterns: 
+patterns:
 - name: string.quoted.single.prolog
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.prolog
   begin: "'"
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.prolog
   end: "'"
-  patterns: 
+  patterns:
   - name: constant.character.escape.prolog
     match: \\.
   - name: constant.character.escape.quote.prolog
     match: "''"
 - name: comment.line.percent.prolog
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.comment.prolog
   match: (%).*$\n?
 - name: keyword.operator.definition.prolog

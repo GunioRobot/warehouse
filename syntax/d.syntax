@@ -1,18 +1,18 @@
---- 
+---
 name: D
-fileTypes: 
+fileTypes:
 - d
 firstLineMatch: ^#!.*\bdmd\b.
 scopeName: source.d
-repository: 
-  string_escaped_char: 
-    patterns: 
+repository:
+  string_escaped_char:
+    patterns:
     - name: constant.character.escape.c
       match: \\(\\|[abefnprtv'"?]|[0-3]\d{,2}|[4-7]\d?|x[a-zA-Z0-9]+)
     - name: invalid.illegal.unknown-escape.c
       match: \\.
-  string_placeholder: 
-    patterns: 
+  string_placeholder:
+    patterns:
     - name: constant.other.placeholder.c
       match: "(?x)%\n\
         \t\t\t\t\t\t(\\d+\\$)?                             # field (argument #)\n\
@@ -25,17 +25,17 @@ repository:
         \t\t\t\t\t"
     - name: invalid.illegal.placeholder.c
       match: "%"
-  comment_nested_block_content: 
-    captures: 
-      "0": 
+  comment_nested_block_content:
+    captures:
+      "0":
         name: punctuation.definition.comment.d
     begin: /\+
     end: \+/
-    patterns: 
+    patterns:
     - include: "#comment_nested_block_content"
 uuid: F02BBA11-F58F-4E85-8698-FC74E339D6C3
 foldingStartMarker: (?x)/\*\*(?!\*)|^(?![^{]*?//|[^{]*?/\*(?!.*?\*/.*?\{)).*?\{\s*($|//|/\*(?!.*?\*/.*\S))
-patterns: 
+patterns:
 - name: keyword.other.external.d
   match: \b(import|package|module|extern)\b
 - name: keyword.control.conditional.d
@@ -72,64 +72,64 @@ patterns:
   match: \b(auto|static|override|final|const|abstract|volatile|synchronized)\b
 - name: keyword.control.pragma.d
   match: \b(pragma)\b
-- captures: 
-    "1": 
+- captures:
+    "1":
       name: punctuation.section.embedded.mips
   begin: asm[\n]*\s*({)
   end: (})
-  patterns: 
+  patterns:
   - include: source.mips
   comment: |-
     This rule is broken and never gets called anyhow since asm
     					   is matched above this. If fixed the scopes here should be
     					   redone as well. -msheets
 - name: comment.block.nested.d
-  captures: 
-    "0": 
+  captures:
+    "0":
       name: punctuation.definition.comment.d
   begin: /\+
   end: \+/
-  patterns: 
+  patterns:
   - include: "#comment_nested_block_content"
 - name: comment.block.d
-  captures: 
-    "0": 
+  captures:
+    "0":
       name: punctuation.definition.comment.d
   begin: /\*
   end: \*/
 - name: comment.line.double-slash.d
   begin: (//)
-  beginCaptures: 
-    "1": 
+  beginCaptures:
+    "1":
       name: punctuation.definition.comment.d
   end: $\n?
-  patterns: 
+  patterns:
   - name: punctuation.separator.continuation.d
     match: (?>\\\s*\n)
 - name: constant.numeric.c
   match: \b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\.?[0-9]*)|(\.[0-9]+))((e|E)(\+|-)?[0-9]+)?)(L|l|UL|ul|u|U|F|f|ll|LL|ull|ULL)?\b
 - name: string.quoted.double.c
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.d
   begin: "\""
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.d
   end: "\""
-  patterns: 
+  patterns:
   - include: "#string_escaped_char"
   - include: "#string_placeholder"
 - name: string.quoted.single.c
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.d
   begin: "'"
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.d
   end: "'"
-  patterns: 
+  patterns:
   - include: "#string_escaped_char"
 - name: support.type.sys-types.c
   match: \b(u_char|u_short|u_int|u_long|ushort|uint|u_quad_t|quad_t|qaddr_t|caddr_t|daddr_t|dev_t|fixpt_t|blkcnt_t|blksize_t|gid_t|in_addr_t|in_port_t|ino_t|key_t|mode_t|nlink_t|id_t|pid_t|off_t|segsz_t|swblk_t|uid_t|id_t|clock_t|size_t|ssize_t|time_t|useconds_t|suseconds_t)\b

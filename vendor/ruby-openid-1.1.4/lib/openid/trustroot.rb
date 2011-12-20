@@ -14,14 +14,14 @@ module OpenID
       rescue
         return nil
       end
-      
+
       return [parsed.scheme, parsed.host, parsed.port, parsed.path]
     end
 
     def TrustRoot.parse(trust_root)
-      return nil unless trust_root.instance_of?(String)    
+      return nil unless trust_root.instance_of?(String)
 
-      trust_root = trust_root.dup      
+      trust_root = trust_root.dup
       unparsed = trust_root.dup
 
       # look for wildcard
@@ -39,7 +39,7 @@ module OpenID
       return nil if parts.nil?
 
       proto, host, port, path = parts
-      
+
       return nil unless ['http', 'https'].member?(proto)
       return new(unparsed, proto, wildcard, host, port, path)
     end
@@ -49,7 +49,7 @@ module OpenID
       return false if tr.nil?
       return tr.sane?
     end
-      
+
 
     def initialize(unparsed, proto, wildcard, host, port, path)
       @unparsed = unparsed
@@ -62,13 +62,13 @@ module OpenID
 
     def sane?
       return true if @host == 'localhost'
-      
+
       host_parts = @host.split('.')
       # a note: ruby string split does not put an empty string
       # at the end of the list if the split element is last.  for example,
       # 'foo.com.'.split('.') => ['foo','com'].  Mentioned because the python
       # code differs here.
-      
+
       return false if host_parts.length == 0
 
       # no adjacent dots
@@ -83,7 +83,7 @@ module OpenID
       if @wildcard
         if tld.length == 2 and host_parts[-2].length <= 3
           # It's a 2-letter tld with a short second to last segment
-          # so there needs to be more than two segments specified 
+          # so there needs to be more than two segments specified
           # (e.g. *.co.uk is insane)
           return host_parts.length > 2
         end
@@ -91,13 +91,13 @@ module OpenID
 
       return true
     end
-    
+
     def validate_url(url)
       parts = TrustRoot._parse_url(url)
       return false if parts.nil?
 
       proto, host, port, path = parts
-      
+
       return false unless proto == @proto
       return false unless port == @port
       return false unless path.index(@path) == 0

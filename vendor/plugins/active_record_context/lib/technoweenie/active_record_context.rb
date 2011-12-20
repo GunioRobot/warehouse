@@ -6,7 +6,7 @@ module Technoweenie
         alias_method_chain :find_one,   :context
       end
     end
-    
+
     mattr_accessor :log_context_activity
     mattr_reader :context_cache
 
@@ -15,7 +15,7 @@ module Technoweenie
         store_in_context records
       end
     end
-    
+
     def find_one_with_context(id, options)
       record = options[:conditions].nil? && cached[id.to_i]
       logger.debug("[Context] #{record ? :Found : :Missed} #{name} ##{id}") if log_context_activity
@@ -25,15 +25,15 @@ module Technoweenie
     def cached
       context_cache ? (context_cache[self] ||= {}) : {}
     end
-    
+
     def store_in_context(records)
       return if context_cache.nil?
       logger.debug "[Context] Storing #{name} records: #{records.collect(&:id).to_sentence}" if log_context_activity
-      records.inject(cached) do |memo, record| 
+      records.inject(cached) do |memo, record|
         memo.update record.id => record
       end
     end
-    
+
     # Enables the context cache inside this block.
     def with_context
       @@context_cache = {}

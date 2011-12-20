@@ -1,9 +1,9 @@
---- 
+---
 name: MATLAB
 scopeName: source.matlab
 uuid: 48F8858B-72FF-11D9-BFEE-000D93589AF6
 foldingStartMarker: ^\s*(function|if|switch|while|for|try)\b(?!.*\bend\b).*$
-patterns: 
+patterns:
 - name: storage.modifier.matlab
   match: \b(varargin|varargout)\b
 - name: keyword.control.matlab
@@ -11,61 +11,61 @@ patterns:
 - name: keyword.other.matlab
   match: \b(inputname|get|findobj|allchild|dbstack|stop|waitbar)\b
 - name: meta.scope.expression.matlab
-  captures: 
-    "0": 
+  captures:
+    "0":
       name: punctuation.section.scope.matlab
   begin: \({2}
   end: \){2}
-  patterns: 
+  patterns:
   - include: $self
 - name: meta.scope.logical-expression.matlab
-  captures: 
-    "0": 
+  captures:
+    "0":
       name: punctuation.section.scope.matlab
   begin: \[{2}
   end: \]{2}
-  patterns: 
+  patterns:
   - name: keyword.operator.logical.matlab
     match: ==|~=|&|~|\|
     comment: do we want a special rule for ( expr )?
   - include: $self
 - name: meta.scope.parens.matlab
-  captures: 
-    "0": 
+  captures:
+    "0":
       name: punctuation.section.scope.matlab
   begin: \(
   end: \)
-  patterns: 
+  patterns:
   - include: $self
 - name: comment.line.percentage.matlab
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.comment.matlab
   match: (%).*$\n?
 - name: variable.other.transpose.matlab
   match: "[a-zA-Z)\\]]'"
 - name: string.quoted.single.matlab
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.matlab
   begin: "'"
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.matlab
   end: (')|\n
-  patterns: 
+  patterns:
   - name: constant.character.escape.matlab
     match: \\.
 - name: string.quoted.double.matlab
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.matlab
   begin: "\""
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.matlab
   end: "\""
-  patterns: 
+  patterns:
   - name: constant.character.escape.matlab
     match: \\.
 - name: keyword.other.matlab

@@ -1,78 +1,78 @@
---- 
+---
 name: Lilypond
-fileTypes: 
+fileTypes:
 - ly
 - ily
 scopeName: source.lilypond
-repository: 
-  g_markup: 
+repository:
+  g_markup:
     name: meta.element.markup.lilypond
     begin: "(?x)\n\
       \t\t\t\t((\\\\) markup) \\s+ # backslash + \"markup\" + spaces\n\
       \t\t\t\t(?={)\n\
       \t\t\t"
-    beginCaptures: 
-      "1": 
+    beginCaptures:
+      "1":
         name: support.function.element.markup.lilypond
-      "2": 
+      "2":
         name: punctuation.definition.function.markup
     end: (?<=})
-    patterns: 
+    patterns:
     - include: "#g_m_group"
-  comments: 
-    patterns: 
+  comments:
+    patterns:
     - name: comment.block.lilypond
-      captures: 
-        "0": 
+      captures:
+        "0":
           name: punctuation.definition.comment.lilypond
       begin: "%{"
       end: "%}"
     - name: comment.line.lilypond
       begin: "%"
-      beginCaptures: 
-        "0": 
+      beginCaptures:
+        "0":
           name: punctuation.definition.comment.lilypond
       end: $\n?
-  g_times: 
+  g_times:
     begin: ((\\)times)\s*(?:([1-9][0-9]*/[1-9][0-9])\s*)(?={)
-    beginCaptures: 
-      "1": 
+    beginCaptures:
+      "1":
         name: support.function.section.lilypond
-      "2": 
+      "2":
         name: punctuation.definition.function.lilypond
-      "3": 
+      "3":
         name: constant.numeric.fraction.lilypond
     end: (?<=})
-    patterns: 
+    patterns:
     - include: "#group"
-  f_keywords: 
+  f_keywords:
     name: keyword.control.lilypond
-    captures: 
-      "1": 
+    captures:
+      "1":
         name: punctuation.definition.function.lilypond
     match: "(?x)\n\
       \t\t\t\t(?: (\\\\)\n\
       \t\t\t\t    (?: set | new | override | revert)\n\
       \t\t\t\t)\n\
       \t\t\t"
-  f_clef: 
+  f_clef:
     name: meta.element.clef.lilypond
-    captures: 
-      "6": 
+    captures:
+      "6":
         name: meta.fixme.unknown-clef-name.lilypond
-      "7": 
+      "7":
         name: constant.other.modifier.clef.lilypond
-      "8": 
+      "8":
         name: punctuation.definition.string.lilypond
-      "1": 
+      "1":
         name: support.function.element.lilypond
-      "2": 
+      "2":
         name: punctuation.definition.function.lilypond
-      "3": 
+      "3":
         name: punctuation.definition.string.lilypond
-      "4": 
+      "4":
         name: constant.language.clef-name.lilypond
-      "5": 
+      "5":
         name: constant.other.modifier.clef.lilypond
     match: "(?x)\n\
       \t\t\t\t((\\\\) clef) \\s+  # backslash + \"clef\" + spaces (groups 1-2)\n\
@@ -98,26 +98,26 @@ repository:
       \t\t\t\tThis looks something like:   \\clef mezzosoprano_8\n\
       \t\t\t\tOr maybe:                    \\clef neomensural-c3^15\n\
       \t\t\t"
-  g_relative: 
+  g_relative:
     begin: ((\\)relative)\s*(?:([a-h][',]*)\s*)?(?={)
-    beginCaptures: 
-      "1": 
+    beginCaptures:
+      "1":
         name: support.function.section.lilypond
-      "2": 
+      "2":
         name: punctuation.definition.function.lilypond
-      "3": 
+      "3":
         name: storage.type.pitch.lilypond
     end: (?<=})
-    patterns: 
+    patterns:
     - include: "#group"
-  scheme: 
+  scheme:
     begin: "#"
     contentName: source.scheme.embedded.lilypond
-    beginCaptures: 
-      "0": 
+    beginCaptures:
+      "0":
         name: punctuation.section.embedded.scheme.lilypond
     end: (?=[\s%])|(?<=\n)
-    patterns: 
+    patterns:
     - include: source.scheme
     comment: "\n\
       \t\t\t\tLilypond source can embed scheme code to do things more\n\
@@ -125,8 +125,8 @@ repository:
       \t\t\t\tWe need to make sure to match after a \\n, as included\n\
       \t\t\t\tby some s-expressions in the scheme grammar.\n\
       \t\t\t"
-  notes: 
-    patterns: 
+  notes:
+    patterns:
     - name: meta.element.note.lilypond
       begin: "(?x)\\b\n\
         \t\t\t\t\t    (\t\t\t\t\t\t  # (group 1)\n\
@@ -145,25 +145,25 @@ repository:
         \t\t\t\t\t\t  )?\n\
         \t\t\t\t\t\t)(?![a-z])\t# do not follow a note with a letter\n\
         \t\t\t\t\t"
-      beginCaptures: 
-        "6": 
+      beginCaptures:
+        "6":
           name: storage.type.duration.lilypond
-        "12": 
+        "12":
           name: keyword.operator.duration-scale.lilypond
-        "13": 
+        "13":
           name: constant.numeric.fraction.lilypond
-        "9": 
+        "9":
           name: punctuation.definition.function.lilypond
-        "2": 
+        "2":
           name: storage.type.pitch.lilypond
-        "4": 
+        "4":
           name: meta.note-modifier.cautionary-accidental.lilypond
-        "5": 
+        "5":
           name: meta.note-modifier.octave.lilypond
       end: "(?x)\n\
         \t\t\t\t\t\t(?= [ }~a-z] ) # End when we encounter a space or }\n\
         \t\t\t\t\t"
-      patterns: 
+      patterns:
       - include: "#n_articulations"
       comment: "\n\
         \t\t\t\t\t\tThis rule handles notes, including the pitch, the\n\
@@ -197,19 +197,19 @@ repository:
         \t\t\t\t\t\t)?\n\
         \t\t\t\t\t\t(?![a-z])\t# do not follow a note with a letter\n\
         \t\t\t\t\t"
-      beginCaptures: 
-        "6": 
+      beginCaptures:
+        "6":
           name: keyword.operator.duration-scale.lilypond
-        "8": 
+        "8":
           name: constant.numeric.fraction.lilypond
-        "1": 
+        "1":
           name: storage.type.pause.rest.lilypond
-        "2": 
+        "2":
           name: storage.type.duration.lilypond
-        "4": 
+        "4":
           name: punctuation.definition.function.lilypond
       end: (?=[ }~a-z])
-      patterns: 
+      patterns:
       - include: "#n_articulations"
     - name: meta.element.pause.skip.lilypond
       begin: "(?x)\\b\n\
@@ -223,40 +223,40 @@ repository:
         \t\t\t\t\t\t)?\n\
         \t\t\t\t\t\t(?![a-z])\t# do not follow a note with a letter\n\
         \t\t\t\t\t"
-      beginCaptures: 
-        "6": 
+      beginCaptures:
+        "6":
           name: keyword.operator.duration-scale.lilypond
-        "8": 
+        "8":
           name: constant.numeric.fraction.lilypond
-        "1": 
+        "1":
           name: storage.type.pause.skip.lilypond
-        "2": 
+        "2":
           name: storage.type.duration.lilypond
-        "4": 
+        "4":
           name: punctuation.definition.function.lilypond
       end: (?=[ }~a-z])
-      patterns: 
+      patterns:
       - include: "#n_articulations"
     - name: meta.element.pause.skip.lilypond
-      captures: 
-        "1": 
+      captures:
+        "1":
           name: storage.type.pause.skip.lilypond
-        "2": 
+        "2":
           name: punctuation.definition.function.lilypond
-        "3": 
+        "3":
           name: storage.type.duration.lilypond
       match: ((\\)skip)\s+(64|32|16|8|4|2|1)
     - name: meta.element.chord.lilypond
-      endCaptures: 
-        "1": 
+      endCaptures:
+        "1":
           name: punctuation.definition.chord.lilypond
-        "2": 
+        "2":
           name: storage.type.duration.lilypond
-        "4": 
+        "4":
           name: punctuation.definition.function.lilypond
       begin: <
-      beginCaptures: 
-        "0": 
+      beginCaptures:
+        "0":
           name: punctuation.definition.chord.lilypond
       end: "(?x)\n\
         \t\t\t\t\t\t(>)\n\
@@ -266,13 +266,13 @@ repository:
         \t\t\t\t\t\t  (\\.)?                  # Augmentation dot (group 5)\n\
         \t\t\t\t\t\t)?\n\
         \t\t\t\t\t"
-      patterns: 
-      - captures: 
-          "1": 
+      patterns:
+      - captures:
+          "1":
             name: storage.type.pitch.lilypond
-          "3": 
+          "3":
             name: meta.note-modifier.cautionary-accidental.lilypond
-          "4": 
+          "4":
             name: meta.note-modifier.octave.lilypond
         match: "(?x)\\b\n\
           \t\t\t\t\t\t\t\t  ( [a-h]                 # Pitch (group 1)\n\
@@ -289,7 +289,7 @@ repository:
     - name: meta.element.chord.lilypond
       begin: (?<=>)(?<!->)(?!\s)
       end: (?=[ }~a-z])(?<![^-]>)
-      patterns: 
+      patterns:
       - include: "#n_articulations"
       comment: "\n\
         \t\t\t\t\t\tThis rule attaches stuff to the end of a chord\n\
@@ -301,23 +301,23 @@ repository:
     - name: storage.type.tie.lilypond
       match: "~"
     - name: storage.type.breath-mark.lilypond
-      captures: 
-        "1": 
+      captures:
+        "1":
           name: punctuation.definition.function.lilypond
       match: (\\)breathe
     comment: "\n\
       \t\t\t\tThis section includes the rules for notes, rests, and chords\n\
       \t\t\t"
-  n_articulations: 
-    patterns: 
+  n_articulations:
+    patterns:
     - name: storage.modifier.articulation.accent.lilypond
       match: "(?x)\n\
         \t\t\t\t\t\t([_^-])\n\
         \t\t\t\t\t\t(?:[.>^+_-])\n\
         \t\t\t\t\t"
     - name: storage.modifier.articulation.named.lilypond
-      captures: 
-        "1": 
+      captures:
+        "1":
           name: punctuation.definition.function.lilypond
       match: "(?x)\n\
         \t\t\t\t\t\t(\\\\)\n\
@@ -345,85 +345,85 @@ repository:
       match: \[|\]
     - name: storage.modifier.slur.lilypond
       match: \(|\)
-  functions: 
-    patterns: 
+  functions:
+    patterns:
     - include: "#f_clef"
     - include: "#f_time-signature"
     - include: "#f_key-signature"
     - include: "#f_keywords"
     - include: "#f_generic"
-  strings: 
+  strings:
     name: string.quoted.double.lilypond
-    captures: 
-      "0": 
+    captures:
+      "0":
         name: punctuation.definition.string.lilypond
     begin: "\""
     end: "\""
-    patterns: 
+    patterns:
     - name: constant.character.escape.lilypond
       match: \\.
-  f_key-signature: 
+  f_key-signature:
     name: meta.element.key-signature.lilypond
     comment: FIXME
-  music-expr: 
-    patterns: 
+  music-expr:
+    patterns:
     - include: "#comments"
     - include: "#groupings"
     - include: "#strings"
     - include: "#functions"
     - include: "#scheme"
     - include: "#notes"
-  g_system: 
+  g_system:
     name: meta.system.lilypond
-    endCaptures: 
-      "0": 
+    endCaptures:
+      "0":
         name: punctuation.section.system.end.lilypond
     begin: "<<"
-    beginCaptures: 
-      "0": 
+    beginCaptures:
+      "0":
         name: punctuation.section.system.begin.lilypond
     end: ">>"
-    patterns: 
+    patterns:
     - include: $self
-  f_generic: 
+  f_generic:
     name: support.function.general.lilypond
-    captures: 
-      "1": 
+    captures:
+      "1":
         name: punctuation.definition.function.lilypond
     match: (\\)[a-zA-Z-]+\b
-  groupings: 
-    patterns: 
+  groupings:
+    patterns:
     - include: "#g_system"
     - include: "#g_relative"
     - include: "#g_times"
     - include: "#group"
-  group: 
+  group:
     name: meta.music-expression.lilypond
-    endCaptures: 
-      "0": 
+    endCaptures:
+      "0":
         name: punctuation.section.group.end.lilypond
     begin: "{"
-    beginCaptures: 
-      "0": 
+    beginCaptures:
+      "0":
         name: punctuation.section.group.begin.lilypond
     end: "}"
-    patterns: 
+    patterns:
     - include: "#music-expr"
-  g_header: 
+  g_header:
     name: meta.header.lilypond
-    endCaptures: 
-      "0": 
+    endCaptures:
+      "0":
         name: punctuation.section.group.end.lilypond
     begin: ((\\)header)\s*({)
-    beginCaptures: 
-      "1": 
+    beginCaptures:
+      "1":
         name: support.function.section.header.lilypond
-      "2": 
+      "2":
         name: punctuation.definition.function.lilypond
-      "3": 
+      "3":
         name: punctuation.section.group.begin.lilypond
     end: "}"
-    patterns: 
+    patterns:
     - include: "#comments"
     - include: "#strings"
     - include: "#scheme"
@@ -443,30 +443,30 @@ repository:
         \t\t\t\t\t\tstyle | maintainer | maintainerEmail |\n\
         \t\t\t\t\t\tmaintainerWeb | lastupdated\n\
         \t\t\t\t\t"
-  g_m_group: 
+  g_m_group:
     name: meta.group.lilypond
-    endCaptures: 
-      "0": 
+    endCaptures:
+      "0":
         name: punctuation.section.group.end.lilypond
     begin: "{"
-    beginCaptures: 
-      "0": 
+    beginCaptures:
+      "0":
         name: punctuation.section.group.begin.lilypond
     end: "}"
-    patterns: 
+    patterns:
     - include: "#f_generic"
     - include: "#strings"
     - include: "#comments"
     - include: "#scheme"
     - include: "#g_m_group"
-  f_time-signature: 
+  f_time-signature:
     name: meta.element.time-signature.lilypond
-    captures: 
-      "1": 
+    captures:
+      "1":
         name: support.function.element.lilypond
-      "2": 
+      "2":
         name: punctuation.definition.function.lilypond
-      "3": 
+      "3":
         name: constant.numeric.time-signature.lilypond
     match: "(?x)\n\
       \t\t\t\t((\\\\) time) \\s+ # backslash + \"time\" + spaces (groups 1-2)\n\
@@ -474,7 +474,7 @@ repository:
       \t\t\t"
 uuid: F25B30BE-0526-4D92-806C-F0D678DDF669
 foldingStartMarker: (\{|<<)\s*$
-patterns: 
+patterns:
 - include: "#comments"
 - include: "#g_header"
 - include: "#groupings"

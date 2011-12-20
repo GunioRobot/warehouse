@@ -1,11 +1,11 @@
---- 
+---
 name: Python (Django)
 fileTypes: []
 
 scopeName: source.python.django
 uuid: 5326D56C-6F76-4758-8DB7-D818527919AC
 foldingStartMarker: ^\s*(def|class)\s+([.a-zA-Z0-9_ b]+)\s*(\((.*)\))?\s*:|\{\s*$|\(\s*$|\[\s*$
-patterns: 
+patterns:
 - name: support.type.django.model
   match: (meta|models)\.(ForeignKey|Admin|AutoField|BooleanField|CharField|CommaSeparatedIntegerField|DateField|DateTimeField|EmailField|FileField|FilePathField|FloatField|ImageField|IntegerField|IPAddressField|ManyToManyField|NullBooleanField|OneToOneField|PhoneNumberField|PositiveIntegerField|PositiveSmallIntegerField|SlugField|SmallIntegerField|TextField|TimeField|URLField|USStateField|XMLField)
 - name: support.other.django.module

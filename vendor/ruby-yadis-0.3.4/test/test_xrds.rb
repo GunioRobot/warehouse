@@ -7,7 +7,7 @@ class XRDSTestCase < Test::Unit::TestCase
     File.open('data/brian.xrds') do |f|
       xrds = XRDS.new(f.read)
       assert_not_nil(xrds)
-      assert_equal(xrds.services.length, 1)      
+      assert_equal(xrds.services.length, 1)
     end
 
     File.open('data/brianellin.mylid.xrds') do |f|
@@ -25,7 +25,7 @@ class XRDSTestCase < Test::Unit::TestCase
     File.open('data/brian.multi.xrds') do |f|
       xrds = XRDS.new(f.read)
       assert_not_nil(xrds)
-      assert_equal(1, xrds.services.length)      
+      assert_equal(1, xrds.services.length)
       s = xrds.services[0]
       assert s.service_types.member?('http://openid.net/signon/1.0')
     end
@@ -69,7 +69,7 @@ class XRDSTestCase < Test::Unit::TestCase
       s = Marshal.dump(xrds)
       xrds2 = Marshal.load(s)
       assert_equal(xrds.services, xrds2.services)
-    end   
+    end
   end
 
 end

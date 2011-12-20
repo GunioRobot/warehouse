@@ -26,7 +26,7 @@ class ActiveRecordContextTest < Test::Unit::TestCase
       assert_equal @posts[1], Post.find_in_context(2)
     end
   end
-  
+
   def test_should_find_records_in_context
     Post.with_context do
       records = Post.find(:all)
@@ -34,28 +34,28 @@ class ActiveRecordContextTest < Test::Unit::TestCase
       assert_equal @posts[0], Post.find(1)
       assert_equal @posts[1], Post.find(2)
     end
-    
+
     assert_raise ActiveRecord::RecordNotFound do
       Post.find 1
     end
   end
-  
+
   def test_should_find_belongs_to_record
     Post.with_context do
       Topic.find :all ; Topic.delete_all
       assert_equal @topic, @posts[0].topic(true)
     end
-    
+
     assert_equal @topic, @posts[0].topic
     assert_nil @posts[0].topic(true)
   end
-  
+
   def test_should_find_belongs_to_polymorphic_record
     Post.with_context do
       Topic.find :all ; Topic.delete_all
       assert_equal @topic, @posts[1].topic(true)
     end
-    
+
     assert_equal @topic, @posts[1].topic
     assert_nil @posts[1].topic(true)
   end

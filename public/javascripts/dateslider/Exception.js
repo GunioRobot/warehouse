@@ -12,7 +12,7 @@ function Exception(name, message)
 }
 
 /**
- * Set the name of the exception. 
+ * Set the name of the exception.
  */
 Exception.prototype.setName = function(name)
 {
@@ -20,7 +20,7 @@ Exception.prototype.setName = function(name)
 }
 
 /**
- * Get the exception's name. 
+ * Get the exception's name.
  */
 Exception.prototype.getName = function()
 {
@@ -28,7 +28,7 @@ Exception.prototype.getName = function()
 }
 
 /**
- * Set a message on the exception. 
+ * Set a message on the exception.
  */
 Exception.prototype.setMessage = function(msg)
 {
@@ -36,7 +36,7 @@ Exception.prototype.setMessage = function(msg)
 }
 
 /**
- * Get the exception message. 
+ * Get the exception message.
  */
 Exception.prototype.getMessage = function()
 {

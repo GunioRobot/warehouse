@@ -7,7 +7,7 @@ module Technoweenie # :nodoc:
           base.send :extend, ClassMethods
           base.alias_method_chain :process_attachment, :processing
         end
-        
+
         module ClassMethods
           # Yields a block containing an MiniMagick Image for the given binary data.
           def with_image(file, &block)

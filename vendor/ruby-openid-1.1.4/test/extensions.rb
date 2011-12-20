@@ -6,12 +6,12 @@ require "openid/util"
 
 class UtilTestCase < Test::Unit::TestCase
 
-  def test_sreg 
+  def test_sreg
     secret = 'foo'
     openid_sig = 'xxx'
 
     ext_content = "openid.sig:xxx\nsreg.dob:0000-00-00\nsreg.email:foo@bar.com\n"
-    ext_sig = OpenID::Util.to_base64(OpenID::Util.hmac_sha1(secret, ext_content))    
+    ext_sig = OpenID::Util.to_base64(OpenID::Util.hmac_sha1(secret, ext_content))
     query = {
       'openid.sig' => openid_sig,
       'sreg.email' => 'foo@bar.com',

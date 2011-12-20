@@ -334,7 +334,7 @@ comment body
   <H1>This is the header</H1>
   <P>
     This is the paragraph, it contains
-    <a href=\"link.html\">links</a>, 
+    <a href=\"link.html\">links</a>,
     <img src=\"blah.gif\" optional alt='images
 are
 really cool'>.  Ok, here is some more text and

@@ -1,12 +1,12 @@
---- 
+---
 name: Greasemonkey
-fileTypes: 
+fileTypes:
 - user.js
 firstLineMatch: // ==UserScript==
 scopeName: source.js.greasemonkey
 uuid: B57ED36B-65DD-492A-82D7-E6C80253BAAB
 foldingStartMarker: // ==UserScript==
-patterns: 
+patterns:
 - name: support.class.greasemonkey
   match: \bunsafeWindow\b
 - name: support.function.greasemonkey
@@ -14,19 +14,19 @@ patterns:
 - name: meta.header.greasemonkey
   begin: // ==UserScript==
   end: // ==/UserScript==\s*
-  patterns: 
+  patterns:
   - name: meta.directive.standard.greasemonkey
-    captures: 
-      "1": 
+    captures:
+      "1":
         name: keyword.other.greasemonkey
-      "3": 
+      "3":
         name: string.unquoted.greasemonkey
     match: // (@(name|namespace|description|include|exclude))\b\s*(.+\s+)?
   - name: meta.directive.nonstandard.greasemonkey
-    captures: 
-      "1": 
+    captures:
+      "1":
         name: keyword.other.greasemonkey
-      "3": 
+      "3":
         name: string.unquoted.greasemonkey
     match: // (@(\S+))\b\s*(.+\s+)?
 - include: source.js

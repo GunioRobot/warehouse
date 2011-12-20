@@ -46,7 +46,7 @@ FlashTag.prototype.setBgcolor = function(bgc)
 }
 
 /**
- * Sets any variables to be passed into the Flash content. 
+ * Sets any variables to be passed into the Flash content.
  */
 FlashTag.prototype.setFlashvars = function(fv)
 {
@@ -54,7 +54,7 @@ FlashTag.prototype.setFlashvars = function(fv)
 }
 
 /**
- * Get the Flash tag as a string. 
+ * Get the Flash tag as a string.
  */
 FlashTag.prototype.toString = function()
 {
@@ -82,7 +82,7 @@ FlashTag.prototype.toString = function()
     else
     {
         flashTag += '<embed src="'+this.src+'" ';
-        flashTag += 'quality="high" '; 
+        flashTag += 'quality="high" ';
         flashTag += 'bgcolor="#'+this.bgcolor+'" ';
         flashTag += 'width="'+this.width+'" ';
         flashTag += 'height="'+this.height+'" ';
@@ -102,7 +102,7 @@ FlashTag.prototype.toString = function()
 }
 
 /**
- * Write the Flash tag out. Pass in a reference to the document to write to. 
+ * Write the Flash tag out. Pass in a reference to the document to write to.
  */
 FlashTag.prototype.write = function(doc)
 {

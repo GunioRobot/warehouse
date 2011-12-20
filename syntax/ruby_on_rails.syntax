@@ -1,6 +1,6 @@
---- 
+---
 name: Ruby on Rails
-fileTypes: 
+fileTypes:
 - rxml
 - builder
 scopeName: source.ruby.rails
@@ -31,46 +31,46 @@ foldingStartMarker: "(?x)^\n\
   \t    ).*$\n\
   \t|   [#] .*? \\(fold\\) \\s*+ $         # Sune\xE2\x80\x99s special marker\n\
   \t"
-patterns: 
+patterns:
 - name: meta.rails.functional_test
   begin: (^\s*)(?=class\s+(([.a-zA-Z0-9_:]+ControllerTest(\s*<\s*[.a-zA-Z0-9_:]+)?)))
   end: ^\1(?=end)\b
-  patterns: 
+  patterns:
   - include: source.ruby
   - include: $self
   comment: Uses lookahead to match classes with the ControllerTest suffix; includes 'source.ruby' to avoid infinite recursion
 - name: meta.rails.controller
   begin: (^\s*)(?=class\s+(([.a-zA-Z0-9_:]+Controller\b(\s*<\s*[.a-zA-Z0-9_:]+)?)|(<<\s*[.a-zA-Z0-9_:]+)))(?!.+\bend\b)
   end: ^\1(?=end)\b
-  patterns: 
+  patterns:
   - include: source.ruby
   - include: $self
   comment: Uses lookahead to match classes with the Controller suffix; includes 'source.ruby' to avoid infinite recursion
 - name: meta.rails.helper
   begin: (^\s*)(?=module\s+((([A-Z]\w*::)*)[A-Z]\w*)Helper)
   end: ^\1(?=end)\b
-  patterns: 
+  patterns:
   - include: source.ruby
   - include: $self
   comment: Uses lookahead to match modules with the Helper suffix; includes 'source.ruby' to avoid infinite recursion
 - name: meta.rails.mailer
   begin: (^\s*)(?=class\s+(([.a-zA-Z0-9_:]+(\s*<\s*ActionMailer::Base))))
   end: ^\1(?=end)\b
-  patterns: 
+  patterns:
   - include: source.ruby
   - include: $self
   comment: Uses lookahead to match classes that inherit from ActionMailer::Base; includes 'source.ruby' to avoid infinite recursion
 - name: meta.rails.model
   begin: (^\s*)(?=class\s+.+ActiveRecord::Base)
   end: ^\1(?=end)\b
-  patterns: 
+  patterns:
   - include: source.ruby
   - include: $self
   comment: Uses lookahead to match classes that (may) inherit from ActiveRecord::Base; includes 'source.ruby' to avoid infinite recursion
 - name: meta.rails.unit_test
   begin: (^\s*)(?=class\s+(?![.a-zA-Z0-9_:]+ControllerTest)(([.a-zA-Z0-9_:]+Test(\s*<\s*[.a-zA-Z0-9_:]+)?)|(<<\s*[.a-zA-Z0-9_:]+)))
   end: ^\1(?=end)\b
-  patterns: 
+  patterns:
   - include: source.ruby
   - include: $self
   comment: Uses lookahead to match classes with the Test suffix; includes 'source.ruby' to avoid infinite recursion

@@ -10,10 +10,10 @@ Warehouse::Hooks.define :lighthouse do
   notes <<-END_NOTES
     This hook will post the new revision data to your Lighthouse project.
   END_NOTES
-  
+
   # Define the options this hook needs
   # These are given text fields in the Hook admin for the user to customize them.
-  option :account, /^[a-z0-9_-]+$/i, 
+  option :account, /^[a-z0-9_-]+$/i,
     "The account name.  (e.g. 'activereload' in 'activereload.lighthouseapp.com')"
   option :project, /^\d+$/,
     "Project ID.  ('55'' in '/projects/55/tickets...')"
@@ -21,7 +21,7 @@ Warehouse::Hooks.define :lighthouse do
     "Unique API Token to identify the user accessing Lighthouse."
   option :users,   /^([a-z0-9_-]+ [a-z0-9]+(,\s*)?)+$/,
     "Optional comma-separated list linking svn commit authors with different Lighthouse tokens.  (e.g. 'rick ABCDEF12345, bob 98765DCBA')"
-  
+
   user_tokens do
     options[:users].to_s.split(",").inject({}) do |memo, user|
       user.strip!
@@ -30,10 +30,10 @@ Warehouse::Hooks.define :lighthouse do
       memo.update name => token
     end
   end
-  
+
   # Array of changes like ["M /foo/bar.txt", ...]
   commit_changes do
-    commit.changed.split("\n").inject([]) do |memo, line| 
+    commit.changed.split("\n").inject([]) do |memo, line|
       if line.strip =~ /(\w)\s+(.*)/
         memo << [$1, $2]
       end
@@ -55,17 +55,17 @@ END_XML
   current_token do
     user_tokens[commit.author] || options[:token]
   end
-  
+
   changeset_url do
     URI.parse('/projects/%d/changesets.xml' % options[:project])
   end
-  
+
   run do
-    req = Net::HTTP::Post.new(changeset_url.path) 
+    req = Net::HTTP::Post.new(changeset_url.path)
     req.basic_auth current_token, 'x' # to ensure authentication
     req.body = changeset_xml.strip
     req.set_content_type('application/xml')
-    
+
     res = Net::HTTP.new("#{options[:account]}.lighthouseapp.com").start {|http| http.request(req) }
     case res
       when Net::HTTPSuccess, Net::HTTPRedirection

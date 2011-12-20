@@ -1,6 +1,6 @@
---- 
+---
 name: Objective-C++
-fileTypes: 
+fileTypes:
 - mm
 - M
 - h
@@ -11,7 +11,7 @@ foldingStartMarker: "(?x)\n\
   \t\t|^(?![^{]*?//|[^{]*?/\\*(?!.*?\\*/.*?\\{)).*?\\{\\s*($|//|/\\*(?!.*?\\*/.*\\S))\n\
   \t\t|^@(interface|protocol|implementation)\\b\n\
   \t"
-patterns: 
+patterns:
 - include: source.objc
 - include: source.c++
 foldingStopMarker: (?<!\*)\*\*/|^\s*\}|^@end\b

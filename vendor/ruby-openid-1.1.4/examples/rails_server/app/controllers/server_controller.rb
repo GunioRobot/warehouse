@@ -14,7 +14,7 @@ class ServerController < ApplicationController
   include ServerHelper
   include OpenID::Server
   layout nil
-  
+
   def index
     begin
       request = server.decode_request(@params)
@@ -23,25 +23,25 @@ class ServerController < ApplicationController
       render_text e.to_s
       return
     end
-      
+
     # no openid.mode was given
     unless request
       render_text "This is an OpenID server endpoint."
       return
     end
-    
+
     if request.kind_of?(CheckIDRequest)
 
       if self.is_authorized(request.identity_url, request.trust_root)
         response = request.answer(true)
-        
+
         # add the sreg response if requested
         self.add_sreg(request, response)
 
       elsif request.immediate
         server_url = url_for :action => 'index'
         response = request.answer(false, server_url)
-        
+
       else
         @session[:last_request] = request
         @request = request
@@ -53,14 +53,14 @@ class ServerController < ApplicationController
     else
       response = server.handle_request(request)
     end
-  
+
     self.render_response(response)
   end
 
   def user_page
     # Yadis content-negotiation: we want to return the xrds if asked for.
     accept = request.env['HTTP_ACCEPT']
-    
+
     # This is not technically correct, and should eventually be updated
     # to do real Accept header parsing and logic.  Though I expect it will work
     # 99% of the time.
@@ -69,7 +69,7 @@ class ServerController < ApplicationController
       return
     end
 
-    # content negotiation failed, so just render the user page    
+    # content negotiation failed, so just render the user page
     xrds_url = url_for(:controller=>'user',:action=>@params[:username])+'/xrds'
     identity_page = <<EOS
 <html><head>
@@ -143,7 +143,7 @@ EOS
 
     response.headers['content-type'] = 'application/xrds+xml'
     render_text yadis
-  end  
+  end
 
   def add_sreg(request, response)
     # Your code should examine request.query
@@ -166,25 +166,25 @@ EOS
       sreg_fields = {
         'email' => 'mayor@example.com',
         'nickname' => 'Mayor McCheese'
-      }    
+      }
       response.add_fields('sreg', sreg_fields)
     end
 
   end
 
-  def render_response(response)    
+  def render_response(response)
     web_response = server.encode_response(response)
 
     case web_response.code
     when HTTP_OK
-      render_text web_response.body, :status => 200           
+      render_text web_response.body, :status => 200
 
     when HTTP_REDIRECT
       redirect_to web_response.redirect_url
 
     else
       render_text web_response.body, :status => 400
-    end   
+    end
   end
 
 

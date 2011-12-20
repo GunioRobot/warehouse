@@ -1,26 +1,26 @@
---- 
+---
 name: ASP
-fileTypes: 
+fileTypes:
 - asa
 scopeName: source.asp
 uuid: 291022B4-6B1D-11D9-90EB-000D93589AF6
-patterns: 
+patterns:
 - name: meta.function.asp
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: storage.type.function.asp
-    "2": 
+    "2":
       name: entity.name.function.asp
-    "3": 
+    "3":
       name: punctuation.definition.parameters.asp
-    "4": 
+    "4":
       name: variable.parameter.function.asp
-    "5": 
+    "5":
       name: punctuation.definition.parameters.asp
   match: ^\s*((?i:function|sub))\s*([a-zA-Z_]\w*)\s*(\()([^)]*)(\)).*\n?
 - name: comment.line.apostrophe.asp
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.comment.asp
   match: (').*$\n?
 - name: keyword.control.asp
@@ -34,20 +34,20 @@ patterns:
 - name: constant.language.asp
   match: (?i:\b(Empty|False|Nothing|Null|True)\b)
 - name: string.quoted.double.asp
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.asp
   begin: "\""
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.asp
   end: "\"(?!\")"
-  patterns: 
+  patterns:
   - name: constant.character.escape.apostrophe.asp
     match: "\"\""
 - name: variable.other.asp
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.variable.asp
   match: (\$)[a-zA-Z_x7f-xff][a-zA-Z0-9_x7f-xff]*?\b
 - name: support.class.asp

@@ -10,11 +10,11 @@ in callbacks/validations.
 It only uses the context when it's activated.  To activate, you can set a controller around_filter:
 
   around_filter :set_context
-  
+
   def set_context
     ActiveRecord::Base.with_context do
       yield
     end
   end
-  
+
 Set Technoweenie::ActiveRecordContext.log_context_activity = true to turn on debug logging.

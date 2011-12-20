@@ -4,7 +4,7 @@ module ChangeMethods
   def self.included(base)
     base.extend ClassMethods
   end
-  
+
   module ClassMethods
     def find_recent_photos(*args)
       with_scope(CHANGE_SCOPE) { paginate *args }

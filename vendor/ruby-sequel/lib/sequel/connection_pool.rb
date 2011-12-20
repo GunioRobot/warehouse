@@ -6,21 +6,21 @@ module Sequel
   # connection.
   class ConnectionPool
     attr_reader :mutex
-    
+
     # The maximum number of connections.
     attr_reader :max_size
-    
+
     # The proc used to create a new connection.
     attr_accessor :connection_proc
-    
+
     attr_reader :available_connections, :allocated, :created_count
-  
+
     # Constructs a new pool with a maximum size. If a block is supplied, it
     # is used to create new connections as they are needed.
     #
     #   pool = ConnectionPool.new(10) {MyConnection.new(opts)}
     #
-    # The connection creation proc can be changed at any time by assigning a 
+    # The connection creation proc can be changed at any time by assigning a
     # Proc to pool#connection_proc.
     #
     #   pool = ConnectionPool.new(10)
@@ -34,17 +34,17 @@ module Sequel
       @allocated = {}
       @created_count = 0
     end
-    
+
     # Returns the number of created connections.
     def size
       @created_count
     end
-    
+
     # Assigns a connection to the current thread, yielding the connection
     # to the supplied block.
-    # 
+    #
     #   pool.hold {|conn| conn.execute('DROP TABLE posts;')}
-    # 
+    #
     # Pool#hold is re-entrant, meaning it can be called recursively in
     # the same thread without blocking.
     #
@@ -67,7 +67,7 @@ module Sequel
       # if the error is not a StandardError it is converted into RuntimeError.
       raise e.is_a?(StandardError) ? e : e.message
     end
-    
+
     def disconnect(&block)
       @mutex.synchronize do
         @available_connections.each {|c| block[c]} if block
@@ -75,13 +75,13 @@ module Sequel
         @created_count = @allocated.size
       end
     end
-    
+
     private
       # Returns the connection owned by the supplied thread, if any.
       def owned_connection(thread)
         @mutex.synchronize {@allocated[thread]}
       end
-      
+
       # Assigns a connection to the supplied thread, if one is available.
       def acquire(thread)
         @mutex.synchronize do
@@ -90,13 +90,13 @@ module Sequel
           end
         end
       end
-      
+
       # Returns an available connection. If no connection is available,
       # tries to create a new connection.
       def available
         @available_connections.pop || make_new
       end
-      
+
       # Creates a new connection if the size of the pool is less than the
       # maximum size.
       def make_new
@@ -106,7 +106,7 @@ module Sequel
             (raise SequelError, "No connection proc specified")
         end
       end
-      
+
       # Releases the connection assigned to the supplied thread.
       def release(thread)
         @mutex.synchronize do
@@ -122,12 +122,12 @@ module Sequel
   class SingleThreadedPool
     attr_reader :conn
     attr_writer :connection_proc
-    
+
     # Initializes the instance with the supplied block as the connection_proc.
     def initialize(&block)
       @connection_proc = block
     end
-    
+
     # Yields the connection to the supplied block. This method simulates the
     # ConnectionPool#hold API.
     def hold
@@ -137,7 +137,7 @@ module Sequel
       # if the error is not a StandardError it is converted into RuntimeError.
       raise e.is_a?(StandardError) ? e : e.message
     end
-    
+
     def disconnect(&block)
       block[@conn] if block && @conn
       @conn = nil

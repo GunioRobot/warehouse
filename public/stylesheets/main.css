@@ -1,4 +1,4 @@
-/* @override 
+/* @override
 	http://mymac.com:3000/stylesheets/main.css
 	http://treasure.svn.mymac.com:3000/stylesheets/main.css
 	http://svn.mymac.com:3000/stylesheets/main.css
@@ -54,7 +54,7 @@ a { outline: none; }
 a:link, a:visited {  color: #07b; text-decoration: none; }
 a:hover { color: #d30; }
 
-ul, li, form, input, dt, dl, dd, ol, div, p, 
+ul, li, form, input, dt, dl, dd, ol, div, p,
 blockquote, h1, h2, h3, h4, h5, h6, a {
   margin: 0;
   padding: 0;
@@ -277,7 +277,7 @@ li#admin a {
 
 /* @group Sidebar */
 #recent-acitivy {
-  
+
 }
 
 #recent-activity li {
@@ -652,7 +652,7 @@ div p.rcontrols {
   width: 60px;
   padding: 5px;
   text-align: center;
-  background-color: #e2e2e2; 
+  background-color: #e2e2e2;
   border-right: 1px solid #ddd;
   line-height: 100%;
 }
@@ -1342,7 +1342,7 @@ input.path {
   top: 0;
 }
 
-#hook-instances .admin-controls li, 
+#hook-instances .admin-controls li,
 #hook-instances .admin-controls li a {
   padding: 0;
   position: absolute;

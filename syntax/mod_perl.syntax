@@ -1,6 +1,6 @@
---- 
+---
 name: mod_perl
-fileTypes: 
+fileTypes:
 - conf
 scopeName: source.apache-config.mod_perl
 uuid: 6A616B03-1053-49BF-830F-0F4E63DB2447
@@ -8,10 +8,10 @@ foldingStartMarker: |-
   ^[ ]*(?x)
   		(<(?i:FilesMatch|Files|DirectoryMatch|Directory|LocationMatch|Location|VirtualHost|IfModule|IfDefine|Perl)\b.*?>
   		)
-patterns: 
+patterns:
 - name: comment.block.documentation.apache-config.mod_perl
-  captures: 
-    "0": 
+  captures:
+    "0":
       name: punctuation.definition.comment.mod_perl
   begin: ^=
   end: ^=cut
@@ -20,27 +20,27 @@ patterns:
 - name: support.constant.apache-config.mod_perl_1.mod_perl
   match: \b(PerlHandler|PerlScript|PerlSendHeader|PerlSetupEnv|PerlTaintCheck|PerlWarn|PerlFreshRestart)\b
 - name: meta.perl-section.apache-config.mod_perl
-  endCaptures: 
-    "1": 
+  endCaptures:
+    "1":
       name: meta.tag.apache-config
-    "2": 
+    "2":
       name: punctuation.definition.tag.apache-config
-    "3": 
+    "3":
       name: entity.name.tag.apache-config
-    "4": 
+    "4":
       name: punctuation.definition.tag.apache-config
   begin: ^\s*((<)(Perl)(>))
-  beginCaptures: 
-    "1": 
+  beginCaptures:
+    "1":
       name: meta.tag.apache-config
-    "2": 
+    "2":
       name: punctuation.definition.tag.apache-config
-    "3": 
+    "3":
       name: entity.name.tag.apache-config
-    "4": 
+    "4":
       name: punctuation.definition.tag.apache-config
   end: ^\s*((</)(Perl)(>))
-  patterns: 
+  patterns:
   - include: source.perl
 - include: source.apache-config
 foldingStopMarker: |-

@@ -5,7 +5,7 @@ module Warehouse
       cattr_accessor :custom_routes, :view_paths, :tabs
       class << self
         attr_accessor :loaded
-        
+
         def load
           unless @loaded
             logger.debug "Loading #{name} Plugin"
@@ -40,30 +40,30 @@ module Warehouse
         def install
           self::Schema.install
         end
-      
+
         # Uninstalls the plugin's tables using the schema file in lib/#{plugin_name}/schema.rb
         def uninstall
           self::Schema.uninstall
         end
-      
-        # Adds a custom route to Mephisto from a plugin.  These routes are created in the order they are added.  
+
+        # Adds a custom route to Mephisto from a plugin.  These routes are created in the order they are added.
         # They will be the last routes before the Mephisto Dispatcher catch-all route.
         def route(*args)
           custom_routes << args
         end
-      
+
         def resources(resource, options = {})
           icon = options.delete(:icon)
           route :resources, resource, options
           controller resource.to_s.humanize, options[:controller] || resource, options.update(:icon => icon)
         end
-      
+
         def resource(resource, options = {})
           icon = options.delete(:icon)
           route :resource, resource, options
           controller resource.to_s.humanize, options[:controller] || resource, options.update(:icon => icon)
         end
-  
+
         # Keeps track of custom adminstration tabs.  Each item is an array of arguments to be passed to link_to.
         #
         #   class Foo < Beast::Plugin
@@ -72,7 +72,7 @@ module Warehouse
         def tab(*args)
           tabs << args
         end
-        
+
         def tab!(*args)
           tabs.clear
           tab(*args)
@@ -104,12 +104,12 @@ module Warehouse
           def css_files
             @css_files ||= Dir[File.join(plugin_path, 'public', 'stylesheets', '*.css')]
           end
-          
+
           def js_files
             @js_files ||= Dir[File.join(plugin_path, 'public', 'javascripts', '*.js')]
           end
       end
-      
+
       def initialize(options = {}, active = false, &block)
         @active = active
         super(options, &block)
@@ -124,13 +124,13 @@ module Warehouse
       end
 
       def head_extras
-        @head_extras ||= 
-          (css_files.collect { |f| %(<link href="#{sanitize_path f}" rel="stylesheet" type="text/css" />) } * "\n") + 
+        @head_extras ||=
+          (css_files.collect { |f| %(<link href="#{sanitize_path f}" rel="stylesheet" type="text/css" />) } * "\n") +
           (js_files.collect  { |f| %(<script src="#{sanitize_path f}" type="text/javascript"></script>)   } * "\n")
       end
 
       %w(plugin_path view_path tabs).each do |method_name|
-        define_method method_name do 
+        define_method method_name do
           self.class.send method_name
         end
       end

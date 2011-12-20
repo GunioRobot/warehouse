@@ -1,13 +1,13 @@
 # Be sure to restart your web server when you modify this file.
 
-# Uncomment below to force Rails into production mode when 
+# Uncomment below to force Rails into production mode when
 # you don't control web/app server and can't set it the proper way
 # ENV['RAILS_ENV'] ||= 'production'
 
 # Specifies gem version of Rails to use when vendor/rails is not present
 RAILS_GEM_VERSION = '2.0.2' unless defined? RAILS_GEM_VERSION
 
-# Set this to :path to have URLs like http://my-warehouse.com/repo1/* instead of 
+# Set this to :path to have URLs like http://my-warehouse.com/repo1/* instead of
 # http://repo1.my-warehouse.com/*
 # USE_REPO_PATHS = true
 
@@ -16,7 +16,7 @@ require File.join(File.dirname(__FILE__), 'boot')
 
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here
-  
+
   # Skip frameworks you're not going to use (only works if using vendor/rails)
   # config.frameworks -= [ :active_resource, :action_mailer ]
 
@@ -25,7 +25,7 @@ Rails::Initializer.run do |config|
 
   # Add additional load paths for your own custom dirs
   config.load_paths += %W( #{RAILS_ROOT}/app/concerns #{RAILS_ROOT}/app/cachers )
-  # Force all environments to use the same logger level 
+  # Force all environments to use the same logger level
   # (by default production uses :info, the others :debug)
   # config.log_level = :debug
 
@@ -41,7 +41,7 @@ Rails::Initializer.run do |config|
   # config.action_controller.session_store = :active_record_store
 
   # Use SQL instead of Active Record's schema dumper when creating the test database.
-  # This is necessary if your schema can't be completely dumped by the schema dumper, 
+  # This is necessary if your schema can't be completely dumped by the schema dumper,
   # like if you have constraints or database-specific column types
   # config.active_record.schema_format = :sql
 
@@ -52,7 +52,7 @@ Rails::Initializer.run do |config|
   config.active_record.default_timezone = :utc
 
   # See Rails::Configuration for more options
-  
+
   # Application configuration should go into files in config/initializers
   # -- all .rb files in that directory is automatically loaded
 end

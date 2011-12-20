@@ -10,7 +10,7 @@ ALT_MODULUS = 0xCAADDDEC1667FC68B5FA15D53C4E1532DD24561A1A2D47A12C01ABEA1E00731F
 ALT_GEN = 5
 
 class TestProtocolError < Test::Unit::TestCase
-  
+
   def test_browser_with_return_to
     return_to = 'http://rp.unittest/consumer'
     # will be a ProtocolError raised by Decode or CheckAuthRequest.answer
@@ -20,7 +20,7 @@ class TestProtocolError < Test::Unit::TestCase
       'openid.return_to' => return_to
     }
     e = ProtocolError.new(args, 'plucky')
-    
+
     assert_equal(true, e.has_return_to?)
 
     expected_args = {
@@ -38,15 +38,15 @@ class TestProtocolError < Test::Unit::TestCase
       'openid.mode' => 'zebradance',
       'openid.identity' => 'http://wagu.unittest/',
     }
-    
+
     e = ProtocolError.new(args, "waffles")
     assert_equal(false, e.has_return_to?)
-    
+
     expected = {
       'error' => 'waffles',
       'mode' => 'error'
     }
-    
+
     actual = OpenID::Util.parsekv(e.encode_to_kvform)
     assert_equal(expected, actual)
     assert_equal(ENCODE_KVFORM, e.which_encoding?)
@@ -55,7 +55,7 @@ class TestProtocolError < Test::Unit::TestCase
 end
 
 class TestDecode < Test::Unit::TestCase
-  
+
   def setup
     @id_url = "http://decoder.am.unittest/"
     @rt_url = "http://rp.unittest/foobot/?qux=zam"
@@ -105,7 +105,7 @@ class TestDecode < Test::Unit::TestCase
       'openid.return_to' => @rt_url,
       'openid.trust_root' => @tr_url
     }
-    
+
     # this should raise an argument error
     begin
       result = self.decode(args)
@@ -223,7 +223,7 @@ class TestDecode < Test::Unit::TestCase
     assert_equal([['foo', 'signedval1'],
                   ['bar', 'signedval2'],
                   ['mode', 'id_res']], r.signed)
-                           
+
   end
 
   def test_check_auth_missing_signed_field
@@ -261,7 +261,7 @@ class TestDecode < Test::Unit::TestCase
       flunk('Expected a ProtocolError, but did not get one')
     end
   end
-  
+
 
   def test_check_auth_and_invalidate
     args = {
@@ -340,7 +340,7 @@ class TestDecode < Test::Unit::TestCase
       assert e.query == args
     else
       flunk('Wanted a ProtocolError')
-    end      
+    end
   end
 
   def test_associate_plain_session
@@ -355,7 +355,7 @@ class TestDecode < Test::Unit::TestCase
 end
 
 class TestEncode < Test::Unit::TestCase
-  
+
   def setup
     @encoder = Encoder.new
   end
@@ -373,7 +373,7 @@ class TestEncode < Test::Unit::TestCase
     }
     webresponse = @encoder.encode(response)
     assert_equal(HTTP_REDIRECT, webresponse.code)
-    assert webresponse.headers.has_key?('location')    
+    assert webresponse.headers.has_key?('location')
     loc = webresponse.headers['location']
     assert loc.starts_with?(request.return_to)
 
@@ -411,7 +411,7 @@ class TestEncode < Test::Unit::TestCase
     res = OpenIDResponse.new(req)
     res.fields = {'is_valid' => 'true', 'invalidate_handle' => 'xxx:xxx'}
     wr = @encoder.encode(res)
-    
+
     expected = "invalidate_handle:xxx:xxx\nis_valid:true\n"
     expected = OpenID::Util.parsekv(expected)
 
@@ -440,8 +440,8 @@ class TestEncode < Test::Unit::TestCase
     e = ProtocolError.new(args, 'snoot')
 
     expected_body = "error:snoot\nmode:error\n"
-    expected_body = OpenID::Util.parsekv(expected_body)   
-    
+    expected_body = OpenID::Util.parsekv(expected_body)
+
     wr = @encoder.encode(e)
     assert_equal(HTTP_ERROR, wr.code)
     assert_equal({}, wr.headers)
@@ -478,10 +478,10 @@ class TestSigningEncode < Test::Unit::TestCase
     @store.store_association(@normal_key, assoc)
     @request.assoc_handle = assoc_handle
     wr = @encoder.encode(@response)
-    
+
     assert_equal(HTTP_REDIRECT, wr.code)
     assert wr.headers.has_key?('location')
-    
+
     loc = wr.headers['location']
     query = OpenID::Util.parse_query(URI.parse(loc).query)
 
@@ -498,7 +498,7 @@ class TestSigningEncode < Test::Unit::TestCase
 
     loc = wr.headers['location']
     query = OpenID::Util.parse_query(URI.parse(loc).query)
-    
+
     assert query.has_key?('openid.sig')
     assert query.has_key?('openid.signed')
     assert query.has_key?('openid.assoc_handle')
@@ -541,12 +541,12 @@ class TestSigningEncode < Test::Unit::TestCase
 end
 
 class TestCheckID < Test::Unit::TestCase
-  
+
   def setup
     @request = CheckIDRequest.new('checkid_setup',
                                   'http://bombom.unittest/',
                                   'http://burr.unittest/999',
-                                  'http://burr.unittest/')    
+                                  'http://burr.unittest/')
   end
 
   def test_trust_root_invalid
@@ -569,7 +569,7 @@ class TestCheckID < Test::Unit::TestCase
     signed = answer.signed.dup.sort
     assert_equal(['identity','mode','return_to'], signed)
   end
-  
+
   def test_answer_allow_no_trust_root
     @request.trust_root = nil
     answer = @request.answer(true)
@@ -602,7 +602,7 @@ class TestCheckID < Test::Unit::TestCase
     server_url = 'http://openid-server.un/'
     url = @request.encode_to_url(server_url)
     query = OpenID::Util.parse_query(URI.parse(url).query)
-    
+
     req = CheckIDRequest.from_query(query)
     assert_equal(@request.mode, req.mode)
     assert_equal(@request.identity, req.identity)
@@ -614,11 +614,11 @@ class TestCheckID < Test::Unit::TestCase
 
   def test_cancel_url
     url = @request.cancel_url
-    expected = OpenID::Util.append_args(@request.return_to, 
+    expected = OpenID::Util.append_args(@request.return_to,
                                         {'openid.mode'=>'cancel'})
     assert_equal(expected, url)
   end
-  
+
   def test_cancel_url_immediate
     @request.immediate = true
     begin
@@ -634,7 +634,7 @@ end
 
 
 class TestCheckIDExtension < Test::Unit::TestCase
-  
+
   def setup
     @request = CheckIDRequest.new('checkid_setup',
                                   'http://bombom.unittest/',
@@ -652,7 +652,7 @@ class TestCheckIDExtension < Test::Unit::TestCase
     assert_equal({'blue'=>'star',
                  'mode'=>'id_res',
                  'mj12.bright'=>'potato'}, @response.fields)
-    assert_equal(['mode','identity','return_to','mj12.bright'], @response.signed)    
+    assert_equal(['mode','identity','return_to','mj12.bright'], @response.signed)
   end
 
   def test_add_field_unsigned
@@ -661,7 +661,7 @@ class TestCheckIDExtension < Test::Unit::TestCase
     assert_equal({'blue'=>'star',
                  'mode'=>'id_res',
                  'mj12.bright'=>'potato'}, @response.fields)
-    assert_equal(['mode','identity','return_to'], @response.signed)    
+    assert_equal(['mode','identity','return_to'], @response.signed)
   end
 
   def test_add_fields
@@ -671,7 +671,7 @@ class TestCheckIDExtension < Test::Unit::TestCase
                  'mode'=>'id_res',
                  'mj12.bright'=>'potato',
                  'mj12.xxx'=>'yyy'}, @response.fields)
-    assert_equal(['mode','identity','return_to','mj12.bright','mj12.xxx'].sort, @response.signed.sort)    
+    assert_equal(['mode','identity','return_to','mj12.bright','mj12.xxx'].sort, @response.signed.sort)
   end
 
   def test_add_fields_unsigned
@@ -681,25 +681,25 @@ class TestCheckIDExtension < Test::Unit::TestCase
                  'mode'=>'id_res',
                  'mj12.bright'=>'potato',
                  'mj12.xxx'=>'yyy'}, @response.fields)
-    assert_equal(['mode','identity','return_to'].sort, @response.signed.sort)    
+    assert_equal(['mode','identity','return_to'].sort, @response.signed.sort)
   end
 
   def test_update
     eres = OpenIDResponse.new(nil)
     eres.fields.update({'a'=>'b','c'=>'d'})
     eres.signed = ['c']
-    
+
     @response.update('ns', eres)
     assert_equal({'blue'=>'star','mode'=>'id_res','ns.a'=>'b','ns.c'=>'d'},
                  @response.fields)
     assert_equal(['mode', 'identity', 'return_to', 'ns.c'], @response.signed)
   end
-  
+
   def test_update_no_namespace
     eres = OpenIDResponse.new(nil)
     eres.fields.update({'a'=>'b','c'=>'d'})
     eres.signed = ['c']
-    
+
     @response.update(nil, eres)
     assert_equal({'blue'=>'star','mode'=>'id_res','a'=>'b','c'=>'d'},
                  @response.fields)
@@ -709,7 +709,7 @@ class TestCheckIDExtension < Test::Unit::TestCase
 end
 
 class MockSignatory
-  
+
   attr_accessor :is_valid, :assocs
 
   def initialize(assoc)
@@ -778,7 +778,7 @@ class TestCheckAuthServer < Test::Unit::TestCase
     r = @request.answer(@signatory)
     assert_equal({'is_valid'=>'true',
                  'invalidate_handle'=>'bogushandle'}, r.fields)
-    assert_equal(r.request, @request)    
+    assert_equal(r.request, @request)
   end
 
   def test_invalidate_handle_no
@@ -793,7 +793,7 @@ end
 
 
 class TestAssociate < Test::Unit::TestCase
-  
+
   def setup
     @request = AssociateRequest.from_query({})
     @store = OpenID::MemoryStore.new
@@ -824,7 +824,7 @@ class TestAssociate < Test::Unit::TestCase
   def test_plaintext
     response = @request.answer(@assoc)
     rf = response.fields
-    
+
     assert_equal('HMAC-SHA1', rf['assoc_type'])
     assert_equal(@assoc.handle, rf['assoc_handle'])
     assert_equal(OpenID::Util.to_base64(@assoc.secret), rf['mac_key'])
@@ -837,7 +837,7 @@ class TestAssociate < Test::Unit::TestCase
 end
 
 class Counter
-  
+
   attr_accessor :count
 
   def initialize
@@ -877,7 +877,7 @@ class TestSignatory < Test::Unit::TestCase
     @store = OpenID::MemoryStore.new
     @signatory = Signatory.new(@store)
     @dumb_key = 'http://localhost/|dumb'
-    @normal_key = 'http://localhost/|normal'    
+    @normal_key = 'http://localhost/|normal'
   end
 
   def test_sign
@@ -897,7 +897,7 @@ class TestSignatory < Test::Unit::TestCase
     }
     response.signed = ['foo','azu']
     sresponse = @signatory.sign(response)
-    
+
     assert_equal(assoc_handle, sresponse.fields['assoc_handle'])
     assert_equal('foo,azu', sresponse.fields['signed'])
     assert_not_nil(sresponse.fields['sig'])
@@ -921,7 +921,7 @@ class TestSignatory < Test::Unit::TestCase
     assert_equal('foo,azu', sresponse.fields['signed'])
     assert_not_nil(sresponse.fields['sig'])
   end
-  
+
   def test_sign_expired
     request = CheckIDRequest.new('checkid_setup','foo','bar','baz')
     assoc_handle = '{assoc}{lookatme}'
@@ -931,7 +931,7 @@ class TestSignatory < Test::Unit::TestCase
                                                                  'sekrit',
                                                                  'HMAC-SHA1'))
     assert_not_nil(@store.get_association(@normal_key, assoc_handle))
-    
+
     request.assoc_handle = assoc_handle
     response = OpenIDResponse.new(request)
     response.fields = {
@@ -941,11 +941,11 @@ class TestSignatory < Test::Unit::TestCase
     }
     response.signed = ['foo','azu']
     sresponse = @signatory.sign(response)
-    
+
     new_assoc_handle = sresponse.fields['assoc_handle']
     assert_not_nil(new_assoc_handle)
     assert new_assoc_handle != assoc_handle
-    
+
     assert_equal(assoc_handle, sresponse.fields['invalidate_handle'])
     assert_equal('foo,azu', sresponse.fields['signed'])
     assert_not_nil(sresponse.fields['sig'])
@@ -954,16 +954,16 @@ class TestSignatory < Test::Unit::TestCase
     assert_not_nil(@store.get_association(@dumb_key, new_assoc_handle))
     assert_nil(@store.get_association(@normal_key, new_assoc_handle))
   end
-  
+
   def test_verify
     assoc_handle = '{vroom}{zoom}'
     assoc = OpenID::Association.from_expires_in(60, assoc_handle,
                                                 'sekrit', 'HMAC-SHA1')
-    
+
     @store.store_association(@dumb_key, assoc)
-    
+
     signed_pairs = [['foo', 'bar'],['apple', 'orange']]
-    
+
     sig = "Ylu0KcIR7PvNegB/K41KpnRgJl0="
     verified = @signatory.verify(assoc_handle, sig, signed_pairs)
     assert_not_nil(verified)
@@ -973,11 +973,11 @@ class TestSignatory < Test::Unit::TestCase
     assoc_handle = '{vroom}{zoom}'
     assoc = OpenID::Association.from_expires_in(60, assoc_handle,
                                                 'sekrit', 'HMAC-SHA1')
-    
+
     @store.store_association(@dumb_key, assoc)
-    
+
     signed_pairs = [['foo', 'bar'],['apple', 'orange']]
-    
+
     sig = "Ylu0KcIR7PvNegB/K41KpnRgXXX="
     verified = @signatory.verify(assoc_handle, sig, signed_pairs)
     assert(!verified)
@@ -986,7 +986,7 @@ class TestSignatory < Test::Unit::TestCase
   def test_verify_bad_handle
     assoc_handle = '{vroom}{zoom}'
     signed_pairs = [['foo', 'bar'],['apple', 'orange']]
-    
+
     sig = "Ylu0KcIR7PvNegB/K41KpnRgJl0="
     verified = @signatory.verify(assoc_handle, sig, signed_pairs)
     assert(!verified)
@@ -998,14 +998,14 @@ class TestSignatory < Test::Unit::TestCase
                                                 'sekrit', 'HMAC-SHA1')
     key = dumb ? @dumb_key : @normal_key
     @store.store_association(key, assoc)
-    return assoc_handle                                                
+    return assoc_handle
   end
-  
+
   def test_get_assoc
     assoc_handle = self.make_assoc(true)
     assoc = @signatory.get_association(assoc_handle, true)
     assert_not_nil(assoc)
-    assert_equal(assoc_handle, assoc.handle)    
+    assert_equal(assoc_handle, assoc.handle)
   end
 
   def test_get_assoc_expired
@@ -1032,7 +1032,7 @@ class TestSignatory < Test::Unit::TestCase
     assert_not_nil(assoc2)
     assert_equal(assoc, assoc2)
   end
-  
+
   def test_invalidate
     assoc_handle = '-squash-'
     assoc = OpenID::Association.from_expires_in(60, assoc_handle,

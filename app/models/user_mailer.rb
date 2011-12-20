@@ -19,7 +19,7 @@ class UserMailer < ActionMailer::Base
       @body[:url]  = reset_url(:token => user.token, :host => Warehouse.domain)
       setup_email
     end
-    
+
     def setup_email
       @from        = "#{Warehouse.mail_from}"
       @sent_on     = Time.now

@@ -6,12 +6,12 @@ module Sequel
     def self.primary_key
       :id
     end
-    
+
     # Returns primary key attribute hash.
     def self.primary_key_hash(value)
       {:id => value}
     end
-    
+
     # Sets primary key, regular and composite are possible.
     #
     # == Example:
@@ -29,13 +29,13 @@ module Sequel
     def self.set_primary_key(*key)
       # if k is nil, we go to no_primary_key
       return no_primary_key unless key
-      
+
       # backwards compat
       key = (key.length == 1) ? key[0] : key.flatten
 
       # redefine primary_key
       meta_def(:primary_key) {key}
-      
+
       unless key.is_a? Array # regular primary key
         class_def(:this) do
           @this ||= dataset.filter(key => @values[key]).limit(1).naked
@@ -51,7 +51,7 @@ module Sequel
         exp_list = key.map {|k| "#{k.inspect} => @values[#{k.inspect}]"}
         block = eval("proc {@this ||= self.class.dataset.filter(#{exp_list.join(',')}).limit(1).naked}")
         class_def(:this, &block)
-        
+
         exp_list = key.map {|k| '#{@values[%s]}' % k.inspect}.join(',')
         block = eval('proc {@cache_key ||= "#{self.class}:%s"}' % exp_list)
         class_def(:cache_key, &block)
@@ -61,14 +61,14 @@ module Sequel
         end
       end
     end
-    
+
     def self.no_primary_key #:nodoc:
       meta_def(:primary_key) {nil}
       meta_def(:primary_key_hash) {|v| raise SequelError, "#{self} does not have a primary key"}
       class_def(:this) {raise SequelError, "No primary key is associated with this model"}
       class_def(:cache_key) {raise SequelError, "No primary key is associated with this model"}
     end
-    
+
     # Creates new instance with values set to passed-in Hash ensuring that
     # new? returns true.
     def self.create(values = {})
@@ -78,12 +78,12 @@ module Sequel
         obj
       end
     end
-    
+
     # Returns (naked) dataset bound to current instance.
     def this
       @this ||= self.class.dataset.filter(:id => @values[:id]).limit(1).naked
     end
-    
+
     # Returns a key unique to the underlying record for caching
     def cache_key
       pk = @values[:id] || (raise SequelError, 'no primary key for this record')
@@ -94,12 +94,12 @@ module Sequel
     def primary_key
       @primary_key ||= self.class.primary_key
     end
-    
+
     # Returns value for primary key.
     def pkey
       @pkey ||= @values[primary_key]
     end
-    
+
     # Creates new instance with values set to passed-in Hash.
     #
     # This method guesses whether the record exists when
@@ -111,22 +111,22 @@ module Sequel
       unless @new # determine if it's a new record
         pk = primary_key
         # if there's no primary key for the model class, or
-        # @values doesn't contain a primary key value, then 
+        # @values doesn't contain a primary key value, then
         # we regard this instance as new.
         @new = (pk == nil) || (!(Array === pk) && !@values[pk])
       end
     end
-    
+
     # Returns true if the current instance represents a new record.
     def new?
       @new
     end
-    
+
     # Returns true when current instance exists, false otherwise.
     def exists?
       this.count > 0
     end
-    
+
     # Creates or updates dataset for Model and runs hooks.
     def save
       run_hooks(:before_save)
@@ -158,7 +158,7 @@ module Sequel
       this.update(values)
       values.each {|k, v| @values[k] = v}
     end
-    
+
     # Reloads values from database and returns self.
     def refresh
       @values = this.first || raise(SequelError, "Record not found")
@@ -173,20 +173,20 @@ module Sequel
         run_hooks(:after_destroy)
       end
     end
-    
+
     # Deletes and returns self.
     def delete
       this.delete
       self
     end
-    
+
     ATTR_RE = /^([a-zA-Z_]\w*)(=)?$/.freeze
 
     def method_missing(m, *args) #:nodoc:
       if m.to_s =~ ATTR_RE
         att = $1.to_sym
         write = $2 == '='
-        
+
         # check wether the column is legal
         unless columns.include?(att)
           raise SequelError, "Invalid column (#{att.inspect}) for #{self}"
@@ -200,7 +200,7 @@ module Sequel
             model.class_def(m) {@values[att]}
           end
         end
-        
+
         # call the accessor
         respond_to?(m) ? send(m, *args) : super(m, *args)
       else

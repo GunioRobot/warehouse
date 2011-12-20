@@ -12,17 +12,17 @@ describe Sequel::Schema::Generator do
     end
     @table_name, @columns, @indexes = @generator.create_info
   end
-  
+
   {:name => :id, :primary_key => true}.each do |field, expected|
     it "uses default primary key #{field}" do
       @columns.first[field].should == expected
     end
   end
-  
+
   it "counts primary key as column" do
     @columns.size.should == 4
   end
-  
+
   it "places primary key first" do
     @columns[0][:primary_key].should     be_true
     @columns[1][:primary_key].should_not be_true
@@ -39,19 +39,19 @@ describe Sequel::Schema::Generator do
     @columns[2][:name].should == :body
     @columns[2][:type].should == :text
   end
-  
+
   it "creates foreign key column" do
     @columns[3][:name].should == :parent_id
     @columns[3][:type].should == :integer
   end
-  
+
   it "finds columns" do
     [:title, :body, :parent_id, :id].each do |col|
       @generator.has_column?(col).should be_true
     end
     @generator.has_column?(:foo).should_not be_true
   end
-  
+
   it "creates indexes" do
     @indexes[0][:columns].should include(:title)
     @indexes[1][:columns].should include(:title)

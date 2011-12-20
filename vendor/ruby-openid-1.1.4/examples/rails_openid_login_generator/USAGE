@@ -3,7 +3,7 @@ NAME
 
 SYNOPSIS
      openid_login [Controller name]
-     
+
      Good names are Account Myaccount Security
 
 DESCRIPTION
@@ -12,12 +12,12 @@ DESCRIPTION
      Included:
       - a User model which stores OpenID authenticated users
       - a Controller with login, welcome and logoff actions
-      - a mixin which lets you easily add advanced authentication 
+      - a mixin which lets you easily add advanced authentication
         features to your abstract base controller
 
-            
+
 EXAMPLE
       ./script/generate openid_login Account
 
-     This will generate an Account controller with login and logout methods. 
-     The model is always called User 
+     This will generate an Account controller with login and logout methods.
+     The model is always called User

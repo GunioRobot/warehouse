@@ -6,7 +6,7 @@ if gems.any?
     next if standard_dirs.include?(File.basename(dir))
     lib = File.join(dir, 'lib')
     if File.directory?(lib)
-      $LOAD_PATH.unshift(lib) 
+      $LOAD_PATH.unshift(lib)
       Dependencies.load_paths << lib
       Dependencies.load_once_paths << lib
     end

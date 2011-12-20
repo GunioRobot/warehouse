@@ -12,7 +12,7 @@ end
 
 class <%= class_name %>Controller < ApplicationController
   layout  'scaffold'
-  
+
   # process the login request, disover the openid server, and
   # then redirect.
   def login
@@ -33,24 +33,24 @@ class <%= class_name %>Controller < ApplicationController
       when OpenID::FAILURE
         escaped_url = CGI::escape(openid_url)
         flash[:notice] = "Could not find OpenID server for #{escaped_url}"
-        
+
       else
         flash[:notice] = "An unknown error occured."
 
-      end      
-    end    
+      end
+    end
 
   end
 
   # handle the openid server response
   def complete
     response = consumer.complete(params)
-    
+
     case response.status
     when OpenID::SUCCESS
 
       @user = User.get(response.identity_url)
-      
+
       # create user object if one does not exist
       if @user.nil?
         @user = User.new(:openid_url => response.identity_url)
@@ -62,7 +62,7 @@ class <%= class_name %>Controller < ApplicationController
       session[:user_id] = @user.id
 
       flash[:notice] = "Logged in as #{CGI::escape(response.identity_url)}"
-       
+
       redirect_back_or_default :action => "welcome"
       return
 
@@ -80,14 +80,14 @@ class <%= class_name %>Controller < ApplicationController
     else
       flash[:notice] = 'Unknown response from OpenID server.'
     end
-  
+
     redirect_to :action => 'login'
   end
-  
+
   def logout
     session[:user_id] = nil
   end
-    
+
   def welcome
   end
 
@@ -97,8 +97,8 @@ class <%= class_name %>Controller < ApplicationController
   def consumer
     # Create the OpenID store for storing associations and nonces,
     # putting it in your app's db directory.
-    # Note: see the plugin located at examples/active_record_openid_store 
-    # if you need to store this information in your database. 
+    # Note: see the plugin located at examples/active_record_openid_store
+    # if you need to store this information in your database.
     store_dir = Pathname.new(RAILS_ROOT).join('db').join('openid-store')
     store = OpenID::FilesystemStore.new(store_dir)
 
@@ -110,5 +110,5 @@ class <%= class_name %>Controller < ApplicationController
     return nil if session[:user_id].nil?
     User.find(session[:user_id])
   end
-  
+
 end

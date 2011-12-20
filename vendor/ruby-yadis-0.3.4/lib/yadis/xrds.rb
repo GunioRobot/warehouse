@@ -4,7 +4,7 @@ require 'yadis/service'
 # Class that handles XRDS parsing and XRD Service element extraction.
 
 module XRDSUtil
-  
+
   @@namespaces = {
     'xrdsns' => 'xri://$xrds',
     'xrdns' => 'xri://$xrd*($v*2.0)'
@@ -14,7 +14,7 @@ module XRDSUtil
     REXML::XPath.match(root_element, '/xrdsns:XRDS/xrdns:XRD',
                        @@namespaces)[-1]
   end
-  
+
 end
 
 class XRDS
@@ -48,25 +48,25 @@ class XRDS
     XRDS.new(s)
   end
 
-  def parse_xml(xml_text)   
+  def parse_xml(xml_text)
     begin
       xml = @xml = REXML::Document.new(xml_text)
     rescue
       raise ArgumentError, "Can't parse XRDS"
     end
-    
+
     if xml.root.nil?
       raise ArgumentError, "No document root"
     end
 
     xrd = self.last_xrd(xml.root)
     raise ArgumentError, "No XRD Elements found" if xrd.nil?
-   
+
     @services = {}  # keyed by [service_priority, uri_priority]
     REXML::XPath.each(xrd, 'xrdns:Service', @@namespaces) do |s|
       _create_services(s)
     end
-    
+
     REXML::XPath.each(xrd, 'xrdns:CanonicalID', @@namespaces) do |c|
       canonical_id = c.text.strip
       if canonical_id.length > 0
@@ -91,7 +91,7 @@ class XRDS
       end
 
     end
-    
+
     return s
   end
 
@@ -118,14 +118,14 @@ class XRDS
       has_uri = true
       _service = service.dup
       _service.uri = uri.text.strip
-      
+
       up = uri.attributes['priority']
       uri_priority = up ? up.to_i : -1
       priority = [service_priority, uri_priority]
-      
+
       _add_service(priority, _service)
     end
-      
+
     unless has_uri
       priority = [service_priority, -1]
       _add_service(priority, service)

@@ -1,11 +1,11 @@
 require 'openid/util'
 require 'openid/association'
 
-module StoreTestCase 
-  
+module StoreTestCase
+
   @@allowed_handle = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
   @@allowed_nonce = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-  
+
   def _gen_nonce
     OpenID::Util.random_string(8, @@allowed_nonce)
   end
@@ -22,9 +22,9 @@ module StoreTestCase
     secret = _gen_secret(20)
     handle = _gen_handle(128)
     OpenID::Association.new(handle, secret, Time.now.to_i + issued, lifetime,
-                            'HMAC-SHA1') 
+                            'HMAC-SHA1')
   end
-    
+
   def _check_retrieve(url, handle=nil, expected=nil)
     ret_assoc = @store.get_association(url, handle)
 
@@ -41,7 +41,7 @@ module StoreTestCase
     present = @store.remove_association(url, handle)
     expected_present = ((not @store.dumb?) and expected)
     assert ((not expected_present and not present) or \
-            (expected_present and present))    
+            (expected_present and present))
   end
 
   def test_store
@@ -131,10 +131,10 @@ module StoreTestCase
     _check_remove(server_url, assoc.handle, false)
     _check_remove(server_url, assoc3.handle, false)
   end
-    
+
   def test_nonce
     nonce1 = _gen_nonce
-    
+
     assert_not_nil(nonce1)
 
     # a nonce is present by default
@@ -148,7 +148,7 @@ module StoreTestCase
     assert present
     present = @store.use_nonce(nonce1)
     assert_equal(present, false)
-    
+
     # Storing twice has the same effect as storing once.
     @store.store_nonce(nonce1)
     @store.store_nonce(nonce1)
@@ -156,12 +156,12 @@ module StoreTestCase
     assert present
     present = @store.use_nonce(nonce1)
     assert_equal(present, false)
-    
+
     ### Auth key stuff
-    
+
     # there is no key to start with, so generate a new key and return it
     key = @store.get_auth_key
-    
+
     # the second time we should return the same key as before
     key2 = @store.get_auth_key
     assert key == key2

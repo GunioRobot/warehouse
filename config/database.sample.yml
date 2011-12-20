@@ -32,5 +32,5 @@ production:
   adapter: mysql
   database: xorn_production
   username: root
-  password: 
+  password:
   socket: /tmp/mysql.sock

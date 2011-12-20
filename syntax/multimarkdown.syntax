@@ -1,4 +1,4 @@
---- 
+---
 name: MultiMarkdown
 firstLineMatch: ^Format:\s*(?i:complete)\s*$
 scopeName: text.html.markdown.multimarkdown
@@ -9,26 +9,26 @@ foldingStartMarker: |-
   		|<!--(?!.*-->)
   		|\{\s*($|\?>\s*$|//|/\*(.*\*/\s*$|(?!.*?\*/)))
   		)
-patterns: 
+patterns:
 - name: meta.header.multimarkdown
   begin: ^([A-Za-z0-9]+)(:)\s*
-  beginCaptures: 
-    "1": 
+  beginCaptures:
+    "1":
       name: keyword.other.multimarkdown
-    "2": 
+    "2":
       name: punctuation.separator.key-value.multimarkdown
   end: ^$|^(?=[A-Za-z0-9]+:)
-  patterns: 
+  patterns:
   - name: string.unquoted.multimarkdown
     match: .+
     comment: |-
-      The reason for not setting scopeName = "string.unquoted" 
+      The reason for not setting scopeName = "string.unquoted"
       						(for the parent rule) is that we do not want
       						newlines to be marked as string.unquoted
 - name: meta.content.multimarkdown
   begin: ^(?!=[A-Za-z0-9]+:)
   end: ^(?=not)possible$
-  patterns: 
+  patterns:
   - include: text.html.markdown
 foldingStopMarker: |-
   (?x)

@@ -10,7 +10,7 @@ class YadisHTMLParseTestCase < Test::Unit::TestCase
 
   def test_valid
     check('foo', '<html><head><meta http-equiv="X-YADIS-LOCATION" content="foo"/></head></html>')
-    
+
     check('foo', '<html><head><meta http-equiv="X-YADIS-LOCATION" content="foo"/></head></html>')
     check('foo', '<html><head><meta http-equiv="X-YADIS-LOCATION" content="foo"/></head></html>')
     check('foo', '<html><head><meta HTTP-EQUIV="X-YADIS-LOCATION" CONTENT="foo"/></head></html>')

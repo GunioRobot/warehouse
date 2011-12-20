@@ -1,11 +1,11 @@
---- 
+---
 name: HTML (Django)
 fileTypes: []
 
 scopeName: text.html.django
 uuid: F4B0A70C-ECF6-4660-BC26-785216E3CF02
 foldingStartMarker: (<(?i:(head|table|tr|div|style|script|ul|ol|form|dl))\b.*?>|{% (block|comment|filter|for|if|ifchanged|ifequal|ifnotequal))
-patterns: 
+patterns:
 - include: text.html.basic
   comment: Since html is valid in Django templates include the html patterns
 - name: comment.block.django.template
@@ -15,12 +15,12 @@ patterns:
   begin: "{{"
   end: "}}"
 - name: meta.scope.django.template.tag
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: entity.other.django.tagbraces
   begin: ({%)
   end: (%})
-  patterns: 
+  patterns:
   - name: keyword.control.django.template
     match: \b(block|endblock|blocktrans|endblocktrans|plural|debug|extends|filter|firstof|for|endfor|if|include|else|endif|ifchanged|endifchanged|ifequal|endifequal|ifnotequal|endifnotequal|load|now|regroup|ssi|spaceless|templatetag|widthratio)\b
   - name: keyword.operator.django.template

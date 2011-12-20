@@ -7,7 +7,7 @@ class CreateChanges < ActiveRecord::Migration
       t.text :from_path
       t.integer :from_revision
     end
-    
+
     add_index :changes, :changeset_id
   end
 

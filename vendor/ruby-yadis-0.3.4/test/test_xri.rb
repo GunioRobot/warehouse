@@ -2,7 +2,7 @@ require 'test/unit'
 require 'yadis/xri'
 
 class XriDiscoveryTestCase < Test::Unit::TestCase
-  
+
   def test_isXRI?
     assert_equal(:xri, XRI.identifier_scheme('=john.smith'))
     assert_equal(:xri, XRI.identifier_scheme('@smiths/john'))
@@ -16,7 +16,7 @@ end
 
 class XriEscapingTestCase < Test::Unit::TestCase
   def test_escaping_percents
-    assert_equal('@example/abc%252Fd/ef', 
+    assert_equal('@example/abc%252Fd/ef',
                  XRI.escape_for_iri('@example/abc%2Fd/ef'))
   end
 
@@ -52,16 +52,16 @@ class ProxyQueryTestCase < Test::Unit::TestCase
   def test_proxy_url
     args_esc = "_xrd_r=application%2Fxrds%2Bxml&_xrd_t=#{CGI::escape(ST)}"
     self.assert_equal(H + '=foo?' + args_esc, @proxy.query_url('=foo', ST))
-    self.assert_equal(H + '=foo/bar?baz&' + args_esc, 
+    self.assert_equal(H + '=foo/bar?baz&' + args_esc,
                       @proxy.query_url('=foo/bar?baz', ST))
-    self.assert_equal(H + '=foo/bar?baz=quux&' + args_esc, 
+    self.assert_equal(H + '=foo/bar?baz=quux&' + args_esc,
                       @proxy.query_url('=foo/bar?baz=quux', ST))
-    self.assert_equal(H + '=foo/bar?mi=fa&so=la&' + args_esc, 
+    self.assert_equal(H + '=foo/bar?mi=fa&so=la&' + args_esc,
                       @proxy.query_url('=foo/bar?mi=fa&so=la', ST))
 # TODO:
-#     self.assert_equal(H + '=foo/bar??' + args_esc, 
+#     self.assert_equal(H + '=foo/bar??' + args_esc,
 #                       @proxy.query_url('=foo/bar?', ST))
-#     self.assert_equal(H + '=foo/bar????' + args_esc, 
+#     self.assert_equal(H + '=foo/bar????' + args_esc,
 #                       @proxy.query_url('=foo/bar???', ST))
   end
 end

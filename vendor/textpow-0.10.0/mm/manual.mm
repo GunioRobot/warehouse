@@ -4,11 +4,11 @@
 #Introduction# | index
 
 = What is Textpow? =
-Textpow is a library to parse and process 
+Textpow is a library to parse and process
 [Textmate http://macromates.com] bundles. Although created created for their
 use in a word processor, these bundles have many other uses. For example, we
-have used them to create a syntax highligting 
-[utility http://ultraviolet.rubyforge.org] and also the markup rendering 
+have used them to create a syntax highligting
+[utility http://ultraviolet.rubyforge.org] and also the markup rendering
 [engine http://mama.rubyforge.org] used to render this
 documentation.
 
@@ -19,7 +19,7 @@ documentation.
 
 = Installation =
 
-If you have [rubygems http://docs.rubygems.org/] installation is straightforward by typing 
+If you have [rubygems http://docs.rubygems.org/] installation is straightforward by typing
 (as root if needed):
 
 --------hl shell-unix-generic,,false------
@@ -38,8 +38,8 @@ and theme (/tmTheme/) files.
 
 = Syntax files and text parsing =
 
-The idea of parsing is to process some /input text/ using the rules defined in 
-a /syntax [file > syntax_files]/ (which are discussed in detail in Textmate 
+The idea of parsing is to process some /input text/ using the rules defined in
+a /syntax [file > syntax_files]/ (which are discussed in detail in Textmate
 [documentation http://macromates.com/textmate/manual/language_grammars#language_grammars]).
 The text is parsed line by line, and, events are sent to a /[processor > processors]/
 according to how the text matches the syntax file.
@@ -48,21 +48,21 @@ according to how the text matches the syntax file.
 digraph G {
    node [fontname=Helvetica, fontsize=10];
    edge [fontname=Helvetica, style=dashed, fontsize=10, decorate=true, fontcolor="#0066aa"];
-   center=true; 
+   center=true;
    {
       rank=same;
       node [shape=invhouse, style="filled", color="#333399", fillcolor="#6666cc", fontcolor="white"];
       syntax_file[label="Syntax file"];
       text[label="Input text"];
    }
-   {     
+   {
       node [shape=box, style="filled", color="#993333", fillcolor="#cc6666", fontcolor="white"]
       syntax_object[label="SyntaxNode"];
       processor[label="Processor", shape=box];
    }
    parse [label="", style=invis, fontsize=0,height=0,width=0,shape=none];
    rank=same{syntax_object; parse};
-   
+
    syntax_file -> syntax_object [label="  SyntaxNode#load"];
    syntax_object -> parse [arrowhead=none];
    text -> parse [arrowhead=none];
@@ -97,7 +97,7 @@ Parsing a file using Textpow is as easy as 1-2-3!
 
 == Syntax files == | syntax_files
 At the heart of syntax parsing are ..., well, syntax files. Lets see for instance
-the example syntax that appears in textmate's 
+the example syntax that appears in textmate's
 [documentation http://macromates.com/textmate/manual/language_grammars#language_grammars]:
 
 
@@ -113,7 +113,7 @@ the example syntax that appears in textmate's
        {  name = 'string.quoted.double.untitled';
           begin = '"';
           end = '"';
-          patterns = ( 
+          patterns = (
              {  name = 'constant.character.escape.untitled';
                 match = '\\.';
              }
@@ -124,7 +124,7 @@ the example syntax that appears in textmate's
 ----------------------------------
 
 But Textpow is not able to parse text pfiles. However, in practice this is not a problem,
-since it is possible to convert both text and binary pfiles to an XML format. Indeed, all 
+since it is possible to convert both text and binary pfiles to an XML format. Indeed, all
 the syntaxes in the Textmate syntax [repository http://macromates.com/svn/Bundles/trunk/Bundles/]
 are in XML format:
 
@@ -172,13 +172,13 @@ are in XML format:
 </dict>
 ------------------------
 
-Of course, most people find XML both ugly and cumbersome. Fortunately, it is 
-also possible to store syntax files in YAML format, which is much easier to 
+Of course, most people find XML both ugly and cumbersome. Fortunately, it is
+also possible to store syntax files in YAML format, which is much easier to
 read:
 
 -------------hl yaml---------------
---- 
-fileTypes: 
+---
+fileTypes:
 - txt
 scopeName: source.untitled
 foldingStartMarker: \{\s*$
@@ -203,7 +203,7 @@ specified in the [syntax file > syntax_files].
 
 In textpow, the process takes place line by line, from the beginning to the
 end and from left to right for every line. As the text is parsed, events are
-sent to a /processor/ object when a tag is open or closed and so on. 
+sent to a /processor/ object when a tag is open or closed and so on.
 A processor is any object which implements one or more of the following
 methods:
 
@@ -211,16 +211,16 @@ methods:
 class Processor
    def open_tag name, position
    end
-      
+
    def close_tag name, position
    end
-      
+
    def new_line line
    end
-      
+
    def start_parsing name
    end
-   
+
    def end_parsing name
    end
 end
@@ -231,14 +231,14 @@ end
 * `close_tag`. The same that `open_tag`, but it is called when a tag is closed.
 * `new_line`. Is called every time that a new line is processed, it receives the
     line's contents.
-* `start_parsing`. Is called once at the beginning of the parsing process. It 
+* `start_parsing`. Is called once at the beginning of the parsing process. It
     receives the scope name for the syntax being used.
-* `end_parsing`. Is called once after all the input text has been parsed. It 
+* `end_parsing`. Is called once after all the input text has been parsed. It
     receives the scope name for the syntax being used.
 
-Textpow ensures that the methods are called in parsing order, thus, 
+Textpow ensures that the methods are called in parsing order, thus,
 for example, if there are two subsequent calls to `open_tag`, the first
-having `name="text.string", position=10` and the second having 
+having `name="text.string", position=10` and the second having
 `name="markup.string", position=10`, it should be understood that the
 `"markup.string"` tag is /inside/ the `"text.string"` tag.
 

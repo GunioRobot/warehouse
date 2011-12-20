@@ -20,7 +20,7 @@ class OpenIdAuthenticationTest < Test::Unit::TestCase
 
   def test_authentication_should_fail_when_the_identity_server_is_missing
     @controller.stubs(:open_id_consumer).returns(stub(:begin => stub(:status => OpenID::FAILURE)))
-    
+
     @controller.send(:authenticate_with_open_id, "http://someone.example.com") do |result, identity_url|
       assert result.missing?
       assert_equal "Sorry, the OpenID server couldn't be found", result.message
@@ -38,7 +38,7 @@ class OpenIdAuthenticationTest < Test::Unit::TestCase
 
   def test_authentication_should_begin_when_the_identity_server_is_present
     @controller.stubs(:open_id_consumer).returns(stub(:begin => stub(:status => OpenID::SUCCESS)))
-    @controller.expects(:begin_open_id_authentication) 
+    @controller.expects(:begin_open_id_authentication)
     @controller.send(:authenticate_with_open_id, "http://someone.example.com")
   end
 end

@@ -30,7 +30,7 @@ context "Bookmarks Controller" do
       delete :destroy, :id => 1
     end
   end
-  
+
   specify "should not allow duplicate paths" do
     @controller.stubs(:current_user).returns(users(:rick))
     @request.host = "sample.test.host"
@@ -38,7 +38,7 @@ context "Bookmarks Controller" do
       post :create, :bookmark => { :path => 'moon', :label => 'Foo' }
     end
   end
-  
+
   specify "should require repository_admin" do
     @controller.stubs(:current_user).returns(users(:justin))
     @request.host = "sample.test.host"
@@ -46,7 +46,7 @@ context "Bookmarks Controller" do
       post :create, :bookmark => { :path => 'foo', :label => 'Foo' }
     end
   end
-  
+
   specify "should not see bookmark in other repo" do
     @controller.stubs(:current_user).returns(users(:rick))
     @request.host = "example.test.host"

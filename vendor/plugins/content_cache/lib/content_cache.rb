@@ -9,7 +9,7 @@
 #
 #   class NotesController < ActionController::Base
 #     caches_action_content :index
-#     
+#
 #     def index
 #       @notes = Note.find(:all, :include => [:monkeys, dirigibles, robots])
 #     end
@@ -42,10 +42,10 @@ module ContentCache
       include InstanceMethods
     end
   end
-  
+
   module InstanceMethods
     # Use this like you would ApplicationControlle.expires_page:
-    # 
+    #
     #   expire_action_content('/blog')
     def expire_action_content(path)
       expire_fragment(/#{Regexp.escape(path[1..-1])}.*/)
@@ -55,21 +55,21 @@ module ContentCache
     def action_url_to_id
       "#{request.host_with_port}#{request.request_uri}"
     end
-    
+
     def action_caching_layout
       true
     end
   end
-  
+
   module ClassMethods
-  
+
     # Documentation goes here.
     # Call it just like you would caches action.
     def caches_action_content(*actions)
       return unless perform_caching
       around_filter(ActionContentFilter.new(*actions))
     end
-    
+
   end
 end
 
@@ -102,12 +102,12 @@ class ActionContentFilter
         # temporarily raise the logger level to fatal, otherwise the entirety of
         # the cached fragment is written to the logs (which get big real quick)
         controller.logger.level = Logger::FATAL
-        
+
         # render the cached fragments
         controller.rendered_action_cache = true
         controller.response.content_type = controller.request.format.all? ? Mime::HTML : controller.request.format
         controller.send(:render, :text => data['@content_for_layout'], :layout => controller.action_caching_layout)
-        
+
         # NO WORKIE, due to some rails filter rewrite
         # i see no way to call after filters, and WH doesn't use them
         # anyway, so w/e
@@ -119,7 +119,7 @@ class ActionContentFilter
       end
     end
   end
-  
+
   def after(controller)  #:nodoc:
     return if !@actions.include?(controller.action_name.intern) || controller.rendered_action_cache
     template = controller.instance_variable_get('@template')
@@ -127,7 +127,7 @@ class ActionContentFilter
       data = {}
       # Save the action content to a fragment.
       data['@content_for_layout'] = template.instance_variable_get('@content_for_layout') || template.controller.response.body
-      
+
       # Save preserved instance variables
       if template = controller.instance_variable_get('@template')
         for preserved_instance_variable in @@preserved_instance_variables
@@ -136,7 +136,7 @@ class ActionContentFilter
       else
         logger.error('Template not found!')
       end
-      
+
       controller.write_fragment(controller.action_url_to_id, data.to_yaml)
     end
   end

@@ -58,21 +58,21 @@ namespace :warehouse do
     Warehouse::Hooks.discover
     @command.process_hooks_for(ENV['REPO'], ENV['REPO_PATH'], ENV['REVISION'] || ENV['CHANGESET'])
   end
-  
+
   task :build_htpasswd => :init do
     @command.write_users_to_htpasswd(ENV['CONFIG'] || 'config/htpasswd.conf')
   end
-  
+
   task :build_repo_htpasswd => :init do
     @command.write_repo_users_to_htpasswd(ENV['REPO'], ENV['CONFIG'] || 'config/htpasswd.conf')
   end
-  
+
   task :build_user_htpasswd => :init do
     raise "Need htpasswd config path with :repo variable.  CONFIG=/svn/:repo/.htaccess" unless ENV['CONFIG'].to_s[/:repo/]
     raise "Need single user id. USER=234" unless ENV['USER']
     @command.write_repo_users_to_htpasswd @command.repos_from_user(:id => user), ENV['CONFIG']
   end
-  
+
   # CONFIG
   # EMAIL
   # REPO
@@ -82,12 +82,12 @@ namespace :warehouse do
     raise "Need an htpasswd file to import.  CONFIG=/path/to/htpasswd" unless ENV['CONFIG']
     @command.import_users_from_htpasswd ENV['CONFIG'], ENV['EMAIL'], ENV['REPO'], ENV['REPO_PATH'], ENV['REPO_ACCESS']
   end
-  
+
   task :build_config => :init do
     require 'lib/warehouse'
     require 'config/initializers/warehouse'
     config_path = ENV['CONFIG'] || 'config/access.conf'
-    
+
     @command.build_config_for ENV['REPO'], config_path
   end
 

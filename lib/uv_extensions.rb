@@ -27,7 +27,7 @@ module Uv
 
   def Uv.syntaxes
     if @syntax_list.nil?
-      @syntax_list = Dir.glob( File.join(syntax_path, '*.syntax') ).collect! do |f| 
+      @syntax_list = Dir.glob( File.join(syntax_path, '*.syntax') ).collect! do |f|
         File.basename(f, '.syntax')
       end
       @syntax_list = @syntax_list - ignored_syntaxes if ignored_syntaxes
@@ -41,7 +41,7 @@ module Uv
     # if the extension isn't in there, look for the 'full' extension,
     # like '.html.erb'
     if @syntax_index[ext].nil? && file_name =~ /[^\.]+\.(.*$)/
-      ext = $1 if ext != $1 
+      ext = $1 if ext != $1
     end
     @syntax_index[ext] || default_syntax
   end

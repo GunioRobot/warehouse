@@ -19,7 +19,7 @@ module OpenID
   #   The website wanting to verify an OpenID identity URL.  Sometimes
   #   called a "relying party".  If you want people to log into your site
   #   using OpenID, then you are the consumer.
-  # 
+  #
   # [+Server+]
   #   The website which makes assertions as to whether or not the user
   #   at the end of the browser owns the URL they say they do.
@@ -40,7 +40,7 @@ module OpenID
   #    discovery).
   #
   # 3. The consumer site prepares a URL to be sent to the  server
-  #    which contains the OpenID autentication information, and 
+  #    which contains the OpenID autentication information, and
   #    issues a redirect user's browser.
   #
   # 4. The server then verifies that the user owns the URL
@@ -152,7 +152,7 @@ module OpenID
   #
   # If successful, build a redirect URL to the server by calling
   # SuccessRequest.redirect_url and send back an HTTP 302 redirect
-  # of that URL to the user's browser. The redirect_url accepts a 
+  # of that URL to the user's browser. The redirect_url accepts a
   # return_to parameter, which is the URL to which they will return
   # to fininsh the OpenID transaction.  This URL is supplied by you,
   # and should be able to handle step 4 of the flow described in the
@@ -179,7 +179,7 @@ module OpenID
   # If you received a SuccessResponse, you may access the identity URL
   # of the user though it's +identity_url+ method.
   class Consumer
-    
+
     @@service_key = '_openid_consumer_service'
     @@disco_suffix = 'xopenid_services'
     attr_accessor :consumer, :session, :fetcher
@@ -195,12 +195,12 @@ module OpenID
     #   redirected to the server.  In a rails application, the controller's
     #   @session instance variable should be used.
     #
-    # [+store+] 
+    # [+store+]
     #   This must be an object that implements the OpenID::Store interface.
     #   Several concrete implementations are provided, to cover
     #   most common use cases.  We recommend using the simple file based
     #   store bundled with the library: OpenID::FilesystemStore.
-    # 
+    #
     # [+fetcher+]
     #   Optional.  If provided, this must be an instance that implements
     #   OpenID::Fetcher interface.  If no fetcher is provided,
@@ -208,9 +208,9 @@ module OpenID
     #   for you automatically.  If you need custom fetcher behavior, it
     #   is probably best to subclass StandardFetcher, and pass your instance
     #   in here.
-    # 
+    #
     # This object keeps an internal instance of OpenID::GenericConsumer
-    # for low level OpenID calls, called +consumer+. You may use a custom    
+    # for low level OpenID calls, called +consumer+. You may use a custom
     # certificate authority PEM file for veryifying HTTPS server certs
     # by calling the GenericConsumer.ca_path= method of the +consumer+
     # instance variable.
@@ -238,7 +238,7 @@ module OpenID
     # return OpenID::SUCCESS, or OpenID::FAILURE.  Generally +begin+ will fail
     # if the users' OpenID page cannot be retrieved or OpenID server
     # information cannot be determined.
-    # 
+    #
     # ===Success
     #
     # In the case that request.status equals OpenID::SUCCESS, the response
@@ -258,7 +258,7 @@ module OpenID
     # the Consumer.complete method.
     #
     # ===Failure
-    # 
+    #
     # If the library is unable to fetch the +user_url+, or no server
     # information can be determined, or if the server information is malformed,
     # +begin+ will return a FailureRequest object.  The status method of this
@@ -277,7 +277,7 @@ module OpenID
       unless service
         return FailureRequest.new('No service endpoints found.')
       end
-      
+
       return self.begin_without_discovery(service)
     end
 
@@ -293,7 +293,7 @@ module OpenID
     # and perform discovery manually using OpenID::OpenIDDiscovery.
     #
     # ==Return Value
-    # 
+    #
     # +begin_without_discovery+ always returns an OpenID::SuccessRequest
     # object.  Please see the success documentation for OpenID::Consumer.begin
     # for more information.
@@ -302,7 +302,7 @@ module OpenID
       @session[@@service_key] = service
       return request
     end
-    
+
     # Called to interpret the server's response to an OpenID request. It
     # is called in step 4 of the flow described in the consumer overview.
     #
@@ -316,7 +316,7 @@ module OpenID
     # or OpenID::SETUP_NEEDED.  The status may be accessed through the
     # +status+ method of the response object.
     #
-    # When OpenID::SUCCESS is returned, the response object will be of 
+    # When OpenID::SUCCESS is returned, the response object will be of
     # type SuccessResponse, which has several useful attributes including
     # +identity_url+, +service+, and a method +extension_response+ for
     # extracting potential signed extension reponses from the server.  See
@@ -335,17 +335,17 @@ module OpenID
     # which may be useful in debugging.  If no msg is specified, msg will be
     # nil.
     #
-    # When OpenID::SETUP_NEEDED is returned, the response object is an 
+    # When OpenID::SETUP_NEEDED is returned, the response object is an
     # instance of OpenID::SetupNeededResponse. The useful piece of information
     # contained in this response is the +setup_url+ method, which
     # should be used to send the user to the server and log in.
     # This response is only generated by immediate
     # mode requests (openid.mode=immediate).  The user should be redirected
-    # in to the +setup_url+, either in the current window or in a 
+    # in to the +setup_url+, either in the current window or in a
     # new browser window.
     def complete(query)
       service = @session[@@service_key]
-      
+
       if service.nil?
         resp = FailureResponse.new(nil, 'No session state found.')
       else
@@ -381,7 +381,7 @@ module OpenID
     end
 
     protected
-    
+
     # Used internally to create an instnace of the OpenIDDiscovery object.
     def get_discovery(url)
       if XRI::identifier_scheme(url) == :xri
@@ -406,12 +406,12 @@ module OpenID
   # documented in full here is the store required to create an
   # OpenID::Consumer instance.  More on the abstract store type and
   # concrete implementations of it that are provided in the documentation
-  # of OpenID::Consumer.new 
+  # of OpenID::Consumer.new
   class GenericConsumer
 
     # Number of characters to be used in generated nonces
     @@NONCE_LEN = 8
-    
+
     # Nonce character set
     @@NONCE_CHRS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
     @@D_SUFFIX = 'openid_disco'
@@ -419,17 +419,17 @@ module OpenID
     attr_reader :fetcher
 
     public
-        
+
     # Creates a new Consumer instance.  You should create a new
     # instance of the Consumer object with every HTTP request.  Do not
     # store the instance of it in a global variable somewhere.
     #
-    # [+store+] 
+    # [+store+]
     #   This must be an object that implements the OpenID::Store interface.
     #   Several concrete implementations are provided, to cover
     #   most common use cases.  We recommend using the simple file based
     #   store bundled with the library: OpenID::FilesystemStore.
-    # 
+    #
     # [+fetcher+]
     #   Optional.  If provided, this must be an instance that implements
     #   Fetcher interface.  If no fetcher is provided,
@@ -443,7 +443,7 @@ module OpenID
       @fetcher = fetcher
       @ca_path = nil
     end
-    
+
     # Set the path to a pem certificate authority file for verifying
     # server certificates during HTTPS.  If you are interested in verifying
     # certs like the mozilla web browser, have a look at the files here:
@@ -491,7 +491,7 @@ module OpenID
       mode = query["openid.mode"]
 
       case mode
-      when "cancel"        
+      when "cancel"
         return CancelResponse.new(consumer_id)
 
       when "error"
@@ -501,7 +501,7 @@ module OpenID
         end
         return FailureResponse.new(nil, msg=error)
 
-      when "id_res"        
+      when "id_res"
         return self.do_id_res(nonce, consumer_id, server_id, server_url, query)
 
       else
@@ -516,11 +516,11 @@ module OpenID
       if user_setup_url
         return SetupNeededResponse.new(user_setup_url)
       end
-      
+
       return_to = query["openid.return_to"]
       server_id2 = query["openid.identity"]
       assoc_handle = query["openid.assoc_handle"]
-      
+
       if return_to.nil?
         return FailureResponse.new(consumer_id, msg='openid.return_to was nil')
       elsif server_id2.nil?
@@ -528,13 +528,13 @@ module OpenID
       elsif assoc_handle.nil?
         return FailureResponse.new(consumer_id, msg='openid.assoc_handle was nil')
       end
-      
+
       if server_id != server_id2
         return FailureResponse.new(consumer_id, msg='server ids do not match')
       end
-      
+
       assoc = @store.get_association(server_url, assoc_handle)
-    
+
       if assoc.nil?
         # It's not an association we know about. Dumb mode is our
         # only possible path for recovery.
@@ -556,7 +556,7 @@ module OpenID
       return FailureResponse.new(consumer_id, 'no sig') if sig.nil?
       signed = query["openid.signed"]
       return FailureResponse.new(consumer_id, 'no signed') if signed.nil?
-      
+
       args = OpenID::Util.get_openid_params(query)
       signed_list = signed.split(",")
       _signed, v_sig = OpenID::Util.sign_reply(args, assoc.secret, signed_list)
@@ -584,10 +584,10 @@ module OpenID
       else
         url, body = ret
       end
-    
+
       results = OpenID::Util.parsekv(body)
       is_valid = results.fetch("is_valid", "false")
-    
+
       if is_valid == "true"
 
         # we started this request with a bad association,
@@ -606,7 +606,7 @@ module OpenID
         # is_valid = true, and we successfully used the nonce.
         return SUCCESS, nil
       end
-    
+
       error = results["error"]
       if error
         msg = "error from server: #{error}"
@@ -630,9 +630,9 @@ module OpenID
       return nil if @store.dumb?
       assoc = @store.get_association(server_url)
       return assoc unless assoc.nil?
-      return self.associate(server_url)    
+      return self.associate(server_url)
     end
-    
+
     # Make the openid.associate call to the server.
     def associate(server_url)
       dh = OpenID::DiffieHellman.new
@@ -646,18 +646,18 @@ module OpenID
         'openid.dh_consumer_public' => cpub
       }
       body = OpenID::Util.urlencode(args)
-      
+
       ret = @fetcher.post(server_url, body)
       return nil if ret.nil?
       url, data = ret
       results = OpenID::Util.parsekv(data)
-      
+
       assoc_type = results["assoc_type"]
       return nil if assoc_type.nil? or assoc_type != "HMAC-SHA1"
-      
+
       assoc_handle = results["assoc_handle"]
-      return nil if assoc_handle.nil?    
-      
+      return nil if assoc_handle.nil?
+
       expires_in = results.fetch("expires_in", "0").to_i
 
       session_type = results["session_type"]
@@ -665,17 +665,17 @@ module OpenID
         secret = OpenID::Util.from_base64(results["mac_key"])
       else
         return nil if session_type != "DH-SHA1"
-        
+
         dh_server_public = results["dh_server_public"]
         return nil if dh_server_public.nil?
-        
+
         spub = OpenID::Util.str_to_num(OpenID::Util.from_base64(dh_server_public))
         dh_shared = dh.get_shared_secret(spub)
         enc_mac_key = results["enc_mac_key"]
         secret = OpenID::Util.strxor(OpenID::Util.from_base64(enc_mac_key),
                                      OpenID::Util.sha1(OpenID::Util.num_to_str(dh_shared)))
       end
-   
+
       assoc = OpenID::Association.from_expires_in(expires_in, assoc_handle,
                                                   secret, 'HMAC-SHA1')
       @store.store_association(server_url, assoc)
@@ -712,10 +712,10 @@ module OpenID
   # Encapsulates the information the library retrieves and uses during
   # Consumer.begin.
   class SuccessRequest < OpenIDStatus
-    
+
     attr_reader :server_id, :server_url, :nonce, :identity_url, \
                 :service, :return_to_args
-    
+
     # Creates a new SuccessRequest object.  This just stores each
     # argument in an appropriately named field.
     #
@@ -765,7 +765,7 @@ module OpenID
     # [+immediate+]
     #   Optional.  If +immediate+ is true, the request will be made using
     #   openid.mode=checkid_immediate instead of the standard
-    #   openid.mode=checkid_setup. 
+    #   openid.mode=checkid_setup.
     #
     # ==Return Value
     # Return a string which is the URL to which you should redirect the user.
@@ -782,7 +782,7 @@ module OpenID
 
       redir_args["openid.assoc_handle"] = @assoc.handle if @assoc
       redir_args.update(@extra_args)
-     
+
       return OpenID::Util.append_args(server_url, redir_args).to_s
     end
 
@@ -825,7 +825,7 @@ module OpenID
   # Consumer.complete call.  Verified identity URL and
   # signed extension response values are available through this object.
   class SuccessResponse < OpenIDStatus
-    
+
     attr_reader :identity_url
     attr_accessor :service
 
@@ -840,9 +840,9 @@ module OpenID
     end
 
     # Returns all the arguments from an extension's namespace.  For example
-    # 
+    #
     #   response.extension_response('sreg')
-    # 
+    #
     # may return something like:
     #
     #  {'email' => 'mayor@example.com', 'nickname' => 'MayorMcCheese'}
@@ -851,23 +851,23 @@ module OpenID
     # hash.  Values returned from this method are guaranteed to be signed.
     # Calling this method should be the *only* way you access extension
     # response data!
-    def extension_response(extension_name)      
+    def extension_response(extension_name)
       prefix = extension_name
-      
+
       signed = @query['openid.signed']
       return nil if signed.nil?
-      
+
       signed = signed.split(',')
       extension_args = {}
       extension_prefix = prefix + '.'
-      
+
       signed.each do |arg|
         if arg.index(extension_prefix) == 0
           query_key = 'openid.'+arg
           extension_args[arg[(1+prefix.length..-1)]] = @query[query_key]
         end
       end
-      
+
       return extension_args
     end
 
@@ -878,7 +878,7 @@ module OpenID
   # information about the failure if it is available.  These methods will
   # return nil if no useful info can be determined.
   class FailureResponse < OpenIDStatus
-    
+
     attr_accessor :identity_url, :msg, :service
 
     def initialize(identity_url=nil, msg=nil)
@@ -888,12 +888,12 @@ module OpenID
     end
 
   end
-  
+
   # Returned by Consumer.begin in immediate mode when the user needs to
   # log into the OpenID server.  User should be redirected to the value
   # returned from the +setup_url+ method.
   class SetupNeededResponse < OpenIDStatus
-    
+
     attr_reader :setup_url
     attr_accessor :identity_url, :service
 

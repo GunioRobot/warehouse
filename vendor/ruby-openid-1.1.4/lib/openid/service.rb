@@ -23,7 +23,7 @@ module OpenID
   # method, you won't need to ever use this object directly.  It is used
   # internally by the OpenIDConsumer object.
   class OpenIDServiceEndpoint < ServiceEndpoint
-    
+
     @@namespace = {
       'xrdsns' => 'xri://$xrds',
       'xrdns' => 'xri://$xrd*($v*2.0)',
@@ -61,10 +61,10 @@ module OpenID
     def OpenIDServiceEndpoint.is_type?(service, versions=nil)
       # escape the period in the version numbers
       versions.collect! {|v| v.gsub('.', '\.')} if versions
-      
+
       base_url = 'http://openid\.net/signon/'
       base_url += '(' + versions.join('|') + '){1}' if versions
-      
+
       service.service_types.each do |st|
         return true if st.match(base_url)
       end
@@ -76,7 +76,7 @@ module OpenID
     def uses_extension?(extension_url)
       return supports?(extension_url)
     end
-    
+
     # Same as uses_extension? Checks to see if the provided URL is
     # in the list of service types. Example that checks for support
     # of the simple registratino protocol:
@@ -98,7 +98,7 @@ module OpenID
     def server_url
       @uri
     end
-    
+
     # Returns user's URL which resides on the OpenID server.  For
     # example if http://example.com/ delegates to http://example.myopenid.com/,
     # then http://example.myopenid.com/ will be returned by this method.
@@ -124,11 +124,11 @@ module OpenID
   # See the documentation for OpenID::OpenIDService for more information
   # on what this object does.
   class FakeOpenIDServiceEndpoint < OpenIDServiceEndpoint
-    
+
     def initialize(consumer_id, server_id, server_url)
       @uri = server_url
       @delegate = server_id
-      @yadis_url = consumer_id     
+      @yadis_url = consumer_id
       @service_types = ['http://openid.net/signon/1.0']
       @yadis = nil
       @xrds_uri = nil

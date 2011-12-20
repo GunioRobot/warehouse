@@ -18,10 +18,10 @@ manually. First open your app/controllers/application.rb and add
 
 to the top of the file and include the login system with
 
-  include OpenidLoginSystem 
+  include OpenidLoginSystem
 
 The beginning of your ApplicationController.
-It should look something like this : 
+It should look something like this :
 
   require_dependency "openid_login_system"
 
@@ -31,14 +31,14 @@ It should look something like this :
 
 After you have done the modifications the the AbstractController you can import
 the user model into the database. This model is meant as an example and you
-should extend it. 
+should extend it.
 
 The model :user is required when you are hitting problems to the degree of
 "Session could not be restored becuase not all items in it are known"
 
 == Requirements
 
-You need a database table corresponding to the User model. 
+You need a database table corresponding to the User model.
 
   mysql syntax:
   CREATE TABLE users (
@@ -63,10 +63,10 @@ You need a database table corresponding to the User model.
 Of course your user model can have any amount of extra fields. This is just a
 starting point
 
-== How to use it 
+== How to use it
 
 Now you can go around and happily add "before_filter :login_required" to the
-controllers which you would like to protect. 
+controllers which you would like to protect.
 
 After integrating the login system with your rails application
 navigate to your new controller's login method. There you may login
@@ -82,9 +82,9 @@ How do I...
   ... access the user who is currently logged in
 
   A: You can get the user id from the session using session[:user_id]
-     Example: 
-	
-	session[:user_id] 
+     Example:
+
+	session[:user_id]
 
        To get the User object:
 
@@ -93,19 +93,19 @@ How do I...
       	The OpenidController also has a find_user method
      	which will return the User object of the logged in user, or nil
 	if no user is logged in.
-	
 
-  ... restrict access to only a few methods? 
-  
-  A: Use before_filters build in scoping. 
-     Example: 
+
+  ... restrict access to only a few methods?
+
+  A: Use before_filters build in scoping.
+     Example:
        before_filter :login_required, :only => [:myaccount, :changepassword]
        before_filter :login_required, :except => [:index]
-     
+
   ... check if a user is logged-in in my views?
-  
+
   A: session[:user_id] will tell you. Here is an example helper which you can use to make this more pretty:
-     Example: 
+     Example:
        def user?
          !session[:user_id].nil?
        end

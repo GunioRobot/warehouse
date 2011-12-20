@@ -20,17 +20,17 @@ context "Sessions Controller" do
     get :forget
     assert_match /No user/, @response.body
   end
-  
+
   specify "should set token for forgotten account" do
     post :forget, :email => users(:rick).email
     assert_match /Email sent/, @response.body
   end
-  
+
   specify "should require valid token for reset" do
     get :reset
     assert_match /Invalid token/, @response.body
   end
-  
+
   specify "should not reset identity_url for user on invalid open id login" do
     @controller.expects(:using_open_id?).returns(true)
     @controller.expects(:authenticate_with_open_id).yields(stub(:successful? => false, :message => 'fubar'), nil)
@@ -38,7 +38,7 @@ context "Sessions Controller" do
     post :reset
     assert_template 'error'
   end
-  
+
   specify "should reset identity_url for user" do
     login_as :rick
     @controller.expects(:using_open_id?).returns(true)
@@ -47,21 +47,21 @@ context "Sessions Controller" do
     post :reset
     assert_redirected_to root_path
   end
-  
+
   specify "should show error for invalid open id login attempt" do
     @controller.expects(:using_open_id?).returns(true)
     @controller.expects(:authenticate_with_open_id).yields(stub(:successful? => false, :message => 'fubar'), nil)
     post :create
     assert_template 'error'
   end
-  
+
   specify "should show error for invalid login attempt" do
     @controller.expects(:using_open_id?).returns(false)
     User.expects(:authenticate).with('rick', 'monkey').returns(nil)
     post :create, :login => 'rick', :password => 'monkey'
     assert_template 'error'
   end
-  
+
   specify "should create user from new identity url" do
     @controller.expects(:using_open_id?).returns(true)
     @controller.expects(:authenticate_with_open_id).yields(stub(:successful? => true), 'foobar')
@@ -70,7 +70,7 @@ context "Sessions Controller" do
       assert_redirected_to root_path
     end
   end
-  
+
   specify "should login user from with svn password" do
     @controller.expects(:using_open_id?).returns(false)
     User.expects(:authenticate).with('rick', 'monkey').returns(users(:rick))
@@ -79,7 +79,7 @@ context "Sessions Controller" do
       assert_redirected_to root_path
     end
   end
-  
+
   specify "should login user from existing identity url" do
     @controller.expects(:using_open_id?).returns(true)
     @controller.expects(:authenticate_with_open_id).yields(stub(:successful? => true), users(:rick).identity_url)
@@ -88,18 +88,18 @@ context "Sessions Controller" do
       assert_redirected_to root_path
     end
   end
-  
+
   specify "should log user out and redirect to home" do
     delete :destroy
     assert_redirected_to root_path
   end
-  
+
   specify "should log user out and reset session" do
     @request.session = {:user_id => 5}
     delete :destroy
     session[:user_id].should == nil
   end
-  
+
   specify "should log user out and destroy login token cookie" do
     @request.cookies[:login_token] = CGI::Cookie.new 'name' => :login_token, 'value' => '1;asdf', 'expires' => 1.year.from_now, 'domain' => '.test.host', 'path' => '/'
     delete :destroy

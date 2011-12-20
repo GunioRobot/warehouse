@@ -8,19 +8,19 @@ context "Email" do
     @options = {}
     @hook    = Warehouse::Hooks::Email.new(@commit, @options)
   end
-  
+
   it "should split first commit line" do
     @hook.first_commit_line.should == 'add bar'
   end
-  
+
   it "should split extended commit lines" do
     @hook.extended_commit_lines.should == [' * one', ' * two']
   end
-  
+
   it "should create basic subject line" do
     @hook.subject.should == "5: add bar"
   end
-  
+
   it "should create prefixed subject line" do
     @hook.options[:subject_prefix] = 'foo'
     @hook.subject.should == "[foo] 5: add bar"

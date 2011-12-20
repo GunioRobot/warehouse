@@ -27,7 +27,7 @@ class Changeset < ActiveRecord::Base
   def self.find_by_path(path, options = {})
     with_paths([path]) { find :first, options }
   end
-  
+
   def self.search_by_paths(query, paths, options = {})
     with_search(query) { paginate_by_paths(paths, options = {}) }
   end
@@ -43,11 +43,11 @@ class Changeset < ActiveRecord::Base
   def self.find_by_paths(paths, options = {})
     with_paths(paths) { find :first, options }
   end
-  
+
   def self.find_by_date_for_path(date, path)
     with_paths([path]) { find :first, :conditions => ['changesets.changed_at >= ?', date] }
   end
-  
+
   def self.find_latest_changeset(path = nil, revision = nil)
     latest_changeset = lambda { revision ? find_by_revision(revision) : find(:first, :order => 'changesets.changed_at desc') }
     path.blank? ? latest_changeset.call : with_paths([path], &latest_changeset)
@@ -56,13 +56,13 @@ class Changeset < ActiveRecord::Base
   def to_param
     revision.to_s
   end
-  
+
   def created_at
     read_attribute :changed_at
   end
 
   protected
-    # scope changesets query by change paths.  
+    # scope changesets query by change paths.
     #
     # with_paths :all # show all changesets
     # with_paths nil  # no changesets
@@ -80,7 +80,7 @@ class Changeset < ActiveRecord::Base
         with_scope :find => { :select => 'distinct changesets.*', :joins => 'inner join changes on changesets.id = changes.changeset_id', :conditions => conditions, :order => 'changesets.changed_at desc' }, &block
       end
     end
-    
+
     def self.with_search(q, &block)
       if q.blank?
         block.call
@@ -88,7 +88,7 @@ class Changeset < ActiveRecord::Base
         with_scope :find => { :select => 'distinct changesets.*', :conditions => ['message LIKE ?', "%#{q}%"] }, &block
       end
     end
-    
+
     # build conditions for the given paths.  Follow the rules from #with_paths above.
     def self.conditions_for_paths(paths)
       returning [[]] do |conditions|
@@ -106,7 +106,7 @@ class Changeset < ActiveRecord::Base
         conditions[0] = conditions.first.join
       end
     end
-    
+
     # create change path conditions for a given repository
     # if repository is nil, assume it's being scoped elsewhere: @repository.changesets.find_by_paths...
     def self.repository_conditions_for_paths(repository, paths, conditions)
@@ -115,7 +115,7 @@ class Changeset < ActiveRecord::Base
         conditions.first << ' or ' unless conditions.first.empty?
         conditions.first << '(changesets.repository_id = ?'
         conditions.first << ' and ' unless paths == :all
-        conditions << repository 
+        conditions << repository
       end
 
       unless paths == :all

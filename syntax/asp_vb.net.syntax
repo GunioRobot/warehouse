@@ -1,64 +1,64 @@
---- 
+---
 name: ASP vb.NET
-fileTypes: 
+fileTypes:
 - vb
 scopeName: source.asp.vb.net
-repository: 
-  round-brackets: 
+repository:
+  round-brackets:
     name: meta.round-brackets
-    endCaptures: 
-      "0": 
+    endCaptures:
+      "0":
         name: punctuation.section.round-brackets.end.asp
     begin: \(
-    beginCaptures: 
-      "0": 
+    beginCaptures:
+      "0":
         name: punctuation.section.round-brackets.begin.asp
     end: \)
-    patterns: 
+    patterns:
     - include: source.asp.vb.net
 uuid: 7F9C9343-D48E-4E7D-BFE8-F680714DCD3E
 foldingStartMarker: (<(?i:(head|table|div|style|script|ul|ol|form|dl))\b.*?>|\{|^\s*<?%?\s*'?\s*(?i:(sub|private\s+Sub|public\s+Sub|function|if|while|For))\s*.*$)
-patterns: 
+patterns:
 - name: meta.ending-space
   match: \n
 - include: "#round-brackets"
 - name: meta.leading-space
   begin: ^(?=\t)
   end: (?=[^\t])
-  patterns: 
-  - captures: 
-      "1": 
+  patterns:
+  - captures:
+      "1":
         name: meta.odd-tab.tabs
-      "2": 
+      "2":
         name: meta.even-tab.tabs
     match: (\t)(\t)?
 - name: meta.leading-space
   begin: ^(?= )
   end: (?=[^ ])
-  patterns: 
-  - captures: 
-      "1": 
+  patterns:
+  - captures:
+      "1":
         name: meta.odd-tab.spaces
-      "2": 
+      "2":
         name: meta.even-tab.spaces
     match: (  )(  )?
 - name: meta.function.asp
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: storage.type.function.asp
-    "2": 
+    "2":
       name: entity.name.function.asp
-    "3": 
+    "3":
       name: punctuation.definition.parameters.asp
-    "4": 
+    "4":
       name: variable.parameter.function.asp
-    "5": 
+    "5":
       name: punctuation.definition.parameters.asp
   match: ^\s*((?i:function|sub))\s*([a-zA-Z_]\w*)\s*(\()([^)]*)(\)).*\n?
 - name: comment.line.apostrophe.asp
   begin: "'"
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.comment.asp
   end: (?=(\n|%>))
 - name: keyword.control.asp
@@ -66,12 +66,12 @@ patterns:
 - name: keyword.operator.asp
   match: (?i:\b(Mod|And|Not|Or|Xor|as)\b)
 - name: variable.other.dim.asp
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: storage.type.asp
-    "2": 
+    "2":
       name: variable.other.bfeac.asp
-    "3": 
+    "3":
       name: meta.separator.comma.asp
   match: (?i:(dim)\s*(?:(\b[a-zA-Z_x7f-xff][a-zA-Z0-9_x7f-xff]*?\b)\s*(,?)))
 - name: storage.type.asp
@@ -81,20 +81,20 @@ patterns:
 - name: constant.language.asp
   match: (?i:\s*\b(Empty|False|Nothing|Null|True)\b)
 - name: string.quoted.double.asp
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.asp
   begin: "\""
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.asp
   end: "\""
-  patterns: 
+  patterns:
   - name: constant.character.escape.apostrophe.asp
     match: "\"\""
 - name: variable.other.asp
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.variable.asp
   match: (\$)[a-zA-Z_x7f-xff][a-zA-Z0-9_x7f-xff]*?\b\s*
 - name: support.class.asp
@@ -116,8 +116,8 @@ patterns:
 - name: support.type.vb.asp
   match: (?i:\b(vbtrue|fvbalse|vbcr|vbcrlf|vbformfeed|vblf|vbnewline|vbnullchar|vbnullstring|int32|vbtab|vbverticaltab|vbbinarycompare|vbtextcomparevbsunday|vbmonday|vbtuesday|vbwednesday|vbthursday|vbfriday|vbsaturday|vbusesystemdayofweek|vbfirstjan1|vbfirstfourdays|vbfirstfullweek|vbgeneraldate|vblongdate|vbshortdate|vblongtime|vbshorttime|vbobjecterror|vbEmpty|vbNull|vbInteger|vbLong|vbSingle|vbDouble|vbCurrency|vbDate|vbString|vbObject|vbError|vbBoolean|vbVariant|vbDataObject|vbDecimal|vbByte|vbArray)\b)
 - name: support.function.asp
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: entity.name.function.asp
   match: (?i:(\b[a-zA-Z_x7f-xff][a-zA-Z0-9_x7f-xff]*?\b)(?=\(\)?))
 - name: variable.other.asp

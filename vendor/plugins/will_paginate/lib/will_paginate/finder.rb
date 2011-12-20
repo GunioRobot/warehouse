@@ -15,10 +15,10 @@ module WillPaginate
       def method_missing_with_paginate(method, *args, &block)
         # did somebody tried to paginate? if not, let them be
         unless method.to_s.index('paginate') == 0
-          return method_missing_without_paginate(method, *args, &block) 
+          return method_missing_without_paginate(method, *args, &block)
         end
         options = args.last.is_a?(Hash) ? args.pop.symbolize_keys : {}
-        
+
         page = (options.delete(:page) || 1).to_i
         entries_per_page = options.delete(:per_page) || per_page
 
@@ -32,7 +32,7 @@ module WillPaginate
 
         # oh, you're not so fun anymore!
         [:distinct, :count].each {|key| options.delete key } unless options.empty?
-        
+
         finder = method.to_s.sub /^paginate/, 'find'
         # :all is implicit
         if finder == 'find'
@@ -51,7 +51,7 @@ module WillPaginate
   end
 
   # TODO: Controllers need love, too!
-  # 
+  #
   # module ControllerHelpers
   #   def totally_awesome_helper
   #     patience

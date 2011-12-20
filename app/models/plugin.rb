@@ -3,7 +3,7 @@ class Plugin < ActiveRecord::Base
   cattr_reader :plugin_class_path
 
   serialize :options, Hash
-  
+
   before_validation_on_create :convert_name
   before_create :set_default_active_state
   validates_presence_of   :name
@@ -13,16 +13,16 @@ class Plugin < ActiveRecord::Base
   def self.create_empty_for(name)
     create! :name => name, :options => {}, :active => false
   end
-  
+
   def self.find_from(plugins)
     find(:all, :conditions => ['name IN (?)', plugins])
   end
-  
+
   def plugin_class
     require File.join(plugin_class_path, name, 'lib', 'plugin') unless Warehouse::Plugins.const_defined?(plugin_class_name)
     @plugin_class ||= Warehouse::Plugins.const_get(plugin_class_name)
   end
-  
+
   def plugin_class_name
     @plugin_class_name ||= Warehouse::Plugins::Base.class_name_of(name)
   end
@@ -41,7 +41,7 @@ class Plugin < ActiveRecord::Base
   delegate :view_path,   :to => :properties
   delegate :title,       :to => :properties
   delegate :tabs,        :to => :properties
-  
+
   protected
     def set_default_active_state
       self.active = false ; true

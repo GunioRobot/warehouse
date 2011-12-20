@@ -8,7 +8,7 @@ def html_yadis_location(html)
 
   begin
     while el = parser.getTag('head', '/head', 'meta', 'body')
-      
+
       # we are leaving head or have reached body, so we bail
       return nil if ['/head', 'body'].member?(el.tag_name)
 
@@ -21,7 +21,7 @@ def html_yadis_location(html)
           return el.attr_hash['content']
         end
       end
-      
+
     end
   rescue
     return nil

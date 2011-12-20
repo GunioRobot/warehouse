@@ -1,15 +1,15 @@
---- 
+---
 name: SQL (Rails)
-fileTypes: 
+fileTypes:
 - erbsql
 scopeName: source.sql.ruby
 uuid: D54FBDED-5481-4CC7-B75F-66465A499882
 foldingStartMarker: \s*\(\s*$
-patterns: 
+patterns:
 - name: source.ruby.rails.embedded.sql
   begin: <%+(?!>)=?
   end: "%>"
-  patterns: 
+  patterns:
   - name: comment.line.number-sign.ruby
     match: "#.*?(?=%>)"
   - include: source.ruby.rails

@@ -13,12 +13,12 @@ describe Sequel::Model do
 
   it "should be associated with a dataset" do
     model_a = Class.new(Sequel::Model) { set_dataset MODEL_DB[:as] }
-    
+
     model_a.dataset.should be_a_kind_of(MockDataset)
     model_a.dataset.opts[:from].should == [:as]
 
     model_b = Class.new(Sequel::Model) { set_dataset MODEL_DB[:bs] }
-    
+
     model_b.dataset.should be_a_kind_of(MockDataset)
     model_b.dataset.opts[:from].should == [:bs]
 
@@ -158,34 +158,34 @@ context "A new model instance" do
       set_dataset MODEL_DB[:items]
     end
   end
-  
+
   specify "should be marked as new?" do
     o = @m.new
     o.should be_new
   end
-  
+
   specify "should not be marked as new? once it is saved" do
     o = @m.new(:x => 1)
     o.should be_new
     o.save
     o.should_not be_new
   end
-  
+
   specify "should use the last inserted id as primary key if not in values" do
     d = @m.dataset
     def d.insert(*args)
       super
       1234
     end
-    
+
     def d.first
       {:x => 1, :id => 1234}
     end
-    
+
     o = @m.new(:x => 1)
     o.save
     o.id.should == 1234
-    
+
     o = @m.new(:x => 1, :id => 333)
     o.save
     o.id.should == 333
@@ -196,25 +196,25 @@ describe Sequel::Model do
   before do
     @model = Class.new(Sequel::Model(:items))
   end
-  
+
   it "creates dynamic model subclass with set table name" do
     @model.table_name.should == :items
   end
-  
+
   it "defaults to primary key of id" do
     @model.primary_key.should == :id
   end
-  
+
   it "allow primary key change" do
     @model.set_primary_key :ssn
     @model.primary_key.should == :ssn
   end
-  
+
   it "allows dataset change" do
     @model.set_dataset(MODEL_DB[:foo])
     @model.table_name.should == :foo
   end
-  
+
   it "sets schema with implicit table name" do
     @model.set_schema do
       primary_key :ssn, :string
@@ -222,7 +222,7 @@ describe Sequel::Model do
     @model.primary_key.should == :ssn
     @model.table_name.should == :items
   end
-  
+
   it "sets schema with explicit table name" do
     @model.set_schema :foo do
       primary_key :id
@@ -252,13 +252,13 @@ context "A model class" do
     MODEL_DB.reset
     @c = Class.new(Sequel::Model(:items))
   end
-  
+
   specify "should be able to create rows in the associated table" do
     o = @c.create(:x => 1)
     o.class.should == @c
     MODEL_DB.sqls.should == ['INSERT INTO items (x) VALUES (1);']
   end
-  
+
   specify "should be able to create rows without any values specified" do
     o = @c.create
     o.class.should == @c
@@ -273,16 +273,16 @@ context "A model class without a primary key" do
       no_primary_key
     end
   end
-  
+
   specify "should be able to insert records without selecting them back" do
     i = nil
     proc {i = @c.create(:x => 1)}.should_not raise_error
     i.class.should be(@c)
     i.values.to_hash.should == {:x => 1}
-    
+
     MODEL_DB.sqls.should == ['INSERT INTO items (x) VALUES (1);']
   end
-  
+
   specify "should raise when deleting" do
     o = @c.new
     proc {o.delete}.should raise_error
@@ -300,7 +300,7 @@ context "Model#serialize" do
   setup do
     MODEL_DB.reset
   end
-  
+
   specify "should translate values to YAML when creating records" do
     @c = Class.new(Sequel::Model(:items)) do
       no_primary_key
@@ -309,30 +309,30 @@ context "Model#serialize" do
 
     @c.create(:abc => 1)
     @c.create(:abc => "hello")
-    
+
     MODEL_DB.sqls.should == [ \
       "INSERT INTO items (abc) VALUES ('--- 1\n');", \
       "INSERT INTO items (abc) VALUES ('--- hello\n');", \
     ]
   end
-  
+
 
   specify "should support calling after the class is defined" do
     @c = Class.new(Sequel::Model(:items)) do
       no_primary_key
     end
-    
+
     @c.serialize :def
 
     @c.create(:def => 1)
     @c.create(:def => "hello")
-    
+
     MODEL_DB.sqls.should == [ \
       "INSERT INTO items (def) VALUES ('--- 1\n');", \
       "INSERT INTO items (def) VALUES ('--- hello\n');", \
     ]
   end
-  
+
   specify "should support using the Marshal format" do
     @c = Class.new(Sequel::Model(:items)) do
       no_primary_key
@@ -341,28 +341,28 @@ context "Model#serialize" do
 
     @c.create(:abc => 1)
     @c.create(:abc => "hello")
-    
+
     MODEL_DB.sqls.should == [ \
       "INSERT INTO items (abc) VALUES ('\004\bi\006');", \
       "INSERT INTO items (abc) VALUES ('\004\b\"\nhello');", \
     ]
   end
-  
+
   specify "should translate values to and from YAML using accessor methods" do
     @c = Class.new(Sequel::Model(:items)) do
       serialize :abc, :def
     end
-    
+
     ds = @c.dataset
     ds.extend(Module.new {
       attr_accessor :raw
-      
+
       def fetch_rows(sql, &block)
         block.call(@raw)
       end
-      
+
       @@sqls = nil
-      
+
       def insert(*args)
         @@sqls = insert_sql(*args)
       end
@@ -370,25 +370,25 @@ context "Model#serialize" do
       def update(*args)
         @@sqls = update_sql(*args)
       end
-      
+
       def sqls
         @@sqls
       end
-      
+
       def columns
         [:id, :abc, :def]
       end
     })
-      
+
     ds.raw = {:id => 1, :abc => "--- 1\n", :def => "--- hello\n"}
     o = @c.first
     o.id.should == 1
     o.abc.should == 1
     o.def.should == "hello"
-    
+
     o.set(:abc => 23)
     ds.sqls.should == "UPDATE items SET abc = '#{23.to_yaml}' WHERE (id = 1)"
-    
+
     ds.raw = {:id => 1, :abc => "--- 1\n", :def => "--- hello\n"}
     o = @c.create(:abc => [1, 2, 3])
     ds.sqls.should == "INSERT INTO items (abc) VALUES ('#{[1, 2, 3].to_yaml}');"
@@ -404,7 +404,7 @@ context "Model attribute accessors" do
         [:id, :x, :y]
       end
     end
-    
+
     ds = @c.dataset
     ds.extend(Module.new {
       def columns
@@ -412,26 +412,26 @@ context "Model attribute accessors" do
       end
     })
   end
-  
+
   specify "should be created dynamically" do
     o = @c.new
-    
+
     o.should_not be_respond_to(:x)
     o.x.should be_nil
     o.should be_respond_to(:x)
-    
+
     o.should_not be_respond_to(:x=)
     o.x = 34
     o.x.should == 34
     o.should be_respond_to(:x=)
   end
-  
+
   specify "should raise for a column that doesn't exist in the dataset" do
     o = @c.new
-    
+
     proc {o.x}.should_not raise_error
     proc {o.xx}.should raise_error(SequelError)
-    
+
     proc {o.x = 3}.should_not raise_error
     proc {o.yy = 4}.should raise_error
   end
@@ -444,12 +444,12 @@ context "Model#new?" do
     @c = Class.new(Sequel::Model(:items)) do
     end
   end
-  
+
   specify "should be true for a new instance" do
     n = @c.new(:x => 1)
     n.should be_new
   end
-  
+
   specify "should be false after saving" do
     n = @c.new(:x => 1)
     n.save
@@ -466,7 +466,7 @@ context "Model.after_create" do
         [:id, :x, :y]
       end
     end
-    
+
     ds = @c.dataset
     def ds.insert(*args)
       super(*args)
@@ -476,23 +476,23 @@ context "Model.after_create" do
 
   specify "should be called after creation" do
     s = []
-    
+
     @c.after_create do
       s = MODEL_DB.sqls.dup
     end
-    
+
     n = @c.create(:x => 1)
     MODEL_DB.sqls.should == ['INSERT INTO items (x) VALUES (1);']
     s.should == ['INSERT INTO items (x) VALUES (1);']
   end
-  
+
   specify "should allow calling save in the hook" do
     @c.after_create do
       values.delete(:x)
       self.id = 2
       save
     end
-    
+
     n = @c.create(:id => 1)
     MODEL_DB.sqls.should == ['INSERT INTO items (id) VALUES (1);', 'UPDATE items SET id = 2 WHERE (id = 1)']
   end
@@ -511,17 +511,17 @@ context "Model.subset" do
 
   specify "should create a filter on the underlying dataset" do
     proc {@c.new_only}.should raise_error(NoMethodError)
-    
+
     @c.subset(:new_only) {:age == 'new'}
-    
+
     @c.new_only.sql.should == "SELECT * FROM items WHERE (age = 'new')"
     @c.dataset.new_only.sql.should == "SELECT * FROM items WHERE (age = 'new')"
-    
+
     @c.subset(:pricey) {:price > 100}
-    
+
     @c.pricey.sql.should == "SELECT * FROM items WHERE (price > 100)"
     @c.dataset.pricey.sql.should == "SELECT * FROM items WHERE (price > 100)"
-    
+
     # check if subsets are composable
     @c.pricey.new_only.sql.should == "SELECT * FROM items WHERE (price > 100) AND (age = 'new')"
     @c.new_only.pricey.sql.should == "SELECT * FROM items WHERE (age = 'new') AND (price > 100)"
@@ -531,13 +531,13 @@ end
 context "Model.find" do
   setup do
     MODEL_DB.reset
-    
+
     @c = Class.new(Sequel::Model(:items)) do
       def self.columns
         [:name, :id]
       end
     end
-    
+
     $cache_dataset_row = {:name => 'sharon', :id => 1}
     @dataset = @c.dataset
     $sqls = []
@@ -548,7 +548,7 @@ context "Model.find" do
       end
     })
   end
-  
+
   specify "should return the first record matching the given filter" do
     @c.find(:name => 'sharon').should be_a_kind_of(@c)
     $sqls.last.should == "SELECT * FROM items WHERE (name = 'sharon') LIMIT 1"
@@ -556,7 +556,7 @@ context "Model.find" do
     @c.find {"name LIKE 'abc%'".lit}.should be_a_kind_of(@c)
     $sqls.last.should == "SELECT * FROM items WHERE name LIKE 'abc%' LIMIT 1"
   end
-  
+
   specify "should accept filter blocks" do
     @c.find {:id == 1}.should be_a_kind_of(@c)
     $sqls.last.should == "SELECT * FROM items WHERE (id = 1) LIMIT 1"
@@ -569,13 +569,13 @@ end
 context "Model.[]" do
   setup do
     MODEL_DB.reset
-    
+
     @c = Class.new(Sequel::Model(:items)) do
       def self.columns
         [:name, :id]
       end
     end
-    
+
     $cache_dataset_row = {:name => 'sharon', :id => 1}
     @dataset = @c.dataset
     $sqls = []
@@ -586,31 +586,31 @@ context "Model.[]" do
       end
     })
   end
-  
+
   specify "should return the first record for the given pk" do
     @c[1].should be_a_kind_of(@c)
     $sqls.last.should == "SELECT * FROM items WHERE (id = 1) LIMIT 1"
     @c[9999].should be_a_kind_of(@c)
     $sqls.last.should == "SELECT * FROM items WHERE (id = 9999) LIMIT 1"
   end
-  
+
   specify "should work correctly for custom primary key" do
     @c.set_primary_key :name
     @c['sharon'].should be_a_kind_of(@c)
     $sqls.last.should == "SELECT * FROM items WHERE (name = 'sharon') LIMIT 1"
   end
-  
+
   specify "should work correctly for composite primary key" do
     @c.set_primary_key [:node_id, :kind]
     @c[3921, 201].should be_a_kind_of(@c)
     $sqls.last.should =~ \
       /^SELECT \* FROM items WHERE (\(node_id = 3921\) AND \(kind = 201\))|(\(kind = 201\) AND \(node_id = 3921\)) LIMIT 1$/
   end
-  
+
   specify "should act as shortcut to find if a hash is given" do
     @c[:id => 1].should be_a_kind_of(@c)
     $sqls.last.should == "SELECT * FROM items WHERE (id = 1) LIMIT 1"
-    
+
     @c[:name => ['abc', 'def']].should be_a_kind_of(@c)
     $sqls.last.should == "SELECT * FROM items WHERE (name IN ('abc', 'def')) LIMIT 1"
   end
@@ -619,7 +619,7 @@ end
 context "A cached model" do
   setup do
     MODEL_DB.reset
-    
+
     @cache_class = Class.new(Hash) do
       attr_accessor :ttl
       def set(k, v, ttl); self[k] = v; @ttl = ttl; end
@@ -627,15 +627,15 @@ context "A cached model" do
     end
     cache = @cache_class.new
     @cache = cache
-    
+
     @c = Class.new(Sequel::Model(:items)) do
       set_cache cache
-      
+
       def self.columns
         [:name, :id]
       end
     end
-    
+
     $cache_dataset_row = {:name => 'sharon', :id => 1}
     @dataset = @c.dataset
     $sqls = []
@@ -644,48 +644,48 @@ context "A cached model" do
         $sqls << sql
         yield $cache_dataset_row
       end
-      
+
       def update(values)
         $sqls << update_sql(values)
         $cache_dataset_row.merge!(values)
       end
-      
+
       def delete
         $sqls << delete_sql
       end
     })
   end
-  
+
   specify "should set the model's cache store" do
     @c.cache_store.should be(@cache)
   end
-  
+
   specify "should have a default ttl of 3600" do
     @c.cache_ttl.should == 3600
   end
-  
+
   specify "should take a ttl option" do
     @c.set_cache @cache, :ttl => 1234
     @c.cache_ttl.should == 1234
   end
-  
+
   specify "should offer a set_cache_ttl method for setting the ttl" do
     @c.cache_ttl.should == 3600
     @c.set_cache_ttl 1234
     @c.cache_ttl.should == 1234
   end
-  
+
   specify "should generate a cache key appropriate to the class" do
     m = @c.new
     m.values[:id] = 1
     m.cache_key.should == "#{m.class}:1"
-    
+
     # custom primary key
     @c.set_primary_key :ttt
     m = @c.new
     m.values[:ttt] = 333
     m.cache_key.should == "#{m.class}:333"
-    
+
     # composite primary key
     @c.set_primary_key [:a, :b, :c]
     m = @c.new
@@ -694,40 +694,40 @@ context "A cached model" do
     m.values[:b] = 789
     m.cache_key.should == "#{m.class}:123,789,456"
   end
-  
+
   specify "should raise error if attempting to generate cache_key and primary key value is null" do
     m = @c.new
     proc {m.cache_key}.should raise_error(SequelError)
-    
+
     m.values[:id] = 1
     proc {m.cache_key}.should_not raise_error(SequelError)
   end
-  
+
   specify "should set the cache when reading from the database" do
     $sqls.should == []
     @cache.should be_empty
-    
+
     m = @c[1]
     $sqls.should == ['SELECT * FROM items WHERE (id = 1) LIMIT 1']
     m.values.should == $cache_dataset_row
     @cache[m.cache_key].should == m
-    
+
     # read from cache
     m2 = @c[1]
     $sqls.should == ['SELECT * FROM items WHERE (id = 1) LIMIT 1']
     m2.should == m
     m2.values.should == $cache_dataset_row
   end
-  
+
   specify "should delete the cache when writing to the database" do
     # fill the cache
     m = @c[1]
     @cache[m.cache_key].should == m
-    
+
     m.set(:name => 'tutu')
     @cache.has_key?(m.cache_key).should be_false
     $sqls.last.should == "UPDATE items SET name = 'tutu' WHERE (id = 1)"
-    
+
     m = @c[1]
     @cache[m.cache_key].should == m
     m.name = 'hey'
@@ -735,27 +735,27 @@ context "A cached model" do
     @cache.has_key?(m.cache_key).should be_false
     $sqls.last.should == "UPDATE items SET name = 'hey', id = 1 WHERE (id = 1)"
   end
-  
+
   specify "should delete the cache when deleting the record" do
     # fill the cache
     m = @c[1]
     @cache[m.cache_key].should == m
-    
+
     m.delete
     @cache.has_key?(m.cache_key).should be_false
     $sqls.last.should == "DELETE FROM items WHERE (id = 1)"
   end
-  
+
   specify "should support #[] as a shortcut to #find with hash" do
     m = @c[:id => 3]
     @cache[m.cache_key].should be_nil
     $sqls.last.should == "SELECT * FROM items WHERE (id = 3) LIMIT 1"
-    
+
     m = @c[1]
     @cache[m.cache_key].should == m
     $sqls.should == ["SELECT * FROM items WHERE (id = 3) LIMIT 1", \
       "SELECT * FROM items WHERE (id = 1) LIMIT 1"]
-    
+
     @c[:id => 4]
     $sqls.should == ["SELECT * FROM items WHERE (id = 3) LIMIT 1", \
       "SELECT * FROM items WHERE (id = 1) LIMIT 1", \

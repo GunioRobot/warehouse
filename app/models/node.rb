@@ -8,13 +8,13 @@ class Node
   attr_reader :path
   attr_reader :repository
   delegate :backend, :to => :repository
-  
+
   def initialize(repository, path, rev = nil)
     @repository    = repository
     @path          = path
     @base_revision = rev.nil? ? repository.latest_revision : rev.to_i
   end
-  
+
   def blame
     @blame ||= begin
       lines = {:username_length => 0}
@@ -51,11 +51,11 @@ class Node
   def author
     @author ||= exists? ? prop(Svn::Core::PROP_REVISION_AUTHOR).to_s : ''
   end
-  
+
   def changed_at
     @changed_at ||= exists? ? prop(Svn::Core::PROP_REVISION_DATE) : nil
   end
-    
+
   def message
     @message ||= exists? ? prop(Svn::Core::PROP_REVISION_LOG) : ''
   end
@@ -67,15 +67,15 @@ class Node
   def dir?
     type_code == Svn::Core::NODE_DIR
   end
-              
+
   def exists?
     type_code != Svn::Core::NODE_NONE
   end
-  
+
   def diffable?
     text? && previous_root.check_path(path) == Svn::Core::NODE_FILE
   end
-          
+
   def name
     File.basename(path) + (self.dir? ? '/' : '')
   end
@@ -88,7 +88,7 @@ class Node
     return false unless mime_type
     @text_type ||= self.svn_mime_type != @@default_mime_type
   end
-    
+
   def image?
     return false unless mime_type
     @image_type ||= self.mime_type =~ /(png|jpg|jpeg|gif)/i
@@ -100,12 +100,12 @@ class Node
 
   def mime_type
     return nil if self.dir? || !self.exists?
-  
+
     if svn_mime_type.blank? || svn_mime_type == @@default_mime_type
       File.extname(self.name).gsub(/^\./, '')
     else
       svn_mime_type
-    end      
+    end
   end
 
   def content
@@ -113,12 +113,12 @@ class Node
     unless @content
       content = root.file_contents(self.path) do |s|
         returning(s.read) { |rs| GC.start }
-      end      
+      end
       content_charset = 'utf-8'
       unless self.mime_type.blank?
         content_charset = self.mime_type.slice(%r{charset=([A-Za-z0-9\-_]+)}, 1) || content_charset
       end
-      @content = convert_to_utf8(content, content_charset)          
+      @content = convert_to_utf8(content, content_charset)
     end
     @content
   end
@@ -136,7 +136,7 @@ class Node
     sorted   = check_revisions(old_rev, new_rev)
     old_root = find_root_for_revision(sorted[0], diff_path)
     new_root = find_root_for_revision(sorted[1], diff_path)
-    
+
     differ = Svn::Fs::FileDiff.new(old_root, diff_path, new_root, diff_path)
 
     if differ.binary?
@@ -147,14 +147,14 @@ class Node
       differ.unified(old, cur)
     end
   end
-  
+
   def find_root_for_revision(rev, diff_path)
     return rev           if rev.respond_to?(:node_prop)
     return root          if rev ==  base_revision
     return previous_root if rev == (base_revision - 1)
     backend.fs.root find_revision(rev, diff_path)
   end
-  
+
   def find_revision(rev, diff_path)
     return rev.node_created_rev(diff_path) if rev.respond_to?(:node_created_rev)
     case rev
@@ -170,24 +170,24 @@ class Node
       else raise Error, "Invalid Revision: #{rev.inspect}"
     end
   end
-  
+
   def check_revisions(old_rev, new_rev)
     if old_rev.is_a?(String) && new_rev.is_a?(String)
       raise Error, "Can't have two relative revisions: #{old_rev.inspect} - #{new_rev.inspect}"
     end
-    
+
     if old_rev.is_a?(String)
       old_rev = relative_revision_to(new_rev, old_rev)
     elsif new_rev.is_a?(String)
       new_rev = relative_revision_to(old_rev, new_rev)
     end
-    
+
     unless old_rev.is_a?(Fixnum) && new_rev.is_a?(Fixnum)
       raise Error, "Can't have two non-integer revisions: #{old_rev.inspect} - #{new_rev.inspect}"
     end
     [old_rev, new_rev]
   end
-  
+
   def relative_revision_to(revision, value)
     case value
       when /^h/i
@@ -217,7 +217,7 @@ class Node
     return content if content_charset == 'utf-8'
     Iconv.conv('utf-8', content_charset, content) rescue content
   end
-  
+
   def client
     @client ||= Svn::Client::Context.new
   end

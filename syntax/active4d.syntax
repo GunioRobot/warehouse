@@ -1,242 +1,242 @@
---- 
+---
 name: Active4D
 fileTypes: []
 
 scopeName: source.active4d
-repository: 
-  escaped_char: 
+repository:
+  escaped_char:
     name: constant.character.escape.active4d
     match: \\.
-  interpolated_variable: 
+  interpolated_variable:
     name: variable.other.interpolated.local.active4d
-    captures: 
-      "1": 
+    captures:
+      "1":
         name: punctuation.definition.variable.active4d
     match: (\$)[\w_]+({(".+?"|\d+|\$[\w_]+)})*(\[\[\d+\]\])*
-  interpolated_table_field: 
+  interpolated_table_field:
     name: variable.other.interpolated.table-field.active4d
     match: \[\w[\w_ ]*\][\w_]+(\[\[\d+\]\])*
-  interpolated_string: 
-    patterns: 
+  interpolated_string:
+    patterns:
     - include: "#escaped_char"
     - include: "#interpolated_code"
     - include: "#interpolated_table_field"
     - include: "#interpolated_variable"
     - include: "#interpolated_collection_ref"
-  interpolated_code: 
+  interpolated_code:
     name: source.interpolated.active4d
-    endCaptures: 
-      "0": 
+    endCaptures:
+      "0":
         name: punctuation.definition.string.end.active4d
     begin: `
-    beginCaptures: 
-      "0": 
+    beginCaptures:
+      "0":
         name: punctuation.definition.string.begin.active4d
     end: `
-    patterns: 
+    patterns:
     - include: $self
-  interpolated_collection_ref: 
+  interpolated_collection_ref:
     name: variable.other.interpolated.collection-ref.active4d
     match: (_form|_query|_request|globals|session)({(".+?"|\d+|\$[\w_]+)})+(\[\[\d+\]\])*
-  fusedoc: 
+  fusedoc:
     name: text.xml
     begin: (?=^\s*<fusedoc )
     end: (?<=</fusedoc>)
-    patterns: 
+    patterns:
     - include: text.xml
 uuid: 8C2BF09D-AE95-479B-B516-F8DB62C86A0C
 foldingStartMarker: |-
   (?x)
   		(^\s*(?i:if|while|for\ each|for|case\ of|repeat|method|save output)\b
   		)
-patterns: 
+patterns:
 - name: comment.line.backtick.active4d
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.comment.active4d
   match: (`).*$\n?
 - name: comment.line.double-slash.active4d
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.comment.active4d
   match: (//).*$\n?
 - name: comment.line.double-backslash.continuation.active4d
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.comment.active4d
   match: (\\\\).*$\n?
 - name: comment.block.active4d
-  captures: 
-    "0": 
+  captures:
+    "0":
       name: punctuation.definition.comment.active4d
   begin: /\*
   end: \*/
-  patterns: 
+  patterns:
   - include: "#fusedoc"
 - name: string.quoted.double.active4d
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.active4d
   begin: "\"(?!\"\")"
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.active4d
   end: "\""
-  patterns: 
+  patterns:
   - include: "#escaped_char"
 - name: string.quoted.triple.heredoc.active4d
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.active4d
   begin: "\"\"\""
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.active4d
   end: "\"\"\""
-  patterns: 
+  patterns:
   - include: "#escaped_char"
 - name: string.interpolated.quoted.single.active4d
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.active4d
   begin: "'(?!'')"
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.active4d
   end: "'"
-  patterns: 
+  patterns:
   - include: "#interpolated_string"
 - name: string.interpolated.quoted.triple.heredoc.active4d
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.active4d
   begin: "'''"
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.active4d
   end: "'''"
-  patterns: 
+  patterns:
   - include: "#interpolated_string"
 - name: constant.numeric.active4d
   match: (?<![[:alpha:]])[\-]?(?:0x[[:xdigit:]]{1,4}|\d+(\.\d+)?)(?![[:alpha:]])
 - name: constant.language.boolean.active4d
   match: \b(?i)(true|false)\b
 - name: variable.other.local.active4d
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.variable.active4d
   match: (\$)[\w_]+
 - name: variable.other.interprocess.active4d
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.variable.active4d
   match: (\<\>)[\w_]+
 - name: variable.other.table-field.active4d
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.variable.active4d
-    "2": 
+    "2":
       name: punctuation.definition.variable.active4d
   match: (\[)[^\[].*?(\])([\w_ ]+)?
 - name: constant.other.date.active4d
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.constant.active4d
-    "2": 
+    "2":
       name: punctuation.definition.constant.active4d
   match: (!)\d{1,2}/\d{1,2}/\d{2,4}(!)
 - name: constant.other.time.active4d
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.constant.active4d
-    "2": 
+    "2":
       name: punctuation.definition.constant.active4d
   match: (\?)\d{1,2}:\d{1,2}:\d{1,2}(\?)
 - name: meta.function.active4d
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: storage.type.function.active4d
-    "2": 
+    "2":
       name: entity.name.function.active4d
   match: ^\s*(method)\s*("[^"]+")(?!\s*\()
   comment: method definition without parameters
 - name: meta.function.active4d
-  endCaptures: 
-    "1": 
+  endCaptures:
+    "1":
       name: punctuation.definition.parameters.active4d
   begin: ^\s*(method)\s*((")[^"]+("))\s*(\()
-  beginCaptures: 
-    "1": 
+  beginCaptures:
+    "1":
       name: storage.type.function.active4d
-    "2": 
+    "2":
       name: entity.name.function.active4d
-    "3": 
+    "3":
       name: punctuation.definition.entity.active4d
-    "4": 
+    "4":
       name: punctuation.definition.entity.active4d
-    "5": 
+    "5":
       name: punctuation.definition.parameters.active4d
   end: (\))\s*(?:(?:\\\\|//|`).*)?$
-  patterns: 
+  patterns:
   - name: variable.parameter.function.active4d
-    captures: 
-      "1": 
+    captures:
+      "1":
         name: keyword.operator.active4d
-      "2": 
+      "2":
         name: punctuation.definition.variable.active4d
-      "3": 
+      "3":
         name: punctuation.separator.parameters.active4d
     match: (&)?(\$)[\w_]+(;)?
-  - endCaptures: 
-      "1": 
+  - endCaptures:
+      "1":
         name: punctuation.separator.parameters.active4d
     begin: (=)
-    beginCaptures: 
-      "1": 
+    beginCaptures:
+      "1":
         name: punctuation.separator.key-value.active4d
     end: (;)|(?=\))
-    patterns: 
+    patterns:
     - include: $self
   comment: method definition with parameters
 - name: keyword.operator.active4d
   match: |-
     (?x) (
     				:=
-    			|	\+=	
-    			|	\-=	
-    			|	/=	
-    			|	\\=	
-    			|	\*=	
-    			|	\%=	
-    			|	\^=	
-    			|	&=	
-    			|	\|=	
-    			|	<<=	
-    			|	>>=	
-    			|	>	
-    			|	<	
-    			|	>=	
-    			|	<=	
-    			|	=	
-    			|	=~	
-    			|	\#	
-    			|	\#~	
-    			|	~	
-    			|	!~	
+    			|	\+=
+    			|	\-=
+    			|	/=
+    			|	\\=
+    			|	\*=
+    			|	\%=
+    			|	\^=
+    			|	&=
+    			|	\|=
+    			|	<<=
+    			|	>>=
+    			|	>
+    			|	<
+    			|	>=
+    			|	<=
+    			|	=
+    			|	=~
+    			|	\#
+    			|	\#~
+    			|	~
+    			|	!~
     			|	\+
-    			|	\+\+	
-    			|	\-	
-    			|	\-\-	
-    			|	/	
-    			|	\\	
+    			|	\+\+
+    			|	\-
+    			|	\-\-
+    			|	/
+    			|	\\
     			|	\*
     			|	\*\+
     			|	\*/
-    			|	%	
-    			|	&	
-    			|	\|	
-    			|	\^	
-    			|	\^\|	
+    			|	%
+    			|	&
+    			|	\|
+    			|	\^
+    			|	\^\|
     			|	<<
     			|	>>
     			|	\?\+
@@ -263,10 +263,10 @@ patterns:
   comment: library methods
 - name: support.variable.active4d
   match: (?i)\b(OK|Document|fusebox\.conf\.fuseaction)\b
-- captures: 
-    "1": 
+- captures:
+    "1":
       name: support.class.active4d
-    "2": 
+    "2":
       name: support.function.active4d
   match: (?<!\$)\b((?:a4d\.(?:console|debug|lists|utils|web)|Batch|Breadcrumbs|fusebox\.conf|fusebox\.head|fusebox|RowSet))\.([[:alpha:]][[[:alnum:]]_ ]+[[:alnum:]])
 foldingStopMarker: |-

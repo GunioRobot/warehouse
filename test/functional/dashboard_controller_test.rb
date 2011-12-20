@@ -11,7 +11,7 @@ context "Dashboard Controller" do
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
   end
-  
+
   teardown do
     Warehouse.domain = @old
   end

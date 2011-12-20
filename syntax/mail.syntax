@@ -1,109 +1,109 @@
---- 
+---
 name: Mail
-fileTypes: 
+fileTypes:
 - mail
 firstLineMatch: "^From: .*(?=\\w+@[\\w-]+\\.\\w+)"
 scopeName: text.mail.markdown
-repository: 
-  reference: 
+repository:
+  reference:
     name: constant.other.reference.mail
-    captures: 
-      "0": 
+    captures:
+      "0":
         name: punctuation.definition.constant.mail
     begin: <
     end: ">"
-    patterns: 
+    patterns:
     - include: "#string"
     - include: "#comment"
     - include: "#domain_literal"
     - include: "#atom"
-  encoded_text: 
+  encoded_text:
     name: meta.encoded-text.mail
-    captures: 
-      "1": 
+    captures:
+      "1":
         name: constant.other.charset.mail
-      "2": 
+      "2":
         name: constant.other.encoding.mail
     match: =\?(.*?)(?:\*[^?]+)?\?([QB])\?(.*?)\?=
-  any: 
-    patterns: 
+  any:
+    patterns:
     - include: "#group"
     - include: "#reference"
     - include: "#string"
     - include: "#comment"
     - include: "#domain_literal"
     - include: "#atom"
-  domain_literal: 
+  domain_literal:
     name: meta.domain-literal.mail
     begin: \[
     end: \]
-    patterns: 
+    patterns:
     - include: "#quote_pair"
     - include: "#group"
     - include: "#reference"
     - include: "#string"
     - include: "#comment"
     - include: "#atom"
-  quote_pair: 
+  quote_pair:
     name: constant.other.escape.mail
     match: \\.
-  group: 
+  group:
     name: meta.group.mail
     begin: ":(?=.*;)"
     end: ;
-    patterns: 
+    patterns:
     - include: "#reference"
     - include: "#string"
     - include: "#comment"
     - include: "#domain_literal"
     - include: "#atom"
     comment: "this is to group addresses, RFC822 says that these \xE2\x80\x9Cmust occur in  matched pairs,\xE2\x80\x9D but e.g. the date header uses : as a time separator."
-  comment: 
+  comment:
     name: comment.line.parentheses.mail
-    captures: 
-      "0": 
+    captures:
+      "0":
         name: punctuation.definition.comment.mail
     begin: \(
     end: \)
-    patterns: 
+    patterns:
     - include: "#quote_pair"
     - include: "#comment"
-  string: 
+  string:
     name: string.quoted.double.mail
-    endCaptures: 
-      "0": 
+    endCaptures:
+      "0":
         name: punctuation.definition.string.end.mail
     begin: "\""
-    beginCaptures: 
-      "0": 
+    beginCaptures:
+      "0":
         name: punctuation.definition.string.begin.mail
     end: "\""
-    patterns: 
+    patterns:
     - include: "#quote_pair"
     - include: "#encoded_text"
-  atom: 
+  atom:
     name: string.unquoted.atom.mail
     match: "[^ \\t\\v\\n()<>@,;:\\\\\".\\[\\]]+"
 uuid: 15615A0C-37B0-4B3F-9105-53ED536AFBB4
-patterns: 
+patterns:
 - name: meta.header.mail
   begin: ((?i:subject))(:)\s*
   contentName: entity.name.section.mail
-  beginCaptures: 
-    "1": 
+  beginCaptures:
+    "1":
       name: keyword.other.mail
-    "2": 
+    "2":
       name: punctuation.separator.key-value.mail
   end: ^(?![ \t\v])
 - name: meta.header.mail
   begin: ([\x{21}-\x{39}\x{3B}-\x{7E}]+)(:)\s*
-  beginCaptures: 
-    "1": 
+  beginCaptures:
+    "1":
       name: keyword.other.mail
-    "2": 
+    "2":
       name: punctuation.separator.key-value.mail
   end: ^(?![ \t\v])
-  patterns: 
+  patterns:
   - include: "#string"
   - include: "#comment"
   - include: "#reference"
@@ -111,7 +111,7 @@ patterns:
 - name: text.html.markdown
   begin: ^(?![A-Za-z0-9]+:)
   end: ^(?=not)possible$
-  patterns: 
+  patterns:
   - name: meta.separator.signature.mail
     match: ^-- $\n
   - include: text.html.markdown

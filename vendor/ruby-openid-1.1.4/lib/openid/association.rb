@@ -22,7 +22,7 @@ module OpenID
     def Association.from_expires_in(expires_in, handle, secret, assoc_type)
       issued = Time.now.to_i
       lifetime = expires_in
-      new(handle, secret, issued, lifetime, assoc_type) 
+      new(handle, secret, issued, lifetime, assoc_type)
     end
 
     def Association.serialize(assoc)
@@ -32,14 +32,14 @@ module OpenID
               OpenID::Util.to_base64(assoc.secret),
               assoc.issued.to_i.to_s,
               assoc.lifetime.to_i.to_s,
-              assoc.assoc_type              
+              assoc.assoc_type
              ]
-  
+
       lines = ""
-      (0...@@assoc_keys.length).collect do |i| 
+      (0...@@assoc_keys.length).collect do |i|
         lines += "#{@@assoc_keys[i]}: #{data[i]}\n"
       end
-    
+
       lines
     end
 
@@ -51,10 +51,10 @@ module OpenID
         keys << k.strip
         values << v.strip
       end
-  
+
       version, handle, secret, issued, lifetime, assoc_type = values
       raise 'VersionError' if version != @@version
-  
+
       secret = OpenID::Util.from_base64(secret)
       issued = issued.to_i
       lifetime = lifetime.to_i
@@ -65,7 +65,7 @@ module OpenID
       if assoc_type != 'HMAC-SHA1'
         raise ArgumentError, "HMAC-SHA1 is the only supported assoc_type, got #{assoc_type}"
       end
-      
+
       @handle = handle
       @secret = secret
       @issued = issued

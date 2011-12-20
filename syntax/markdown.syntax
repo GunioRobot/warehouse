@@ -1,44 +1,44 @@
---- 
+---
 name: Markdown
-fileTypes: 
+fileTypes:
 - markdown
 - mdown
 - markdn
 - md
 scopeName: text.html.markdown
-repository: 
-  image-inline: 
+repository:
+  image-inline:
     name: meta.image.inline.markdown
-    captures: 
-      "6": 
+    captures:
+      "6":
         name: punctuation.definition.metadata.markdown
-      "11": 
+      "11":
         name: punctuation.definition.string.markdown
-      "7": 
+      "7":
         name: punctuation.definition.link.markdown
-      "12": 
+      "12":
         name: punctuation.definition.string.markdown
-      "8": 
+      "8":
         name: markup.underline.link.image.markdown
-      "13": 
+      "13":
         name: string.other.link.description.title.markdown
-      "9": 
+      "9":
         name: punctuation.definition.link.markdown
-      "14": 
+      "14":
         name: punctuation.definition.string.markdown
-      "15": 
+      "15":
         name: punctuation.definition.string.markdown
-      "16": 
+      "16":
         name: punctuation.definition.metadata.markdown
-      "1": 
+      "1":
         name: punctuation.definition.string.begin.markdown
-      "2": 
+      "2":
         name: string.other.link.description.markdown
-      "3": 
+      "3":
         name: punctuation.definition.string.end.markdown
-      "10": 
+      "10":
         name: string.other.link.description.title.markdown
-      "5": 
+      "5":
         name: invalid.illegal.whitespace.markdown
     match: "(?x:\n\
       \t\t\t\t\\!\t\t\t\t\t\t\t# Images start with !\n\
@@ -55,65 +55,65 @@ repository:
       \t\t\t\t\t\\s*\t\t\t\t\t\t# Optional whitespace\n\
       \t\t\t\t(\\))\n\
       \t\t\t )"
-  image-ref: 
+  image-ref:
     name: meta.image.reference.markdown
-    captures: 
-      "6": 
+    captures:
+      "6":
         name: constant.other.reference.link.markdown
-      "7": 
+      "7":
         name: punctuation.definition.constant.markdown
-      "1": 
+      "1":
         name: punctuation.definition.string.begin.markdown
-      "2": 
+      "2":
         name: string.other.link.description.markdown
-      "4": 
+      "4":
         name: punctuation.definition.string.begin.markdown
-      "5": 
+      "5":
         name: punctuation.definition.constant.markdown
     match: \!(\[)((?<square>[^\[\]\\]|\\.|\[\g<square>*+\])*+)(\])[ ]?(\[)(.*?)(\])
-  escape: 
+  escape:
     name: constant.character.escape.markdown
     match: \\[-`*_#+.!(){}\[\]\\>]
-  bracket: 
+  bracket:
     name: meta.other.valid-bracket.markdown
     match: <(?![a-z/?\$!])
     comment: "\n\
       \t\t\t\tMarkdown will convert this for us. We match it so that the\n\
       \t\t\t\tHTML grammar will not mark it up as invalid.\n\
       \t\t\t"
-  list-paragraph: 
-    patterns: 
+  list-paragraph:
+    patterns:
     - name: meta.paragraph.list.markdown
       begin: \G\s+(?=\S)
       end: ^\s*$
-      patterns: 
+      patterns:
       - include: "#inline"
-  link-ref-literal: 
+  link-ref-literal:
     name: meta.link.reference.literal.markdown
-    captures: 
-      "6": 
+    captures:
+      "6":
         name: punctuation.definition.constant.end.markdown
-      "1": 
+      "1":
         name: punctuation.definition.string.begin.markdown
-      "2": 
+      "2":
         name: string.other.link.title.markdown
-      "4": 
+      "4":
         name: punctuation.definition.string.end.markdown
-      "5": 
+      "5":
         name: punctuation.definition.constant.begin.markdown
     match: (\[)((?<square>[^\[\]\\]|\\.|\[\g<square>*+\])*+)(\])[ ]?(\[)(\])
-  link-email: 
+  link-email:
     name: meta.link.email.lt-gt.markdown
-    captures: 
-      "1": 
+    captures:
+      "1":
         name: punctuation.definition.link.markdown
-      "2": 
+      "2":
         name: markup.underline.link.markdown
-      "4": 
+      "4":
         name: punctuation.definition.link.markdown
     match: (<)((?:mailto:)?[-.\w]+@[-a-z0-9]+(\.[-a-z0-9]+)*\.[a-z]+)(>)
-  inline: 
-    patterns: 
+  inline:
+    patterns:
     - include: "#escape"
     - include: "#ampersand"
     - include: "#bracket"
@@ -128,11 +128,11 @@ repository:
     - include: "#image-ref"
     - include: "#link-ref-literal"
     - include: "#link-ref"
-  block_quote: 
+  block_quote:
     name: markup.quote.markdown
     begin: \G[ ]{,3}(>)(?!$)[ ]?
-    beginCaptures: 
-      "1": 
+    beginCaptures:
+      "1":
         name: punctuation.definition.blockquote.markdown
     end: |-
       (?x)^
@@ -140,13 +140,13 @@ repository:
       				|	[ ]{,3}(?<marker>[-*_])([ ]{,2}\k<marker>){2,}[ \t]*+$
       				|	[ ]{,3}>.
       				)
-    patterns: 
+    patterns:
     - begin: |-
         (?x)\G
         						(?=	[ ]{,3}>.
         						)
       end: ^
-      patterns: 
+      patterns:
       - include: "#block_quote"
     - begin: |-
         (?x)\G
@@ -156,7 +156,7 @@ repository:
         						)
       applyEndPatternLast: 1
       end: ^
-      patterns: 
+      patterns:
       - include: "#block_raw"
       - include: "#heading"
       - include: "#separator"
@@ -169,67 +169,67 @@ repository:
         						|	[ ]{,3}(?<marker>[-*_])([ ]{,2}\k<marker>){2,}[ \t]*+$
         						)
       end: $|(?<=\n)
-      patterns: 
+      patterns:
       - include: "#inline"
     comment: "\n\
       \t\t\t\tWe terminate the block quote when seeing an empty line, a\n\
       \t\t\t\tseparator or a line with leading > characters. The latter is\n\
       \t\t\t\tto \xE2\x80\x9Creset\xE2\x80\x9D the quote level for quoted lines.\n\
       \t\t\t"
-  link-ref: 
+  link-ref:
     name: meta.link.reference.markdown
-    captures: 
-      "6": 
+    captures:
+      "6":
         name: constant.other.reference.link.markdown
-      "7": 
+      "7":
         name: punctuation.definition.constant.end.markdown
-      "1": 
+      "1":
         name: punctuation.definition.string.begin.markdown
-      "2": 
+      "2":
         name: string.other.link.title.markdown
-      "4": 
+      "4":
         name: punctuation.definition.string.end.markdown
-      "5": 
+      "5":
         name: punctuation.definition.constant.begin.markdown
     match: (\[)((?<square>[^\[\]\\]|\\.|\[\g<square>*+\])*+)(\])[ ]?(\[)([^\]]*+)(\])
-  block_raw: 
+  block_raw:
     name: markup.raw.block.markdown
     match: \G([ ]{4}|\t).*$\n?
-  separator: 
+  separator:
     name: meta.separator.markdown
     match: \G[ ]{,3}([-*_])([ ]{,2}\1){2,}[ \t]*$\n?
-  link-inline: 
+  link-inline:
     name: meta.link.inline.markdown
-    captures: 
-      "6": 
+    captures:
+      "6":
         name: punctuation.definition.metadata.markdown
-      "11": 
+      "11":
         name: punctuation.definition.string.begin.markdown
-      "7": 
+      "7":
         name: punctuation.definition.link.markdown
-      "12": 
+      "12":
         name: punctuation.definition.string.end.markdown
-      "8": 
+      "8":
         name: markup.underline.link.markdown
-      "13": 
+      "13":
         name: string.other.link.description.title.markdown
-      "9": 
+      "9":
         name: punctuation.definition.link.markdown
-      "14": 
+      "14":
         name: punctuation.definition.string.begin.markdown
-      "15": 
+      "15":
         name: punctuation.definition.string.end.markdown
-      "16": 
+      "16":
         name: punctuation.definition.metadata.markdown
-      "1": 
+      "1":
         name: punctuation.definition.string.begin.markdown
-      "2": 
+      "2":
         name: string.other.link.title.markdown
-      "4": 
+      "4":
         name: punctuation.definition.string.end.markdown
-      "10": 
+      "10":
         name: string.other.link.description.title.markdown
-      "5": 
+      "5":
         name: invalid.illegal.whitespace.markdown
     match: "(?x:\n\
       \t\t\t\t(\\[)((?<square>[^\\[\\]\\\\]|\\\\.|\\[\\g<square>*+\\])*+)(\\])\t\n\
@@ -245,10 +245,10 @@ repository:
       \t\t\t\t\t\\s*\t\t\t\t\t\t# Optional whitespace\n\
       \t\t\t\t(\\))\n\
       \t\t\t )"
-  bold: 
+  bold:
     name: markup.bold.markdown
-    captures: 
-      "1": 
+    captures:
+      "1":
         name: punctuation.definition.bold.markdown
     begin: "(?x)\n\
       \t\t\t\t\t\t(\\*\\*|__)(?=\\S)\t\t\t\t\t\t\t\t# Open\n\
@@ -292,11 +292,11 @@ repository:
       \t\t\t\t\t\t)\n\
       \t\t\t\t\t"
     end: (?<=\S)(\1)
-    patterns: 
+    patterns:
     - begin: (?=<[^>]*?>)
       applyEndPatternLast: 1
       end: (?<=>)
-      patterns: 
+      patterns:
       - include: text.html.basic
     - include: "#escape"
     - include: "#ampersand"
@@ -310,38 +310,38 @@ repository:
     - include: "#image-ref"
     - include: "#link-ref-literal"
     - include: "#link-ref"
-  heading: 
+  heading:
     name: markup.heading.markdown
-    captures: 
-      "1": 
+    captures:
+      "1":
         name: punctuation.definition.heading.markdown
     begin: \G(#{1,6})(?!#)\s*(?=\S)
     contentName: entity.name.section.markdown
     end: \s*(#*)$\n?
-    patterns: 
+    patterns:
     - include: "#inline"
-  link-inet: 
+  link-inet:
     name: meta.link.inet.markdown
-    captures: 
-      "1": 
+    captures:
+      "1":
         name: punctuation.definition.link.markdown
-      "2": 
+      "2":
         name: markup.underline.link.markdown
-      "3": 
+      "3":
         name: punctuation.definition.link.markdown
     match: (<)((?:https?|ftp)://.*?)(>)
-  raw: 
+  raw:
     name: markup.raw.inline.markdown
-    captures: 
-      "1": 
+    captures:
+      "1":
         name: punctuation.definition.raw.markdown
-      "3": 
+      "3":
         name: punctuation.definition.raw.markdown
     match: (`+)([^`]|(?!(?<!`)\1(?!`))`)*+(\1)
-  italic: 
+  italic:
     name: markup.italic.markdown
-    captures: 
-      "1": 
+    captures:
+      "1":
         name: punctuation.definition.italic.markdown
     begin: "(?x)\n\
       \t\t\t\t\t\t(\\*|_)(?=\\S)\t\t\t\t\t\t\t\t# Open\n\
@@ -386,11 +386,11 @@ repository:
       \t\t\t\t\t\t)\n\
       \t\t\t\t\t"
     end: (?<=\S)(\1)((?!\1)|(?=\1\1))
-    patterns: 
+    patterns:
     - begin: (?=<[^>]*?>)
       applyEndPatternLast: 1
       end: (?<=>)
-      patterns: 
+      patterns:
       - include: text.html.basic
     - include: "#escape"
     - include: "#ampersand"
@@ -404,10 +404,10 @@ repository:
     - include: "#image-ref"
     - include: "#link-ref-literal"
     - include: "#link-ref"
-  line-break: 
+  line-break:
     name: meta.dummy.line-break
     match: " {2,}$"
-  ampersand: 
+  ampersand:
     name: meta.other.valid-ampersand.markdown
     match: "&(?!([a-zA-Z0-9]+|#[0-9]+|#x[0-9a-fA-F]+);)"
     comment: "\n\
@@ -421,7 +421,7 @@ foldingStartMarker: |-
   		|<!--(?!.*-->)
   		|\{\s*($|\?>\s*$|//|/\*(.*\*/\s*$|(?!.*?\*/)))
   		)
-patterns: 
+patterns:
 - name: meta.block-level.markdown
   begin: |-
     (?x)^
@@ -437,7 +437,7 @@ patterns:
     				|	[#]{1,6}\s*+
     				|	[ ]{,3}(?<marker>[-*_])([ ]{,2}\k<marker>){2,}[ \t]*+$
     				)
-  patterns: 
+  patterns:
   - include: "#block_quote"
   - include: "#block_raw"
   - include: "#heading"
@@ -448,25 +448,25 @@ patterns:
     \t\t\t\tpattern will only match stuff matched by the sub-patterns.\n\
     \t\t\t"
 - name: markup.list.unnumbered
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.list_item.markdown
   begin: ^[ ]{0,3}([*+-])(?=\s)
   end: ^(?=\S)
-  patterns: 
+  patterns:
   - include: "#list-paragraph"
 - name: markup.list.numbered
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.list_item.markdown
   begin: ^[ ]{0,3}[0-9]+(\.)(?=\s)
   end: ^(?=\S)
-  patterns: 
+  patterns:
   - include: "#list-paragraph"
 - name: meta.disable-markdown
   begin: ^(?=<(p|div|h[1-6]|blockquote|pre|table|dl|ol|ul|script|noscript|form|fieldset|iframe|math|ins|del)\b)(?!.*?</\1>)
   end: (?<=^</\1>$\n)
-  patterns: 
+  patterns:
   - include: text.html.basic
   comment: "\n\
     \t\t\t\tMarkdown formatting is disabled inside block-level tags.\n\
@@ -474,36 +474,36 @@ patterns:
 - name: meta.disable-markdown
   begin: ^(?=<(p|div|h[1-6]|blockquote|pre|table|dl|ol|ul|script|noscript|form|fieldset|iframe|math|ins|del)\b)
   end: $\n?
-  patterns: 
+  patterns:
   - include: text.html.basic
   comment: Same rule but for one line disables.
 - name: meta.link.reference.def.markdown
-  captures: 
-    "6": 
+  captures:
+    "6":
       name: markup.underline.link.markdown
-    "11": 
+    "11":
       name: string.other.link.description.title.markdown
-    "7": 
+    "7":
       name: punctuation.definition.link.markdown
-    "12": 
+    "12":
       name: punctuation.definition.string.begin.markdown
-    "8": 
+    "8":
       name: string.other.link.description.title.markdown
-    "13": 
+    "13":
       name: punctuation.definition.string.end.markdown
-    "9": 
+    "9":
       name: punctuation.definition.string.begin.markdown
-    "1": 
+    "1":
       name: punctuation.definition.constant.markdown
-    "2": 
+    "2":
       name: constant.other.reference.link.markdown
-    "3": 
+    "3":
       name: punctuation.definition.constant.markdown
-    "4": 
+    "4":
       name: punctuation.separator.key-value.markdown
-    "10": 
+    "10":
       name: punctuation.definition.string.end.markdown
-    "5": 
+    "5":
       name: punctuation.definition.link.markdown
   match: "(?x:\n\
     \t\t\t\t\\s*\t\t\t\t\t\t# Leading whitespace\n\
@@ -521,17 +521,17 @@ patterns:
 - name: meta.paragraph.markdown
   begin: ^(?=\S)(?![=-]{3,}(?=$))
   end: ^(?:\s*$|(?=[ ]{,3}>.))|(?=[ \t]*\n)(?<=^===|^====|=====|^---|^----|-----)[ \t]*\n
-  patterns: 
+  patterns:
   - include: "#inline"
   - include: text.html.basic
   - name: markup.heading.1.markdown
-    captures: 
-      "1": 
+    captures:
+      "1":
         name: punctuation.definition.heading.markdown
     match: ^(={3,})(?=[ \t]*$)
   - name: markup.heading.2.markdown
-    captures: 
-      "1": 
+    captures:
+      "1":
         name: punctuation.definition.heading.markdown
     match: ^(-{3,})(?=[ \t]*$)
 foldingStopMarker: |-

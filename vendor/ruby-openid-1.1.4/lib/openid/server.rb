@@ -42,7 +42,7 @@ module OpenID
   #
   #
   # ==OpenID Extensions
-  # 
+  #
   # Do you want to provide other information for your users
   # in addition to authentication?  Version 1.2 of the OpenID
   # protocol allows consumers to add extensions to their requests.
@@ -59,7 +59,7 @@ module OpenID
   # the OpenID signature.
   #
   # For example when request is a checkid_* request:
-  #   
+  #
   #   response = request.answer(true)
   #   # this will add a signed 'openid.sreg.timezone' parameter to the response
   #   response.add_field('sreg', 'timezone', 'America/Los_Angeles')
@@ -73,18 +73,18 @@ module OpenID
   # Additionally, several concrete store implementations are provided, so that
   # most sites won't need to implement a custom store.  For a store backed
   # by flat files on disk, see OpenID::FilesystemStore.
-  # 
+  #
   # ==Upgrading
   #
   # The keys by which a server looks up associations in its store have changed
   # in version 1.2 of this library.  If your store has entries created from
   # version 1.0 code, you should empty it.
   module Server
-       
+
     HTTP_REDIRECT = 302
     HTTP_OK = 200
     HTTP_ERROR = 400
-    
+
     BROWSER_REQUEST_MODES = ['checkid_setup', 'checkid_immediate']
     OPENID_PREFIX = 'openid.'
 
@@ -93,7 +93,7 @@ module OpenID
 
     # Represents an incoming OpenID request.
     class OpenIDRequest
-      
+
       attr_reader :mode
 
       # +mode+ is the corresponsing "openid.mode" value of the request,
@@ -106,7 +106,7 @@ module OpenID
 
     # A request to verify the validity of a previous response.
     class CheckAuthRequest < OpenIDRequest
-      
+
       attr_accessor :assoc_handle, :sig, :signed, :invalidate_handle
 
       # Create a new CheckAuthRequest. Please see the
@@ -123,7 +123,7 @@ module OpenID
       #
       # [+signed+]
       #   An array of pairs of [key, value], where key is the signed paramter
-      #   name without the "openid." prefix.  Value is the String value of 
+      #   name without the "openid." prefix.  Value is the String value of
       #   of the paramter.
       #
       # [+invalidate_handle+]
@@ -140,7 +140,7 @@ module OpenID
       # Produce a CheckAuthRequest instance from the request query.  Raises
       # a ProtocolError if the request is malformed, and returns an instance
       # CheckAuthRequest on success.
-      def CheckAuthRequest.from_query(query)       
+      def CheckAuthRequest.from_query(query)
         assoc_handle = query['openid.assoc_handle']
         sig = query['openid.sig']
         signed = query['openid.signed']
@@ -165,13 +165,13 @@ module OpenID
           end
           signed_pairs << [field, value]
         end
-        
+
         return new(assoc_handle, sig, signed_pairs, invalidate_handle)
       end
 
       # Respond to this request.  Given an OpenID::Server::Signatory instance
       # the validity of the signature and invalidate_handle can be checked.
-      # 
+      #
       # Returns an OpenIDResponse object with an appropriate "is_valid" field
       # and an "invalidate_handle" field if appropriate.
       def answer(signatory)
@@ -180,19 +180,19 @@ module OpenID
 
         response = OpenIDResponse.new(self)
         response.fields['is_valid'] = is_valid ? 'true' : 'false'
-        
+
         if @invalidate_handle
           assoc = signatory.get_association(@invalidate_handle, false)
           unless assoc
             response.fields['invalidate_handle'] = @invalidate_handle
-          end          
+          end
         end
 
         return response
       end
 
     end
-    
+
     # An object that knows how to handle association requests with no
     # session type.
     class PlainTextServerSession
@@ -206,7 +206,7 @@ module OpenID
       def PlainTextServerSession.from_query(query)
         new
       end
-      
+
       def answer(secret)
         return {'mac_key' => OpenID::Util.to_base64(secret)}
       end
@@ -218,10 +218,10 @@ module OpenID
     class DiffieHellmanServerSession
 
       attr_reader :session_type, :dh, :consumer_pubkey
-      
+
       # In general you should create instances of DiffieHellmanServerSession
       # with the from_query class method.
-      # 
+      #
       # ==Parameters
       #
       # [+dh+]
@@ -233,10 +233,10 @@ module OpenID
         @dh = dh
         @consumer_pubkey = consumer_pubkey
         @session_type = 'DH-SHA1'
-      end      
+      end
 
       # Creates a new DiffieHellmanServerSession from the incoming request.
-      # Raises a ProtocolError for malformed requests, and returns a 
+      # Raises a ProtocolError for malformed requests, and returns a
       # DiffieHellmanServerSession instnace on success.
       def DiffieHellmanServerSession.from_query(query)
         dh_modulus = query['openid.dh_modulus']
@@ -270,7 +270,7 @@ module OpenID
 
       attr_accessor :assoc_type, :session
 
-      # +session+ is an instance of PlainTextServerSession or 
+      # +session+ is an instance of PlainTextServerSession or
       # DiffieHellmanServerSession
       def initialize(session)
         super('associate')
@@ -290,7 +290,7 @@ module OpenID
           raise ProtocolError.new(query,
                                   "Unknown session_type #{session_type}")
         end
-        
+
         return new(session)
       end
 
@@ -307,9 +307,9 @@ module OpenID
         }
 
         # add the session specific arguments to the response fields
-        response.fields.update(fields)        
+        response.fields.update(fields)
         response.fields.update(@session.answer(assoc.secret))
-        
+
         if @session.session_type != 'plaintext'
           response.fields['session_type'] = @session.session_type
         end
@@ -323,15 +323,15 @@ module OpenID
     # user. This object handles requests for openid.mode checkid_immediate, and
     # checkid_setup.
     class CheckIDRequest < OpenIDRequest
-      
+
       attr_accessor :identity, :return_to, :trust_root, :immediate, \
                     :assoc_handle, :mode, :query
-      
+
       # Create a new CheckIDRequest instance.  Most likely you'll want to
       # use CheckIDRequest.from_query to create this object.
       def initialize(mode, identity, return_to,
                      trust_root=nil, assoc_handle=nil)
-        
+
         unless ['checkid_immediate', 'checkid_setup'].include?(mode)
           raise ProtocolError, "Can't create CheckIDRequest for mode #{mode}"
         end
@@ -344,8 +344,8 @@ module OpenID
         @assoc_handle = assoc_handle
         @query = {}
       end
-       
-      
+
+
       # Create a CheckIDRequest object from a web query.  May raise a
       # ProtocolError if request is a malformed checkid_* reuquest.
       def CheckIDRequest.from_query(query)
@@ -366,12 +366,12 @@ module OpenID
         if trust_root and not OpenID::TrustRoot.parse(trust_root)
           raise MalformedTrustRoot.new(query, trust_root)
         end
-       
+
         assoc_handle = query['openid.assoc_handle']
-        
-        req = new(mode, identity, return_to, trust_root, assoc_handle)        
+
+        req = new(mode, identity, return_to, trust_root, assoc_handle)
         req.query = query
-        
+
         unless req.trust_root_valid
           raise UntrustedReturnURL.new(query, return_to, trust_root)
         end
@@ -439,7 +439,7 @@ module OpenID
           end
 
         end
-        
+
         return response
       end
 
@@ -483,7 +483,7 @@ module OpenID
       end
 
     end
-    
+
     # Object representing a response to an OpenIDRequest
     class OpenIDResponse
 
@@ -529,7 +529,7 @@ module OpenID
           namespaced_fields = other.fields.dup
           namespaced_signed = other.signed.dup
         end
-        
+
         @fields.update(namespaced_fields)
         @signed |= namespaced_signed
       end
@@ -564,7 +564,7 @@ module OpenID
       def encode_to_kvform
         return OpenID::Util.kvform(@fields)
       end
-      
+
     end
 
     # Object responsible for signing responses, and checking signatures.
@@ -572,7 +572,7 @@ module OpenID
       @@secret_lifetime = 14 * 24 * 60 * 6
       @@normal_key = 'http://localhost/|normal'
       @@dumb_key = 'http://localhost/|dumb'
-      
+
       attr_reader :dumb_key
 
       # Accepts an object that implements the OpenID::Store interface.  See
@@ -596,14 +596,14 @@ module OpenID
       #   Array of Array pairs of key, value signed data.
       #
       # [+dumb+]
-      #   boolean representing whether this is a dumb mode request      
+      #   boolean representing whether this is a dumb mode request
       def verify(assoc_handle, sig, signed_pairs, dumb=true)
         assoc = self.get_association(assoc_handle, dumb)
         unless assoc
           OpenID::Util.log("failed to get assoc with handle #{assoc_handle} to verify sig #{sig}")
           return false
         end
-        
+
         expected_sig = OpenID::Util.to_base64(assoc.sign(signed_pairs))
 
         if sig == expected_sig
@@ -633,7 +633,7 @@ module OpenID
           # dumb mode
           assoc = self.create_association(true)
         end
-        
+
         signed_response.fields['assoc_handle'] = assoc.handle
         assoc.add_signature(signed_response.signed,
                             signed_response.fields, '')
@@ -660,15 +660,15 @@ module OpenID
         if assoc_handle.nil?
           raise ArgumentError, 'assoc_handle must not be nil'
         end
-        
+
         key = dumb ? @@dumb_key : @@normal_key
-        
+
         assoc = @store.get_association(key, assoc_handle)
         if assoc and assoc.expired?
           @store.remove_association(key, assoc_handle)
           assoc = nil
         end
-        
+
         return assoc
       end
 
@@ -684,7 +684,7 @@ module OpenID
     # responses can be issued to your framework by examining the +code+
     # method and associated methods.
     class WebResponse
-      
+
       attr_accessor :code, :headers, :body
 
       def initialize
@@ -715,7 +715,7 @@ module OpenID
 
     # Object that encodes OpenIDResponse objects into WebResponse objects.
     class Encoder
-      
+
       def encode(response)
         webresponse = WebResponse.new
 
@@ -731,7 +731,7 @@ module OpenID
           # don't know how to encode response
           raise EncodingError.new(response)
         end
-        
+
         return webresponse
       end
 
@@ -740,7 +740,7 @@ module OpenID
     # Object that encodes OpenIDResponse objects into WebResponse objects,
     # potentially adding a signature along the way.
     class SigningEncoder < Encoder
-      
+
       def initialize(signatory)
         if signatory.nil?
           raise ArgumentError, "signatory must not be nil"
@@ -765,7 +765,7 @@ module OpenID
 
       def decode(query)
         return nil if query.length == 0
-        
+
         mode = query['openid.mode']
         return nil if mode.nil?
 
@@ -782,17 +782,17 @@ module OpenID
 
         when 'associate'
           return AssociateRequest.from_query(query)
-          
+
         else
           raise ProtocolError.new(query, "Unknown mode #{mode}")
         end
-        
+
       end
 
     end
 
     # Top level object that handles incoming requests for an OpenID server.
-    # 
+    #
     # Some types of requests (those which are not CheckIDRequest objects) may
     # be handed to the handle_request method, and an appropriate response
     # will be returned.
@@ -807,13 +807,13 @@ module OpenID
     # file based solution.
     #
     # ==Pseudo Code
-    # 
+    #
     # Below is some pseudo code for using this object to handle OpenID server
     # requests. The +params+ variable represents a Hash of the incoming
     # arguments.  is_authorized and show_decide_page are methods you provide.
     # At the end you have a WebResponse object suitable for examining and
     # issuing a response to your web server.
-    #   
+    #
     #   include OpenID
     #   store = FilesystemStore.new('/var/openid/store')
     #   server = Server::Server.new(store)
@@ -838,7 +838,7 @@ module OpenID
     # app/controllers/server_controller.rb and the +index+ method of the
     # ServerController object.
     class Server
-      
+
       # +store+ is a kind of OpenID::Store
       def initialize(store)
         @store = store
@@ -858,12 +858,12 @@ module OpenID
       def handle_request(request)
         return self.send('openid_'+request.mode, request)
       end
-      
+
       # Return a WebResponse object given an OpenIDResponse object
       def encode_response(response)
         return @encoder.encode(response)
       end
-      
+
       # called by handle_request to perform check auth calls
       def openid_check_authentication(request)
         return request.answer(@signatory)
@@ -879,7 +879,7 @@ module OpenID
 
     # Raised when an OpenID request encounters some kind of protocol error.
     class ProtocolError < Exception
-      
+
       attr_reader :query
 
       def initialize(query, text=nil)
@@ -896,12 +896,12 @@ module OpenID
         unless return_to
           raise ArgumentError, 'No return_to in query'
         end
-        
+
         args = {
           'openid.mode' => 'error',
           'openid.error' => self.to_s
         }
-        
+
         return OpenID::Util.append_args(return_to, args)
       end
 
@@ -909,8 +909,8 @@ module OpenID
         args = {
           'mode' => 'error',
           'error' => self.to_s
-        }        
-        return OpenID::Util.kvform(args)        
+        }
+        return OpenID::Util.kvform(args)
       end
 
       def which_encoding?
@@ -920,19 +920,19 @@ module OpenID
 
         mode = @query['openid.mode']
         if mode and not BROWSER_REQUEST_MODES.member?(mode)
-          return ENCODE_KVFORM          
+          return ENCODE_KVFORM
         end
-        
+
         return nil
       end
 
     end
 
-    class EncodingError < Exception; end    
+    class EncodingError < Exception; end
     class AlreadySigned < EncodingError; end
-    
+
     class MalformedReturnURL < ProtocolError
-      
+
       attr_reader :return_to
 
       def initialize(query, return_to)
@@ -951,7 +951,7 @@ module OpenID
       def initialize(query, return_to, trust_root)
         super(query)
         @return_to = return_to
-        @trust_root = trust_root        
+        @trust_root = trust_root
       end
     end
 

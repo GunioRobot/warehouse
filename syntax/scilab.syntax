@@ -1,6 +1,6 @@
---- 
+---
 name: Scilab
-fileTypes: 
+fileTypes:
 - sce
 - sci
 - tst
@@ -8,7 +8,7 @@ fileTypes:
 scopeName: source.scilab
 uuid: 14374AA3-A329-4623-8DFA-1ACC2CE222B9
 foldingStartMarker: ^(?!.*//.*).*\b(if|while|for|function|select)\b
-patterns: 
+patterns:
 - name: comment.line.double-slash.scilab
   begin: //
   end: $\n?
@@ -19,19 +19,19 @@ patterns:
 - name: string.quoted.double.scilab
   begin: "\""
   end: "\"(?!\")"
-  patterns: 
+  patterns:
   - name: constant.character.escape.scilab
     match: "''|\"\""
 - name: string.quoted.single.scilab
   begin: (?<![\w\]\)])'
   end: "'(?!')"
-  patterns: 
+  patterns:
   - name: constant.character.escape.scilab
     match: "''|\"\""
-- captures: 
-    "1": 
+- captures:
+    "1":
       name: keyword.control.scilab
-    "2": 
+    "2":
       name: entity.name.function.scilab
   match: \b(function)\s+(?:[^=]+=\s*)?(\w+)(?:\s*\(.*\))?
 - name: keyword.control.scilab

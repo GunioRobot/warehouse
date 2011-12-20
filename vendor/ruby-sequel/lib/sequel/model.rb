@@ -184,12 +184,12 @@ module Sequel
       dataset.filter(*args, &block).limit(1).first
       # dataset[cond.is_a?(Hash) ? cond : primary_key_hash(cond)]
     end
-    
+
     def self.[](*args)
       args = args.first if (args.size == 1)
       dataset[(Hash === args) ? args : primary_key_hash(args)]
     end
-    
+
     # Like find but invokes create with given conditions when record does not
     # exists.
     def self.find_or_create(cond)

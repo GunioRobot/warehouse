@@ -1,7 +1,7 @@
 class OpenidLoginGenerator < Rails::Generator::NamedBase
   def manifest
     record do |m|
-      
+
       # Login module, controller class, functional test, and helper.
       m.template "openid_login_system.rb", "lib/openid_login_system.rb"
       m.template "controller.rb", File.join("app/controllers", class_path, "#{file_name}_controller.rb")
@@ -17,7 +17,7 @@ class OpenidLoginGenerator < Rails::Generator::NamedBase
       m.template "scaffold:layout.rhtml", "app/views/layouts/scaffold.rhtml"
       m.template "scaffold:style.css", "public/stylesheets/scaffold.css"
 
-      # Views. 
+      # Views.
       m.directory File.join("app/views", class_path, file_name)
       login_views.each do |action|
         m.template "view_#{action}.rhtml",
@@ -29,7 +29,7 @@ class OpenidLoginGenerator < Rails::Generator::NamedBase
   end
 
   attr_accessor :controller_class_name
-  
+
   def login_views
     %w(welcome login logout)
   end

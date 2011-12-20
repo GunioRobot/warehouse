@@ -1,44 +1,44 @@
---- 
+---
 name: Processing
-fileTypes: 
+fileTypes:
 - pde
 scopeName: source.processing
 uuid: EF0D256C-2FCB-4A87-9250-0F5F82A366B9
 foldingStartMarker: (/\*\*|\{\s*$)
-patterns: 
+patterns:
 - name: support.function.processing
   match: \b(abs|acos|alpha|alpha|ambient|ambientLight|append|applyMatrix|arc|asin|atan2|atan|background|beginCamera|beginShape|bezier|bezierDetail|bezierPoint|bezierTangent|bezierVertex|binary|blend|blend|blue|boolean|box|brightness|byte|cache|camera|ceil|char|charAt|color|colorMode|concat|constrain|contract|copy|copy|cos|createFont|cursor|curve|curveDetail|curvePoint|curveSegments|curveTightness|curveVertex|day|degrees|delay|directionalLight|dist|duration|ellipse|ellipseMode|emissive|endCamera|endShape|equals|exp|expand|fill|filter|filter|float|floor|framerate|frustum|get|get|green|hex|hint|hour|hue|image|imageMode|indexOf|int|join|keyPressed|keyReleased|length|lerp|lightFalloff|lightSpecular|lights|line|link|list|loadBytes|loadFont|loadImage|loadPixels|loadSound|loadStrings|log|lookat|loop|loop|mag|mask|max|millis|min|minute|modelX|modelY|modelZ|month|mouseDragged|mouseMoved|mousePressed|mouseReleased|nf|nfc|nfp|nfs|noCursor|noFill|noLoop|noLoop|noSmooth|noStroke|noTint|noise|noiseDetail|noiseSeed|normal|open|openStream|ortho|param|pause|perspective|play|point|pointLight|popMatrix|pow|print|printCamera|printMatrix|printProjection|println|pushMatrix|quad|radians|random|randomSeed|rect|rectMode|red|redraw|resetMatrix|reverse|rotate|rotateX|rotateY|rotateZ|round|saturation|save|saveBytes|saveFrame|saveStrings|scale|screenX|screenY|screenZ|second|set|set|shininess|shorten|sin|size|smooth|sort|specular|sphere|sphereDetail|splice|split|spotLight|sq|sqrt|status|stop|str|stroke|strokeCap|strokeJoin|strokeWeight|subset|substring|switch|tan|text|textAlign|textAscent|textDescent|textFont|textLeading|textMode|textSize|textWidth|texture|textureMode|time|tint|toLowerCase|toUpperCase|translate|triangle|trim|unHint|unbinary|unhex|updatePixels|vertex|volume|year|draw|setup)\b
 - name: comment.block.empty.processing
-  captures: 
-    "0": 
+  captures:
+    "0":
       name: punctuation.definition.comment.processing
   match: /\*\*/
 - name: comment.block.processing
-  captures: 
-    "0": 
+  captures:
+    "0":
       name: punctuation.definition.comment.processing
   begin: /\*
   end: \*/
 - name: comment.block.documentation.processing
-  captures: 
-    "0": 
+  captures:
+    "0":
       name: punctuation.definition.comment.processing
   begin: /\*\*
   end: \*/
-  patterns: 
-  - captures: 
-      "1": 
+  patterns:
+  - captures:
+      "1":
         name: keyword.other.documentation.params.processing
-      "2": 
+      "2":
         name: keyword.other.documentation.value.processing
     match: \*\s*@(param)\s*([a-z][a-zA-Z0-9_]+)\s*
-  - captures: 
-      "1": 
+  - captures:
+      "1":
         name: keyword.other.embedded-docs.params.processing
     match: \*\s*@([a-zA-Z0-9_-]+)\s*
 - name: comment.line.double-slash.processing
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.comment.processing
   match: (//).*$\n?
 - name: storage.type.processing
@@ -68,38 +68,38 @@ patterns:
 - name: constant.numeric.processing
   match: \b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\.?[0-9]*)|(\.[0-9]+))((e|E)(\+|-)?[0-9]+)?)([LlFfUuDd]|UL|ul)?\b
 - name: string.quoted.double.processing
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.processing
   begin: "\""
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.processing
   end: "\""
-  patterns: 
+  patterns:
   - name: constant.character.escape.processing
     match: \\.
 - name: string.quoted.single.processing
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.processing
   begin: "'"
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.processing
   end: "'"
-  patterns: 
+  patterns:
   - name: constant.character.escape.processing
     match: \\.
 - name: meta.class.processing
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: storage.type.class.processing
-    "2": 
+    "2":
       name: entity.name.type.class.processing
-    "3": 
+    "3":
       name: storage.modifier.extends.processing
-    "4": 
+    "4":
       name: entity.other.inherited-class.processing
   match: \b(class)\s+([a-zA-Z_](?:\w|\.)*)(?:\s+(extends)\s+([a-zA-Z_](?:\w|\.)*))?
 foldingStopMarker: (\*\*/|^\s*\})

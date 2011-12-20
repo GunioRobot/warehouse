@@ -43,7 +43,7 @@ context "Permissions Controller" do
         assert_template 'index'
       end
     end
-    
+
     assigns(:permission).user.should.not.be.new_record
     p = repositories(:sample).permissions.find_by_user_id(assigns(:permission).user.id)
     p.should.be.active
@@ -57,7 +57,7 @@ context "Permissions Controller" do
         assert_template 'index'
       end
     end
-    
+
     assigns(:permission).user.should.not.be.new_record
     perms = repositories(:sample).permissions.find_all_by_user_id(assigns(:permission).user.id).sort_by(&:path)
     perms[0].should.be.active
@@ -81,33 +81,33 @@ context "Permissions Controller" do
 
     put :update, :user_id => 1, :permission => { :admin => false, :paths => {'0' => {:path => 'foo', :id => 1}} }
     assert_redirected_to permissions_path
-    
+
     permissions(:rick_sample).reload.should.not.be.admin
     permissions(:rick_sample).path.should == '/foo'
     permissions(:rick_sample).clean_path.should == 'foo'
   end
-  
+
   specify "should update anon permission" do
     permissions(:anon_sample).reload.should.not.be.admin
     permissions(:anon_sample).reload.should.not.be.full_access
-    
+
     put :anon, :permission => { :admin => true, :paths => {'0' => {:id => 2, :full_access => true}} }
     assert_redirected_to permissions_path
-    
+
     permissions(:anon_sample).reload.should.be.admin
     permissions(:anon_sample).reload.should.be.full_access
   end
-  
+
   specify "should delete user permissions" do
     delete :destroy, :user_id => users(:rick).id
     permissions(:rick_sample).active.should == false
   end
-  
+
   specify "should delete anon permissions" do
     delete :anon
     permissions(:anon_sample).active.should == false
   end
-  
+
   specify "should delete permission" do
     delete :destroy, :id => permissions(:rick_sample).id
     permissions(:rick_sample).reload.active.should == false

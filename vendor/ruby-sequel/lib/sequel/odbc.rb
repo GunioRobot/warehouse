@@ -8,28 +8,28 @@ module Sequel
   module ODBC
     class Database < Sequel::Database
       set_adapter_scheme :odbc
-    
+
       def connect
         conn = ::ODBC::connect(@opts[:database], @opts[:user], @opts[:password])
         conn.autocommit = true
         conn
       end
-      
+
       def disconnect
         @pool.disconnect {|c| c.disconnect}
       end
-    
+
       def dataset(opts = nil)
         ODBC::Dataset.new(self, opts)
       end
-    
+
       def execute(sql)
         @logger.info(sql) if @logger
         @pool.hold do |conn|
           conn.run(sql)
         end
       end
-      
+
       def do(sql)
         @logger.info(sql) if @logger
         @pool.hold do |conn|
@@ -37,7 +37,7 @@ module Sequel
         end
       end
     end
-    
+
     class Dataset < Sequel::Dataset
       def literal(v)
         case v
@@ -61,7 +61,7 @@ module Sequel
         end
         self
       end
-      
+
       def hash_row(row)
         hash = {}
         row.each_with_index do |v, idx|
@@ -69,9 +69,9 @@ module Sequel
         end
         hash
       end
-      
+
       def convert_odbc_value(v)
-        # When fetching a result set, the Ruby ODBC driver converts all ODBC 
+        # When fetching a result set, the Ruby ODBC driver converts all ODBC
         # SQL types to an equivalent Ruby type; with the exception of
         # SQL_TYPE_DATE, SQL_TYPE_TIME and SQL_TYPE_TIMESTAMP.
         #
@@ -89,7 +89,7 @@ module Sequel
           v
         end
       end
-      
+
       def array_tuples_fetch_rows(sql, &block)
         @db.synchronize do
           s = @db.execute sql
@@ -103,11 +103,11 @@ module Sequel
         end
         self
       end
-      
+
       def array_tuples_make_row(row)
         row.fields = @columns
         row.each_with_index do |v, idx|
-          # When fetching a result set, the Ruby ODBC driver converts all ODBC 
+          # When fetching a result set, the Ruby ODBC driver converts all ODBC
           # SQL types to an equivalent Ruby type; with the exception of
           # SQL_TYPE_DATE, SQL_TYPE_TIME and SQL_TYPE_TIMESTAMP.
           #
@@ -125,17 +125,17 @@ module Sequel
         end
         row
       end
-      
+
 
       def insert(*values)
         @db.do insert_sql(*values)
       end
-    
+
       def update(values, opts = nil)
         @db.do update_sql(values, opts)
         self
       end
-    
+
       def delete(opts = nil)
         @db.do delete_sql(opts)
       end

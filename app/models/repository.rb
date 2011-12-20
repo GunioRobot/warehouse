@@ -12,7 +12,7 @@ class Repository < ActiveRecord::Base
   has_permalink :name, :subdomain
   validates_presence_of :name, :path, :subdomain
   attr_accessible :name, :path, :subdomain, :public, :full_url
-  
+
   has_many :permissions, :conditions => ['active = ?', true] do
     def set(user_id, options = {})
       Permission.set(proxy_owner, user_id, options)
@@ -31,12 +31,12 @@ class Repository < ActiveRecord::Base
   def path=(value)
     write_attribute :path, value.to_s.chomp('/')
   end
-  
+
   def full_url=(value)
     value << "/" unless value.last == "/" unless value.blank?
     write_attribute :full_url, value
   end
-  
+
   def member?(user, path = nil)
     return true if public? || (user.is_a?(User) && user.admin?)
     conditions = [[]]
@@ -56,21 +56,21 @@ class Repository < ActiveRecord::Base
     end
     !permissions.count(:id, :conditions => conditions).zero?
   end
-  
+
   def admin?(user)
     return nil unless user.is_a?(User)
     return true if user.admin?
     !permissions.count(:id, :conditions => ['user_id = ? and admin = ?', user.id, true]).zero?
   end
-  
+
   def grant(options = {}, &block)
     Permission.grant(self, options, &block)
   end
-  
+
   def set(user, options = {})
     Permission.set(self, user, options)
   end
-  
+
   def domain
     [subdomain, Warehouse.domain] * '.'
   end
@@ -86,7 +86,7 @@ class Repository < ActiveRecord::Base
     end
     @revisions_to_sync
   end
-  
+
   def sync?
     backend && revisions_to_sync.first <= revisions_to_sync.last
   end
@@ -98,7 +98,7 @@ class Repository < ActiveRecord::Base
   def latest_changed_at
     latest_changeset ? latest_changeset.changed_at : nil
   end
-  
+
   def synced_revision
     latest_changeset ? latest_changeset.revision.to_i + 1 : 1
   end
@@ -122,7 +122,7 @@ class Repository < ActiveRecord::Base
     return if Warehouse.password_command.blank?
     execute_command Warehouse.password_command, user => %w(id)
   end
-  
+
   def self.rebuild_htpasswd_for(user)
     new.rebuild_htpasswd_for(user)
   end

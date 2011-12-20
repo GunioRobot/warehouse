@@ -1,11 +1,11 @@
---- 
+---
 name: Vectorscript
-fileTypes: 
+fileTypes:
 - vss
 scopeName: source.pascal.vectorscript
 uuid: CC77FD91-9DBF-490E-B21D-CC350E82E791
 foldingStartMarker: ^\s*(PROCEDURE|FUNCTION)
-patterns: 
+patterns:
 - name: keyword.control.vectorscript
   match: \b(?i:(abstract|all|and|and_then|array|as|asm|attribute|begin|bindable|case|class|const|constructor|destructor|div|do|end|do|else|end|export|exports|external|far|file|finalization|for|forward|goto|if|implementation|import|in|inherited|initialization|interface|interrupt|is|label|library|mod|module|name|near|nil|not|object|of|only|operator|or|or_else|otherwise|packed|pow|private|program|property|protected|public|published|qualified|record|repeat|resident|restricted|segment|set|shl|shr|then|to|type|unit|until|uses|value|var|view|virtual|while|with|xor|string|handle|real|point|longint|integer|boolean|vector|structure|allocate|dynarray))\b
 - name: constant.other.vectorscript
@@ -15,12 +15,12 @@ patterns:
 - name: support.function.vectorscript.undocumented
   match: \b(?i:(SetObjPropCharVS|vsoInsertAllParams|vsoGetEventInfo))\b
 - name: meta.function.vectorscript
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: storage.type.function.vectorscript
-    "2": 
+    "2":
       name: storage.type.procedure.vectorscript
-    "3": 
+    "3":
       name: entity.name.function.vectorscript
   match: \b(?i:(?:(function)|(procedure)))\b\s+(\w+)
 - name: constant.character.parameter.vectorscript
@@ -30,27 +30,27 @@ patterns:
 - name: constant.language.boolean.vectorscript
   match: \b(?i:(true|false))\b
 - name: comment.block.vectorscript
-  captures: 
-    "0": 
+  captures:
+    "0":
       name: punctuation.definition.comment.vectorscript
   begin: \(\*
   end: \*\)
 - name: comment.block.vectorscript
-  captures: 
-    "0": 
+  captures:
+    "0":
       name: punctuation.definition.comment.vectorscript
   begin: \{
   end: \}
 - name: string.quoted.single.vectorscript
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.vectorscript
   begin: "'"
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.vectorscript
   end: "'"
-  patterns: 
+  patterns:
   - name: constant.character.escape.vectorscript
     match: \\.
 foldingStopMarker: ^\s*END;

@@ -1,19 +1,19 @@
---- 
+---
 name: Regular Expression
-fileTypes: 
+fileTypes:
 - re
 scopeName: source.regexp
-repository: 
-  escaped_char: 
+repository:
+  escaped_char:
     name: constant.character.escape.regexp
     match: \\.
     comment: escaped character
-  character_class: 
+  character_class:
     name: keyword.control.character-class.regexp
     match: \\[wWsSdDhH]
 uuid: BAFE4C4F-8D59-48CD-A3BC-52A2084531C9
 foldingStartMarker: (/\*|\{|\()
-patterns: 
+patterns:
 - name: keyword.operator.regexp
   match: \|
 - name: keyword.control.anchors.regexp
@@ -23,7 +23,7 @@ patterns:
 - name: keyword.control.set.regexp
   begin: \[(?:\^?\])?
   end: \]
-  patterns: 
+  patterns:
   - include: "#character_class"
   - include: "#escaped_char"
   - name: constant.other.range.regexp
@@ -33,7 +33,7 @@ patterns:
 - name: string.regexp.group
   begin: \(
   end: \)
-  patterns: 
+  patterns:
   - include: source.regexp
   - name: constant.other.assertion.regexp
     match: (?<=\()\?(<[=!]|>|=|:|!)

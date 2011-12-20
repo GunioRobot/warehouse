@@ -1,45 +1,45 @@
---- 
+---
 name: Active4D Config
-fileTypes: 
+fileTypes:
 - ini
 scopeName: text.active4d-ini
-repository: 
-  escaped_char: 
+repository:
+  escaped_char:
     name: constant.character.escape.active4d-ini
     match: \\.
 uuid: BECA5580-F845-4715-889C-134DF4BF67C2
-patterns: 
+patterns:
 - name: comment.line.double-slash.active4d-ini
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.comment.active4d-ini
   match: (//).*$\n?
 - name: comment.line.backtick.active4d-ini
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.comment.active4d-ini
   match: (`).*$\n?
 - name: comment.line.double-backslash.continuation.active4d-ini
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.comment.active4d-ini
   match: (\\\\).*$\n?
 - name: comment.block.active4d-ini
-  captures: 
-    "0": 
+  captures:
+    "0":
       name: punctuation.definition.comment.active4d-ini
   begin: /\*
   end: \*/
 - name: string.quoted.double.active4d-ini
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.active4d-ini
   begin: "\"(?!\"\")"
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.active4d-ini
   end: "\""
-  patterns: 
+  patterns:
   - include: "#escaped_char"
 - name: constant.language.boolean.active4d-ini
   match: \b(?i)(true|false|yes|no)\b

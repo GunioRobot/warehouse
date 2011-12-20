@@ -21,7 +21,7 @@ else
   if services.length > 0
     services.each {|s| puts "OpenID server found: #{s.uri}"}
   else
-    puts 'No OpenID servers found.'  
+    puts 'No OpenID servers found.'
   end
 end
 

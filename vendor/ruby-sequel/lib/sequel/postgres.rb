@@ -17,11 +17,11 @@ class PGconn
       end
     end
   end
-  
+
   def connected?
     status == PGconn::CONNECTION_OK
   end
-  
+
   def execute(sql)
     begin
       async_exec(sql)
@@ -34,11 +34,11 @@ class PGconn
       end
     end
   end
-  
+
   attr_accessor :transaction_in_progress
-  
+
   SELECT_CURRVAL = "SELECT currval('%s')".freeze
-      
+
   def last_insert_id(table)
     @table_sequences ||= {}
     if !@table_sequences.include?(table)
@@ -53,9 +53,9 @@ class PGconn
     end
     nil # primary key sequence not found
   end
-      
+
   # Shamelessly appropriated from ActiveRecord's Postgresql adapter.
-  
+
   SELECT_PK_AND_SERIAL_SEQUENCE = <<-end_sql
     SELECT attr.attname, name.nspname, seq.relname
     FROM pg_class seq, pg_attribute attr, pg_depend dep,
@@ -70,7 +70,7 @@ class PGconn
       AND cons.contype = 'p'
       AND dep.refobjid = '%s'::regclass
   end_sql
-  
+
   SELECT_PK_AND_CUSTOM_SEQUENCE = <<-end_sql
     SELECT attr.attname, name.nspname, split_part(def.adsrc, '''', 2)
     FROM pg_class t
@@ -92,7 +92,7 @@ class PGconn
       pg_index.indisprimary = 't' AND
       pg_class.relname = '%s'
   end_sql
-  
+
   def pkey_and_sequence(table)
     r = async_query(SELECT_PK_AND_SERIAL_SEQUENCE % table)
     return [r[0].first, r[0].last] unless r.nil? or r.empty?
@@ -102,7 +102,7 @@ class PGconn
   rescue
     nil
   end
-  
+
   def primary_key(table)
     r = async_query(SELECT_PK % table)
     pkey = r[0].first unless r.nil? or r.empty?
@@ -139,7 +139,7 @@ module Sequel
 
     class Database < Sequel::Database
       set_adapter_scheme :postgres
-    
+
       def connect
         conn = PGconn.connect(
           @opts[:host] || 'localhost',
@@ -154,29 +154,29 @@ module Sequel
         end
         conn
       end
-      
+
       def disconnect
         @pool.disconnect {|c| c.close}
       end
-    
+
       def dataset(opts = nil)
         Postgres::Dataset.new(self, opts)
       end
-    
+
       RELATION_QUERY = {:from => [:pg_class], :select => [:relname]}.freeze
       RELATION_FILTER = "(relkind = 'r') AND (relname !~ '^pg|sql')".freeze
       SYSTEM_TABLE_REGEXP = /^pg|sql/.freeze
-    
+
       def tables
         dataset(RELATION_QUERY).filter(RELATION_FILTER).map {|r| r[:relname].to_sym}
       end
-      
+
       def locks
         dataset.from("pg_class, pg_locks").
           select("pg_class.relname, pg_locks.*").
           filter("pg_class.relfilenode=pg_locks.relation")
       end
-    
+
       def execute(sql)
         @logger.info(sql) if @logger
         @pool.hold {|conn| conn.execute(sql)}
@@ -184,7 +184,7 @@ module Sequel
         @logger.error(e.message) if @logger
         raise e
       end
-    
+
       def execute_and_forget(sql)
         @logger.info(sql) if @logger
         @pool.hold {|conn| conn.execute(sql).clear}
@@ -192,14 +192,14 @@ module Sequel
         @logger.error(e.message) if @logger
         raise e
       end
-      
+
       def primary_key_for_table(conn, table)
         @primary_keys ||= {}
         @primary_keys[table] ||= conn.primary_key(table)
       end
-      
+
       RE_CURRVAL_ERROR = /currval of sequence "(.*)" is not yet defined in this session/.freeze
-      
+
       def insert_result(conn, table, values)
         begin
           result = conn.last_insert_id(table)
@@ -213,7 +213,7 @@ module Sequel
             raise e
           end
         end
-        
+
         case values
         when Hash:
           values[primary_key_for_table(conn, table)]
@@ -223,7 +223,7 @@ module Sequel
           nil
         end
       end
-      
+
       def execute_insert(sql, table, values)
         @logger.info(sql) if @logger
         @pool.hold do |conn|
@@ -234,15 +234,15 @@ module Sequel
         @logger.error(e.message) if @logger
         raise e
       end
-    
+
       def synchronize(&block)
         @pool.hold(&block)
       end
-      
+
       SQL_BEGIN = 'BEGIN'.freeze
       SQL_COMMIT = 'COMMIT'.freeze
       SQL_ROLLBACK = 'ROLLBACK'.freeze
-  
+
       def transaction
         @pool.hold do |conn|
           if conn.transaction_in_progress
@@ -280,7 +280,7 @@ module Sequel
         "DROP TABLE #{name} CASCADE;"
       end
     end
-  
+
     class Dataset < Sequel::Dataset
       def literal(v)
         case v
@@ -290,7 +290,7 @@ module Sequel
           super
         end
       end
-    
+
       def match_expr(l, r)
         case r
         when Regexp:
@@ -301,10 +301,10 @@ module Sequel
           super
         end
       end
-      
+
       FOR_UPDATE = ' FOR UPDATE'.freeze
       FOR_SHARE = ' FOR SHARE'.freeze
-    
+
       def select_sql(opts = nil)
         row_lock_mode = opts ? opts[:lock] : @opts[:lock]
         sql = super
@@ -314,19 +314,19 @@ module Sequel
         end
         sql
       end
-    
+
       def for_update
         clone_merge(:lock => :update)
       end
-    
+
       def for_share
         clone_merge(:lock => :share)
       end
-    
+
       EXPLAIN = 'EXPLAIN '.freeze
       EXPLAIN_ANALYZE = 'EXPLAIN ANALYZE '.freeze
       QUERY_PLAN = 'QUERY PLAN'.to_sym
-    
+
       def explain(opts = nil)
         analysis = []
         fetch_rows(EXPLAIN + select_sql(opts)) do |r|
@@ -334,7 +334,7 @@ module Sequel
         end
         analysis.join("\r\n")
       end
-      
+
       def analyze(opts = nil)
         analysis = []
         fetch_rows(EXPLAIN_ANALYZE + select_sql(opts)) do |r|
@@ -342,9 +342,9 @@ module Sequel
         end
         analysis.join("\r\n")
       end
-    
+
       LOCK = 'LOCK TABLE %s IN %s MODE;'.freeze
-    
+
       ACCESS_SHARE = 'ACCESS SHARE'.freeze
       ROW_SHARE = 'ROW SHARE'.freeze
       ROW_EXCLUSIVE = 'ROW EXCLUSIVE'.freeze
@@ -353,7 +353,7 @@ module Sequel
       SHARE_ROW_EXCLUSIVE = 'SHARE ROW EXCLUSIVE'.freeze
       EXCLUSIVE = 'EXCLUSIVE'.freeze
       ACCESS_EXCLUSIVE = 'ACCESS EXCLUSIVE'.freeze
-    
+
       # Locks the table with the specified mode.
       def lock(mode, &block)
         sql = LOCK % [@opts[:from], mode]
@@ -366,12 +366,12 @@ module Sequel
           end
         end
       end
-  
+
       def insert(*values)
         @db.execute_insert(insert_sql(*values), @opts[:from],
           values.size == 1 ? values.first : values)
       end
-    
+
       def update(values, opts = nil)
         @db.synchronize do
           result = @db.execute(update_sql(values))
@@ -383,7 +383,7 @@ module Sequel
           affected
         end
       end
-    
+
       def delete(opts = nil)
         @db.synchronize do
           result = @db.execute(delete_sql(opts))
@@ -395,7 +395,7 @@ module Sequel
           affected
         end
       end
-      
+
       def fetch_rows(sql, &block)
         @db.synchronize do
           result = @db.execute(sql)
@@ -407,7 +407,7 @@ module Sequel
           end
         end
       end
-      
+
       @@converters_mutex = Mutex.new
       @@converters = {}
 
@@ -418,21 +418,21 @@ module Sequel
           translators << PG_TYPES[result.type(idx)]
         end
         @columns = fields
-        
+
         # create result signature and memoize the converter
         sig = [fields, translators].hash
         @@converters_mutex.synchronize do
           @@converters[sig] ||= compile_converter(fields, translators)
         end
       end
-    
+
       def compile_converter(fields, translators)
         used_fields = []
         kvs = []
         fields.each_with_index do |field, idx|
           next if used_fields.include?(field)
           used_fields << field
-        
+
           if translator = translators[idx]
             kvs << ":\"#{field}\" => ((t = r[#{idx}]) ? t.#{translator} : nil)"
           else
@@ -453,7 +453,7 @@ module Sequel
           end
         end
       end
-      
+
       @@array_tuples_converters_mutex = Mutex.new
       @@array_tuples_converters = {}
 
@@ -464,14 +464,14 @@ module Sequel
           translators << PG_TYPES[result.type(idx)]
         end
         @columns = fields
-        
+
         # create result signature and memoize the converter
         sig = [fields, translators].hash
         @@array_tuples_converters_mutex.synchronize do
           @@array_tuples_converters[sig] ||= array_tuples_compile_converter(fields, translators)
         end
       end
-    
+
       def array_tuples_compile_converter(fields, translators)
         tr = []
         fields.each_with_index do |field, idx|

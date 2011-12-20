@@ -1,4 +1,4 @@
-# Class representing an XRD Service element.  
+# Class representing an XRD Service element.
 class ServiceEndpoint
 
   attr_accessor :service_types, :uri, :yadis_uri, :element, :yadis, :canonical_id

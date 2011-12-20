@@ -4,11 +4,11 @@ module Textpow
       NESTING_DEPTH  = 40
       START_VALUE    = 2 ** ( POINT_DEPTH * NESTING_DEPTH )
       BASE           = 2 ** POINT_DEPTH
-      
+
       def initialize
          @scores = {}
       end
-      
+
       def score search_scope, reference_scope
          max = 0
          search_scope.split( ',' ).each do |scope|
@@ -17,7 +17,7 @@ module Textpow
                max = [max, score_term( arrays[0], reference_scope )].max
             elsif arrays.size > 1
                excluded = false
-               arrays[1..-1].each do |a| 
+               arrays[1..-1].each do |a|
                   if score_term( arrays[1], reference_scope ) > 0
                      excluded = true
                      break
@@ -29,10 +29,10 @@ module Textpow
             end
          end
          max
-      end   
-      
+      end
+
       private
-      
+
       def score_term search_scope, reference_scope
          unless @scores[reference_scope] && @scores[reference_scope][search_scope]
             @scores[reference_scope] ||= {}
@@ -40,7 +40,7 @@ module Textpow
          end
          @scores[reference_scope][search_scope]
       end
-      
+
       def score_array search_array, reference_array
          pending = search_array
          current = reference_array.last

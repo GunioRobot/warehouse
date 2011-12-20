@@ -1,202 +1,202 @@
---- 
+---
 name: SQL
-fileTypes: 
+fileTypes:
 - sql
 - ddl
 - dml
 scopeName: source.sql
-repository: 
-  string_interpolation: 
+repository:
+  string_interpolation:
     name: string.interpolated.sql
-    captures: 
-      "1": 
+    captures:
+      "1":
         name: punctuation.definition.string.end.sql
     match: (#\{)([^\}]*)(\})
-  comments: 
-    patterns: 
+  comments:
+    patterns:
     - name: comment.line.double-dash.sql
-      captures: 
-        "1": 
+      captures:
+        "1":
           name: punctuation.definition.comment.sql
       match: (--).*$\n?
     - name: comment.line.number-sign.sql
-      captures: 
-        "1": 
+      captures:
+        "1":
           name: punctuation.definition.comment.sql
       match: (#).*$\n?
     - name: comment.block.c
-      captures: 
-        "0": 
+      captures:
+        "0":
           name: punctuation.definition.comment.sql
       begin: /\*
       end: \*/
-  string_escape: 
+  string_escape:
     name: constant.character.escape.sql
     match: \\.
-  strings: 
-    patterns: 
+  strings:
+    patterns:
     - name: string.quoted.single.sql
-      captures: 
-        "1": 
+      captures:
+        "1":
           name: punctuation.definition.string.begin.sql
-        "3": 
+        "3":
           name: punctuation.definition.string.end.sql
       match: (')[^'\\]*(')
       comment: this is faster than the next begin/end rule since sub-pattern will match till end-of-line and SQL files tend to have very long lines.
     - name: string.quoted.single.sql
-      endCaptures: 
-        "0": 
+      endCaptures:
+        "0":
           name: punctuation.definition.string.end.sql
       begin: "'"
-      beginCaptures: 
-        "0": 
+      beginCaptures:
+        "0":
           name: punctuation.definition.string.begin.sql
       end: "'"
-      patterns: 
+      patterns:
       - include: "#string_escape"
     - name: string.quoted.other.backtick.sql
-      captures: 
-        "1": 
+      captures:
+        "1":
           name: punctuation.definition.string.begin.sql
-        "3": 
+        "3":
           name: punctuation.definition.string.end.sql
       match: (`)[^`\\]*(`)
       comment: this is faster than the next begin/end rule since sub-pattern will match till end-of-line and SQL files tend to have very long lines.
     - name: string.quoted.other.backtick.sql
-      endCaptures: 
-        "0": 
+      endCaptures:
+        "0":
           name: punctuation.definition.string.end.sql
       begin: `
-      beginCaptures: 
-        "0": 
+      beginCaptures:
+        "0":
           name: punctuation.definition.string.begin.sql
       end: `
-      patterns: 
+      patterns:
       - include: "#string_escape"
     - name: string.quoted.double.sql
-      captures: 
-        "1": 
+      captures:
+        "1":
           name: punctuation.definition.string.begin.sql
-        "3": 
+        "3":
           name: punctuation.definition.string.end.sql
       match: (")[^"#]*(")
       comment: this is faster than the next begin/end rule since sub-pattern will match till end-of-line and SQL files tend to have very long lines.
     - name: string.quoted.double.sql
-      endCaptures: 
-        "0": 
+      endCaptures:
+        "0":
           name: punctuation.definition.string.end.sql
       begin: "\""
-      beginCaptures: 
-        "0": 
+      beginCaptures:
+        "0":
           name: punctuation.definition.string.begin.sql
       end: "\""
-      patterns: 
+      patterns:
       - include: "#string_interpolation"
     - name: string.other.quoted.brackets.sql
-      endCaptures: 
-        "0": 
+      endCaptures:
+        "0":
           name: punctuation.definition.string.end.sql
       begin: "%\\{"
-      beginCaptures: 
-        "0": 
+      beginCaptures:
+        "0":
           name: punctuation.definition.string.begin.sql
       end: \}
-      patterns: 
+      patterns:
       - include: "#string_interpolation"
-  regexps: 
-    patterns: 
+  regexps:
+    patterns:
     - name: string.regexp.sql
-      endCaptures: 
-        "0": 
+      endCaptures:
+        "0":
           name: punctuation.definition.string.end.sql
       begin: /(?=\S.*/)
-      beginCaptures: 
-        "0": 
+      beginCaptures:
+        "0":
           name: punctuation.definition.string.begin.sql
       end: /
-      patterns: 
+      patterns:
       - include: "#string_interpolation"
       - name: constant.character.escape.slash.sql
         match: \\/
     - name: string.regexp.modr.sql
-      endCaptures: 
-        "0": 
+      endCaptures:
+        "0":
           name: punctuation.definition.string.end.sql
       begin: "%r\\{"
-      beginCaptures: 
-        "0": 
+      beginCaptures:
+        "0":
           name: punctuation.definition.string.begin.sql
       end: \}
-      patterns: 
+      patterns:
       - include: "#string_interpolation"
       comment: We should probably handle nested bracket pairs!?! -- Allan
 uuid: C49120AC-6ECC-11D9-ACC8-000D93589AF6
 foldingStartMarker: \s*\(\s*$
-patterns: 
+patterns:
 - name: meta.create.sql
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: keyword.other.create.sql
-    "2": 
+    "2":
       name: keyword.other.sql
-    "5": 
+    "5":
       name: entity.name.function.sql
   match: (?i:^\s*(create)\s+(aggregate|conversion|database|domain|function|group|(unique\s+)?index|language|operator class|operator|rule|schema|sequence|table|tablespace|trigger|type|user|view)\s+)(['"`]?)(\w+)\4
 - name: meta.drop.sql
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: keyword.other.create.sql
-    "2": 
+    "2":
       name: keyword.other.sql
   match: (?i:^\s*(drop)\s+(aggregate|conversion|database|domain|function|group|index|language|operator class|operator|rule|schema|sequence|table|tablespace|trigger|type|user|view))
 - name: meta.drop.sql
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: keyword.other.create.sql
-    "2": 
+    "2":
       name: keyword.other.table.sql
-    "3": 
+    "3":
       name: entity.name.function.sql
-    "4": 
+    "4":
       name: keyword.other.cascade.sql
   match: (?i:\s*(drop)\s+(table)\s+(\w+)(\s+cascade)?\b)
 - name: meta.alter.sql
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: keyword.other.create.sql
-    "2": 
+    "2":
       name: keyword.other.table.sql
   match: (?i:^\s*(alter)\s+(aggregate|conversion|database|domain|function|group|index|language|operator class|operator|rule|schema|sequence|table|tablespace|trigger|type|user|view)\s+)
-- captures: 
-    "6": 
+- captures:
+    "6":
       name: storage.type.sql
-    "11": 
+    "11":
       name: storage.type.sql
-    "7": 
+    "7":
       name: constant.numeric.sql
-    "12": 
+    "12":
       name: storage.type.sql
-    "8": 
+    "8":
       name: constant.numeric.sql
-    "13": 
+    "13":
       name: storage.type.sql
-    "9": 
+    "9":
       name: storage.type.sql
-    "14": 
+    "14":
       name: constant.numeric.sql
-    "15": 
+    "15":
       name: storage.type.sql
-    "1": 
+    "1":
       name: storage.type.sql
-    "2": 
+    "2":
       name: storage.type.sql
-    "3": 
+    "3":
       name: constant.numeric.sql
-    "4": 
+    "4":
       name: storage.type.sql
-    "10": 
+    "10":
       name: constant.numeric.sql
-    "5": 
+    "5":
       name: constant.numeric.sql
   match: "(?xi)\n\n\
     \t\t\t\t# normal stuff, capture 1\n\

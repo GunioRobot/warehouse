@@ -12,7 +12,7 @@ class AssociationTestCase < Test::Unit::TestCase
   def test_assoc
     assoc = _get_assoc
     s = OpenID::Association.serialize(assoc)
-    assert_equal(assoc, OpenID::Association.deserialize(s))    
+    assert_equal(assoc, OpenID::Association.deserialize(s))
   end
 
   def test_sign
@@ -27,7 +27,7 @@ class AssociationTestCase < Test::Unit::TestCase
     assert_not_nil(h['openid.signed'])
     assert_not_nil(h['openid.sig'])
     assert_equal(h['openid.signed'], 'a,c')
-    
+
     sig = OpenID::Util.to_base64( \
            OpenID::Util.hmac_sha1(assoc.secret, "a:b\nc:d\n"))
 

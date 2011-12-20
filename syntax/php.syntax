@@ -1,250 +1,250 @@
---- 
+---
 name: PHP
 firstLineMatch: ^#!.*php[0-9]{0,1}\b
 scopeName: source.php
-repository: 
-  regex-single-quoted: 
+repository:
+  regex-single-quoted:
     name: string.regexp.single-quoted.php
-    endCaptures: 
-      "0": 
+    endCaptures:
+      "0":
         name: punctuation.definition.string.end.php
     begin: (?x)'/ (?= (\\.|[^'/])++/[imsxeADSUXu]*' )
-    beginCaptures: 
-      "0": 
+    beginCaptures:
+      "0":
         name: punctuation.definition.string.begin.php
     end: (/)([imsxeADSUXu]*)(')
-    patterns: 
+    patterns:
     - name: string.regexp.arbitrary-repitition.php
-      captures: 
-        "1": 
+      captures:
+        "1":
           name: punctuation.definition.arbitrary-repitition.php
-        "3": 
+        "3":
           name: punctuation.definition.arbitrary-repitition.php
       match: (\{)\d+(,\d+)?(\})
     - name: string.regexp.character-class.php
-      captures: 
-        "0": 
+      captures:
+        "0":
           name: punctuation.definition.character-class.php
       begin: \[(?:\^?\])?
       end: \]
-      patterns: 
+      patterns:
       - name: constant.character.escape.php
         match: \\[\\']
     - name: keyword.operator.regexp.php
       match: "[$^+*]"
     - name: constant.character.escape.php
       match: \\[\\']
-  variables: 
-    patterns: 
+  variables:
+    patterns:
     - include: "#var_global"
     - include: "#var_global_safer"
     - include: "#var_basic"
-  string-double-quoted: 
+  string-double-quoted:
     name: string.quoted.double.php
-    endCaptures: 
-      "0": 
+    endCaptures:
+      "0":
         name: punctuation.definition.string.end.php
     begin: "\""
-    beginCaptures: 
-      "0": 
+    beginCaptures:
+      "0":
         name: punctuation.definition.string.begin.php
     end: "\""
-    patterns: 
+    patterns:
     - name: constant.character.escape.php
       match: \\.
     - include: "#interpolation"
-  language: 
-    patterns: 
+  language:
+    patterns:
     - name: meta.scope.heredoc
-      endCaptures: 
-        "1": 
+      endCaptures:
+        "1":
           name: keyword.operator.heredoc.php
-        "2": 
+        "2":
           name: punctuation.definition.string.php
       begin: (<<<)\s*(HTML)
       contentName: text.html.basic.embedded
-      beginCaptures: 
-        "1": 
+      beginCaptures:
+        "1":
           name: punctuation.definition.string.php
-        "2": 
+        "2":
           name: keyword.operator.heredoc.php
       end: ^(HTML)(;?)$
-      patterns: 
+      patterns:
       - include: text.html.basic
       - include: "#interpolation"
     - name: meta.scope.heredoc
-      endCaptures: 
-        "1": 
+      endCaptures:
+        "1":
           name: keyword.operator.heredoc.php
-        "2": 
+        "2":
           name: punctuation.definition.string.php
       begin: (<<<)\s*(XML)
       contentName: text.xml.embedded
-      beginCaptures: 
-        "1": 
+      beginCaptures:
+        "1":
           name: punctuation.definition.string.php
-        "2": 
+        "2":
           name: keyword.operator.heredoc.php
       end: ^(XML)(;?)$
-      patterns: 
+      patterns:
       - include: text.xml
       - include: "#interpolation"
     - name: meta.scope.heredoc
-      endCaptures: 
-        "1": 
+      endCaptures:
+        "1":
           name: keyword.operator.heredoc.php
-        "2": 
+        "2":
           name: punctuation.definition.string.php
       begin: (<<<)\s*(SQL)
       contentName: source.sql.embedded
-      beginCaptures: 
-        "1": 
+      beginCaptures:
+        "1":
           name: punctuation.definition.string.php
-        "2": 
+        "2":
           name: keyword.operator.heredoc.php
       end: ^(SQL)(;?)$
-      patterns: 
+      patterns:
       - include: source.sql
       - include: "#interpolation"
     - name: comment.block.documentation.phpdoc.php
-      captures: 
-        "0": 
+      captures:
+        "0":
           name: punctuation.definition.comment.php
       begin: /\*\*\s*$
       end: \*/
-      patterns: 
+      patterns:
       - include: "#php_doc"
       comment: This now only highlights a docblock if the first line contains only /** - this is to stop highlighting everything as invalid when people do comment banners with /******** ...
     - name: comment.block.php
-      captures: 
-        "0": 
+      captures:
+        "0":
           name: punctuation.definition.comment.php
       begin: /\*
       end: \*/
     - name: comment.line.double-slash.php
-      captures: 
-        "1": 
+      captures:
+        "1":
           name: punctuation.definition.comment.php
       match: (//).*?($\n?|(?=\?>))
     - name: comment.line.number-sign.php
-      captures: 
-        "1": 
+      captures:
+        "1":
           name: punctuation.definition.comment.php
       match: (#).*?($\n?|(?=\?>))
     - name: meta.interface.php
       begin: ^\s*(interface)\s+([a-zA-Z0-9_]+)\s*(extends)?\s*
-      beginCaptures: 
-        "1": 
+      beginCaptures:
+        "1":
           name: storage.type.interface.php
-        "2": 
+        "2":
           name: entity.name.type.interface.php
-        "3": 
+        "3":
           name: storage.modifier.extends.php
       end: $
-      patterns: 
+      patterns:
       - name: entity.other.inherited-class.php
         match: "[a-zA-Z0-9_]+"
     - name: meta.class.php
       begin: ^\s*(abstract)?\s*(class)\s+([a-zA-Z0-9_]+)\s*
-      beginCaptures: 
-        "1": 
+      beginCaptures:
+        "1":
           name: storage.modifier.abstract.php
-        "2": 
+        "2":
           name: storage.type.class.php
-        "3": 
+        "3":
           name: entity.name.type.class.php
       end: $
-      patterns: 
-      - captures: 
-          "1": 
+      patterns:
+      - captures:
+          "1":
             name: storage.modifier.extends.php
-          "2": 
+          "2":
             name: entity.other.inherited-class.php
         match: (extends)\s+([a-zA-Z0-9_]+)\s*
       - begin: (implements)\s+([a-zA-Z0-9_]+)\s*
-        beginCaptures: 
-          "1": 
+        beginCaptures:
+          "1":
             name: storage.modifier.implements.php
-          "2": 
+          "2":
             name: support.class.implements.php
         end: (?=\s*\bextends)|$
-        patterns: 
-        - captures: 
-            "1": 
+        patterns:
+        - captures:
+            "1":
               name: support.class.implements.php
           match: ,\s*([a-zA-Z0-9_]+)\s*
     - name: keyword.control.php
       match: \b(break|c(ase|ontinue)|d(e(clare|fault)|ie|o)|e(lse(if)?|nd(declare|for(each)?|if|switch|while)|xit)|for(each)?|if|return|switch|use|while)\b
     - name: meta.include.php
       begin: (?i)\b((?:require|include)(?:_once)?)\b\s*
-      beginCaptures: 
-        "1": 
+      beginCaptures:
+        "1":
           name: keyword.control.import.include.php
       end: (?=\s|;|$)
-      patterns: 
+      patterns:
       - include: "#language"
     - name: keyword.control.exception.php
       match: \b(catch|try|throw|exception)|([a-zA-Z_]*Exception)\b
     - name: meta.function.php
-      endCaptures: 
-        "1": 
+      endCaptures:
+        "1":
           name: punctuation.definition.parameters.end.php
       begin: (?:^\s*)((?:(?:final|abstract|public|private|protected|static)\s+)*)(function)(?:\s+|(\s*&\s*))(?:(__(?:call|(?:con|de)struct|get|(?:is|un)?set|tostring|clone|set_state|sleep|wakeup|autoload))|([a-zA-Z0-9_]+))\s*(\()
       contentName: meta.function.arguments.php
-      beginCaptures: 
-        "6": 
+      beginCaptures:
+        "6":
           name: punctuation.definition.parameters.begin.php
-        "1": 
+        "1":
           name: storage.modifier.php
-        "2": 
+        "2":
           name: storage.type.function.php
-        "3": 
+        "3":
           name: storage.modifier.reference.php
-        "4": 
+        "4":
           name: support.function.magic.php
-        "5": 
+        "5":
           name: entity.name.function.php
       end: \)
-      patterns: 
+      patterns:
       - name: meta.function.argument.typehinted.php
-        captures: 
-          "6": 
+        captures:
+          "6":
             name: constant.language.php
-          "7": 
+          "7":
             name: invalid.illegal.non-null-typehinted.php
-          "1": 
+          "1":
             name: storage.type.php
-          "2": 
+          "2":
             name: support.class.php
-          "3": 
+          "3":
             name: variable.other.php
-          "4": 
+          "4":
             name: punctuation.definition.variable.php
-          "5": 
+          "5":
             name: keyword.operator.assignment.php
         match: \s*(?i:(array)|([A-Za-z_][A-Za-z_0-9]*))\s*((\$+)[a-zA-Z_\x{7f}-\x{ff}][a-zA-Z0-9_\x{7f}-\x{ff}]*)(?:\s*(=)\s*((?i:NULL)|(.+?)))?\s*(?=,|\))
       - name: meta.function.argument.no-default.php
-        captures: 
-          "1": 
+        captures:
+          "1":
             name: variable.other.php
-          "2": 
+          "2":
             name: punctuation.definition.variable.php
         match: \s*((\$+)[a-zA-Z_\x{7f}-\x{ff}][a-zA-Z0-9_\x{7f}-\x{ff}]*)\s*(?=,|\))
       - name: meta.function.argument.default.php
-        captures: 
-          "1": 
+        captures:
+          "1":
             name: variable.other.php
-          "2": 
+          "2":
             name: punctuation.definition.variable.php
-          "3": 
+          "3":
             name: keyword.operator.assignment.php
         begin: \s*((\$+)[a-zA-Z_\x{7f}-\x{ff}][a-zA-Z0-9_\x{7f}-\x{ff}]*)(?:\s*(=)\s*)\s*
         end: (?=,|\))
-        patterns: 
+        patterns:
         - include: "#parameter-default-types"
       - name: comment.block.php
-        captures: 
-          "0": 
+        captures:
+          "0":
             name: punctuation.definition.comment.php
         begin: /\*
         end: \*/
@@ -253,16 +253,16 @@ repository:
     - name: storage.modifier.php
       match: \b(global|abstract|const|extends|implements|final|p(r(ivate|otected)|ublic)|static)\b
     - include: "#object"
-    - captures: 
-        "1": 
+    - captures:
+        "1":
           name: keyword.operator.class.php
-        "2": 
+        "2":
           name: meta.function-call.static.php
-        "3": 
+        "3":
           name: variable.other.class.php
-        "4": 
+        "4":
           name: punctuation.definition.variable.php
-        "5": 
+        "5":
           name: constant.other.class.php
       match: |-
         (?x)(::)
@@ -275,19 +275,19 @@ repository:
                 				)?
     - include: "#support"
     - name: string.unquoted.heredoc.php
-      endCaptures: 
-        "1": 
+      endCaptures:
+        "1":
           name: keyword.operator.heredoc.php
-        "2": 
+        "2":
           name: punctuation.definition.string.php
       begin: (<<<)\s*([a-zA-Z_]+[a-zA-Z0-9_]*)
-      beginCaptures: 
-        "1": 
+      beginCaptures:
+        "1":
           name: punctuation.definition.string.php
-        "2": 
+        "2":
           name: keyword.operator.heredoc.php
       end: ^(\2)(;?)$
-      patterns: 
+      patterns:
       - include: "#interpolation"
     - name: keyword.operator.key.php
       match: =>
@@ -311,10 +311,10 @@ repository:
       match: (===|==|!==|!=|<=|>=|<>|<|>)
     - name: keyword.operator.string.php
       match: (\.=|\.)
-    - captures: 
-        "1": 
+    - captures:
+        "1":
           name: keyword.operator.type.php
-        "2": 
+        "2":
           name: support.class.php
       match: (?i)\b(instanceof)\b(?:\s+(\w+))?
     - include: "#numbers"
@@ -322,102 +322,102 @@ repository:
     - include: "#string-backtick"
     - include: "#function-call"
     - include: "#variables"
-    - captures: 
-        "1": 
+    - captures:
+        "1":
           name: keyword.operator.php
-        "2": 
+        "2":
           name: variable.other.property.php
       match: (?<=[a-zA-Z0-9_\x{7f}-\x{ff}])(->)([a-zA-Z_\x{7f}-\x{ff}][a-zA-Z0-9_\x{7f}-\x{ff}]*?)\b
     - include: "#instantiation"
     - include: "#constants"
-  instantiation: 
-    captures: 
-      "1": 
+  instantiation:
+    captures:
+      "1":
         name: keyword.other.new.php
-      "2": 
+      "2":
         name: support.class.php
-      "3": 
+      "3":
         name: support.class.php
     match: (?i)\b(new)\s+(\w+)|(\w+)(?=::)
-  var_basic: 
+  var_basic:
     name: variable.other.php
-    captures: 
-      "1": 
+    captures:
+      "1":
         name: punctuation.definition.variable.php
     match: |-
       (?x)
       			            (\$+)[a-zA-Z_\x{7f}-\x{ff}]
       			            [a-zA-Z0-9_\x{7f}-\x{ff}]*?\b
-  string-backtick: 
+  string-backtick:
     name: string.interpolated.php
-    endCaptures: 
-      "0": 
+    endCaptures:
+      "0":
         name: punctuation.definition.string.end.php
     begin: `
-    beginCaptures: 
-      "0": 
+    beginCaptures:
+      "0":
         name: punctuation.definition.string.begin.php
     end: `
-    patterns: 
+    patterns:
     - name: constant.character.escape.php
       match: \\.
     - include: "#interpolation"
-  var_global_safer: 
+  var_global_safer:
     name: variable.other.global.safer.php
-    captures: 
-      "2": 
+    captures:
+      "2":
         name: punctuation.definition.variable.php
     match: ((\$)(GLOBALS|_(ENV|SERVER|SESSION)))|\b(global)\b
-  strings: 
-    patterns: 
+  strings:
+    patterns:
     - include: "#regex-double-quoted"
     - include: "#sql-string-double-quoted"
     - include: "#string-double-quoted"
     - include: "#regex-single-quoted"
     - include: "#sql-string-single-quoted"
     - include: "#string-single-quoted"
-  string-single-quoted: 
+  string-single-quoted:
     name: string.quoted.single.php
-    endCaptures: 
-      "0": 
+    endCaptures:
+      "0":
         name: punctuation.definition.string.end.php
     begin: "'"
-    beginCaptures: 
-      "0": 
+    beginCaptures:
+      "0":
         name: punctuation.definition.string.begin.php
     end: "'"
-    patterns: 
+    patterns:
     - name: constant.character.escape.php
       match: \\[\\']
-  sql-string-double-quoted: 
+  sql-string-double-quoted:
     name: string.quoted.double.sql.php
-    endCaptures: 
-      "0": 
+    endCaptures:
+      "0":
         name: punctuation.definition.string.end.php
     begin: "\"\\s*(?=(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER)\\b)"
-    beginCaptures: 
-      "0": 
+    beginCaptures:
+      "0":
         name: punctuation.definition.string.begin.php
     end: "\""
-    patterns: 
+    patterns:
     - name: constant.character.escape.php
       match: \\.
     - include: "#interpolation"
     - include: source.sql
-  support: 
-    patterns: 
+  support:
+    patterns:
     - name: meta.array.php
-      endCaptures: 
-        "0": 
+      endCaptures:
+        "0":
           name: punctuation.definition.array.end.php
       begin: (array)(\()
-      beginCaptures: 
-        "1": 
+      beginCaptures:
+        "1":
           name: support.function.construct.php
-        "2": 
+        "2":
           name: punctuation.definition.array.begin.php
       end: \)
-      patterns: 
+      patterns:
       - include: "#language"
     - name: support.function.construct.php
       match: (?i)\b(isset|unset|print|e(cho|val|mpty)|list)\b
@@ -745,58 +745,58 @@ repository:
       match: (?i)\b(ob_gzhandler|zlib_get_coding_type|readgzfile|gz(compress|inflate|deflate|open|uncompress|encode|file))\b(?=\s*\()
     - name: support.class.builtin.php
       match: (?i)\b(Re(cursive(RegexIterator|CachingIterator|IteratorIterator|DirectoryIterator|FilterIterator|ArrayIterator)|flection(Method|Class|Object|Extension|P(arameter|roperty)|Function)?|gexIterator)|swf(s(hape|ound|prite)|text(field)?|displayitem|f(ill|ont(cha(r)?)?)|action|gradient|mo(vie|rph)|b(itmap|utton))|XMLReader|tidyNode|S(impleXML(Iterator|Element)|oap(Server|Header|Client|Param|Var|Fault)|pl(TempFileObject|ObjectStorage|File(Info|Object)))|NoRewindIterator|C(OMPersistHelper|achingIterator)|I(nfiniteIterator|teratorIterator)|D(irectoryIterator|OM(XPath|Node|C(omment|dataSection)|Text|Document(Fragment)?|ProcessingInstruction|E(ntityReference|lement)|Attr))|P(DO(Statement)?|arentIterator)|E(rrorException|mptyIterator|xception)|FilterIterator|LimitIterator|A(p(pendIterator|acheRequest)|rray(Iterator|Object)))\b(?=\s*\()
-  regex-double-quoted: 
+  regex-double-quoted:
     name: string.regexp.double-quoted.php
-    endCaptures: 
-      "0": 
+    endCaptures:
+      "0":
         name: punctuation.definition.string.end.php
     begin: (?x)'/ (?= (\\.|[^'/])++/[imsxeADSUXu]*' )
-    beginCaptures: 
-      "0": 
+    beginCaptures:
+      "0":
         name: punctuation.definition.string.begin.php
     end: (/)([imsxeADSUXu]*)(")
-    patterns: 
+    patterns:
     - include: "#interpolation"
     - name: string.regexp.arbitrary-repitition.php
-      captures: 
-        "1": 
+      captures:
+        "1":
           name: punctuation.definition.arbitrary-repitition.php
-        "3": 
+        "3":
           name: punctuation.definition.arbitrary-repitition.php
       match: (\{)\d+(,\d+)?(\})
     - name: string.regexp.character-class.php
-      captures: 
-        "0": 
+      captures:
+        "0":
           name: punctuation.definition.character-class.php
       begin: \[(?:\^?\])?
       end: \]
-      patterns: 
+      patterns:
       - name: constant.character.escape.php
         match: \\.
     - name: keyword.operator.regexp.php
       match: "[$^+*]"
     - name: constant.character.escape.php
       match: \\.
-  interpolation: 
-    patterns: 
-    - captures: 
-        "6": 
+  interpolation:
+    patterns:
+    - captures:
+        "6":
           name: keyword.operator.index-start.php
-        "7": 
+        "7":
           name: constant.numeric.index.php
-        "8": 
+        "8":
           name: variable.other.index.php
-        "9": 
+        "9":
           name: punctuation.definition.variable.php
-        "1": 
+        "1":
           name: variable.other.php
-        "2": 
+        "2":
           name: punctuation.definition.variable.php
-        "4": 
+        "4":
           name: keyword.operator.class.php
-        "10": 
+        "10":
           name: keyword.operator.index-end.php
-        "5": 
+        "5":
           name: variable.other.property.php
       match: "(?x)\n\
         \t\t\t\t\t\t((\\$)(?<name>[a-zA-Z_\\x{7f}-\\x{ff}][a-zA-Z0-9_\\x{7f}-\\x{ff}]*))\n\
@@ -810,26 +810,26 @@ repository:
         \t\t\t\t\t\t)?\n\
         \t\t\t\t\t\t"
       comment: "Simple syntax: $foo, $foo[0], $foo[$bar], $foo->bar"
-    - captures: 
-        "1": 
+    - captures:
+        "1":
           name: variable.other.php
-        "2": 
+        "2":
           name: punctuation.definition.variable.php
-        "4": 
+        "4":
           name: punctuation.definition.variable.php
       match: "(?x)\n\
         \t\t\t\t\t\t((\\$\\{)(?<name>[a-zA-Z_\\x{7f}-\\x{ff}][a-zA-Z0-9_\\x{7f}-\\x{ff}]*)(\\}))\n\
         \t\t\t\t\t\t"
       comment: "Simple syntax with braces: \"foo${bar}baz\""
-    - endCaptures: 
-        "0": 
+    - endCaptures:
+        "0":
           name: punctuation.definition.variable.php
       begin: (?=(?<regex>(?#simple syntax)\$(?<name>[a-zA-Z_\x{7f}-\x{ff}][a-zA-Z0-9_\x{7f}-\x{ff}]*)(?:\[(?<index>[a-zA-Z0-9_\x{7f}-\x{ff}]+|\$\g<name>)\]|->\g<name>(\(.*?\))?)?|(?#simple syntax with braces)\$\{(?:\g<name>(?<indices>\[(?:\g<index>|'(?:\\.|[^'\\])*'|"(?:\g<regex>|\\.|[^"\\])*")\])?|\g<complex>|\$\{\g<complex>\})\}|(?#complex syntax)\{(?<complex>\$(?<segment>\g<name>(\g<indices>*|\(.*?\))?)(?:->\g<segment>)*|\$\g<complex>|\$\{\g<complex>\})\}))\{
-      beginCaptures: 
-        "0": 
+      beginCaptures:
+        "0":
           name: punctuation.definition.variable.php
       end: \}
-      patterns: 
+      patterns:
       - include: "#function-call"
       - include: "#var_basic"
       - include: "#object"
@@ -843,11 +843,11 @@ repository:
         							   I've put wildcards into the function call parameter lists to handle this, but this may break the pattern.
         							   It also might be better to disable it as I shouldn't imagine it's used often (hopefully) and it may confuse PHP4 users.
     comment: http://www.php.net/manual/en/language.types.string.php#language.types.string.parsing
-  function-call: 
+  function-call:
     name: meta.function-call.php
     match: "[A-Za-z_][A-Za-z_0-9]*(?=\\s*\\()"
-  constants: 
-    patterns: 
+  constants:
+    patterns:
     - name: constant.language.php
       match: (?i)\b(TRUE|FALSE|NULL|__(FILE|FUNCTION|CLASS|METHOD|LINE)__|ON|OFF|YES|NO|NL|BR|TAB)\b
     - name: support.constant.core.php
@@ -860,28 +860,28 @@ repository:
         In PHP, any identifier which is not a variable is taken to be a constant.
         				However, if there is no constant defined with the given name then a notice
         				is generated and the constant is assumed to have the value of its name.
-  var_global: 
+  var_global:
     name: variable.other.global.php
-    captures: 
-      "1": 
+    captures:
+      "1":
         name: punctuation.definition.variable.php
     match: (\$)(_(COOKIE|FILES|GET|POST|REQUEST))\b
-  sql-string-single-quoted: 
+  sql-string-single-quoted:
     name: string.quoted.single.sql.php
-    endCaptures: 
-      "0": 
+    endCaptures:
+      "0":
         name: punctuation.definition.string.end.php
     begin: "'\\s*(?=(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER)\\b)"
-    beginCaptures: 
-      "0": 
+    beginCaptures:
+      "0":
         name: punctuation.definition.string.begin.php
     end: "'"
-    patterns: 
+    patterns:
     - name: constant.character.escape.php
       match: \\[\\']
     - include: source.sql
-  parameter-default-types: 
-    patterns: 
+  parameter-default-types:
+    patterns:
     - include: "#strings"
     - include: "#numbers"
     - include: "#string-backtick"
@@ -893,29 +893,29 @@ repository:
     - name: storage.modifier.reference.php
       match: "&(?=\\s*\\$)"
     - name: meta.array.php
-      endCaptures: 
-        "0": 
+      endCaptures:
+        "0":
           name: punctuation.definition.array.end.php
       begin: (array)(\()
-      beginCaptures: 
-        "1": 
+      beginCaptures:
+        "1":
           name: support.function.construct.php
-        "2": 
+        "2":
           name: punctuation.definition.array.begin.php
       end: \)
-      patterns: 
+      patterns:
       - include: "#parameter-default-types"
     - include: "#instantiation"
     - include: "#constants"
-  object: 
-    captures: 
-      "1": 
+  object:
+    captures:
+      "1":
         name: keyword.operator.class.php
-      "2": 
+      "2":
         name: meta.function-call.object.php
-      "3": 
+      "3":
         name: variable.other.property.php
-      "4": 
+      "4":
         name: punctuation.definition.variable.php
     match: |-
       (?x)(->)
@@ -924,46 +924,46 @@ repository:
           				    |
           				    ((\$+)?[a-zA-Z_\x{7f}-\x{ff}][a-zA-Z0-9_\x{7f}-\x{ff}]*)
           				)?
-  php_doc: 
-    patterns: 
+  php_doc:
+    patterns:
     - name: invalid.illegal.missing-asterisk.phpdoc.php
       match: ^(?!\s*\*).*$\n?
       comment: PHPDocumentor only recognises lines with an asterisk as the first non-whitespaces character
-    - captures: 
-        "1": 
+    - captures:
+        "1":
           name: keyword.other.phpdoc.php
-        "3": 
+        "3":
           name: storage.modifier.php
-        "4": 
+        "4":
           name: invalid.illegal.wrong-access-type.phpdoc.php
       match: ^\s*\*\s*(@access)\s+((public|private|protected)|(.+))\s*$
     - name: markup.underline.link
       match: ((https?|s?ftp|ftps|file|smb|afp|nfs|(x-)?man|gopher|txmt)://|mailto:)[-:@a-zA-Z0-9_.~%+/?=&#]+(?<![.?:])
-    - captures: 
-        "1": 
+    - captures:
+        "1":
           name: keyword.other.phpdoc.php
-        "2": 
+        "2":
           name: markup.underline.link
       match: (@xlink)\s+(.+)\s*$
     - name: keyword.other.phpdoc.php
       match: \@(a(bstract|uthor)|c(ategory|opyright)|global|li(cense|nk)|pa(ckage|ram)|return|s(ee|ince|tatic|ubpackage)|t(hrows|odo)|v(ar|ersion)|uses|deprecated|final)\b
     - name: meta.tag.inline.phpdoc.php
-      captures: 
-        "1": 
+      captures:
+        "1":
           name: keyword.other.phpdoc.php
       match: \{(@(link)).+?\}
-  numbers: 
+  numbers:
     name: constant.numeric.php
     match: \b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\.?[0-9]*)|(\.[0-9]+))((e|E)(\+|-)?[0-9]+)?)\b
 uuid: 22986475-8CA5-11D9-AEDD-000D93C8BE28
 foldingStartMarker: (/\*|\{\s*$|<<<HTML)
-patterns: 
-- captures: 
-    "0": 
+patterns:
+- captures:
+    "0":
       name: punctuation.section.embedded.php
   begin: <\?(?i:php|=)?
   end: \?>
-  patterns: 
+  patterns:
   - include: "#language"
 foldingStopMarker: (\*/|^\s*\}|^HTML;)
 comment: "TODO:\n\

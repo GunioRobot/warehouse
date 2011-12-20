@@ -7,18 +7,18 @@ module Sequel
       def each_hash(&block)
         each {|a| block[a.to_hash]}
       end
-      
+
       # Returns true if the record count is 0
       def empty?
         count == 0
       end
-      
+
       # Returns the first record in the dataset.
       def single_record(opts = nil)
         each(opts) {|r| return r}
         nil
       end
-      
+
       NAKED_HASH = {:naked => true}.freeze
 
       # Returns the first value of the first reecord in the dataset.
@@ -54,10 +54,10 @@ module Sequel
 
       # Returns the last records in the dataset by inverting the order. If no
       # order is given, an exception is raised. If num is not given, the last
-      # record is returned. Otherwise an array is returned with the last 
+      # record is returned. Otherwise an array is returned with the last
       # <i>num</i> records.
       def last(*args)
-        raise SequelError, 'No order specified' unless 
+        raise SequelError, 'No order specified' unless
           @opts[:order] || (opts && opts[:order])
 
         args = args.empty? ? 1 : (args.size == 1) ? args.first : args
@@ -76,7 +76,7 @@ module Sequel
           filter(args).last(1)
         end
       end
-      
+
       # Maps field values for each record in the dataset (if a field name is
       # given), or performs the stock mapping functionality of Enumerable.
       def map(field_name = nil, &block)
@@ -106,7 +106,7 @@ module Sequel
         paginated.set_pagination_info(page_no, page_size, record_count)
         paginated
       end
-      
+
       # Sets the pagination info
       def set_pagination_info(page_no, page_size, record_count)
         @current_page = page_no
@@ -126,16 +126,16 @@ module Sequel
       def next_page
         current_page < page_count ? (current_page + 1) : nil
       end
-      
+
       # Returns the page range
       def page_range
         1..page_count
       end
-      
+
       # Returns the record range for the current page
       def current_page_record_range
         return (0..0) if @current_page > @page_count
-        
+
         a = 1 + (@current_page - 1) * @page_size
         b = a + @page_size - 1
         b = @pagination_record_count if b > @pagination_record_count
@@ -145,7 +145,7 @@ module Sequel
       # Returns the number of records in the current page
       def current_page_record_count
         return 0 if @current_page > @page_count
-        
+
         a = 1 + (@current_page - 1) * @page_size
         b = a + @page_size - 1
         b = @pagination_record_count if b > @pagination_record_count
@@ -176,12 +176,12 @@ module Sequel
       def print(*cols)
         Sequel::PrettyTable.print(naked.all, cols.empty? ? columns : cols)
       end
-      
+
       COMMA_SEPARATOR = ', '.freeze
-      
-      # Returns a string in CSV format containing the dataset records. By 
+
+      # Returns a string in CSV format containing the dataset records. By
       # default the CSV representation includes the column titles in the
-      # first line. You can turn that off by passing false as the 
+      # first line. You can turn that off by passing false as the
       # include_column_titles argument.
       def to_csv(include_column_titles = true)
         records = naked.to_a
@@ -195,8 +195,8 @@ module Sequel
 
       # Inserts multiple records into the associated table. This method can be
       # to efficiently insert a large amounts of records into a table. Inserts
-      # are automatically wrapped in a transaction. If the :commit_every 
-      # option is specified, the method will generate a separate transaction 
+      # are automatically wrapped in a transaction. If the :commit_every
+      # option is specified, the method will generate a separate transaction
       # for each batch of records, e.g.:
       #
       #   dataset.multi_insert(list, :commit_every => 1000)
@@ -215,18 +215,18 @@ module Sequel
           end
         end
       end
-      
+
       module QueryBlockCopy
         def each(*args); raise SequelError, "#each cannot be invoked inside a query block."; end
         def insert(*args); raise SequelError, "#insert cannot be invoked inside a query block."; end
         def update(*args); raise SequelError, "#update cannot be invoked inside a query block."; end
         def delete(*args); raise SequelError, "#delete cannot be invoked inside a query block."; end
-        
+
         def clone_merge(opts)
           @opts.merge!(opts)
         end
       end
-      
+
       # Translates a query block into a dataset. Query blocks can be useful
       # when expressing complex SELECT statements, e.g.:
       #
@@ -242,9 +242,9 @@ module Sequel
         copy.instance_eval(&block)
         clone_merge(copy.opts)
       end
-      
+
       MUTATION_RE = /^(.+)!$/.freeze
-      
+
       def method_missing(m, *args, &block)
         if m.to_s =~ MUTATION_RE
           m = $1.to_sym

@@ -1,6 +1,6 @@
---- 
+---
 name: Bulletin Board
-fileTypes: 
+fileTypes:
 - bbcode
 scopeName: text.bbcode
 uuid: AC4E0E7E-CC15-4394-A858-6C7E3C09C414
@@ -10,132 +10,132 @@ foldingStartMarker: |-
           |<!--(?!.*-->)
           |\{\s*($|\?>\s*$|//|/\*(.*\*/\s*$|(?!.*?\*/)))
           )
-patterns: 
-- captures: 
-    "0": 
+patterns:
+- captures:
+    "0":
       name: meta.tag.bbcode
-    "1": 
+    "1":
       name: punctuation.definition.tag.bbcode
-    "2": 
+    "2":
       name: punctuation.definition.tag.bbcode
   begin: (\[)(?i:list)(\])
   end: (\[/)(?i:list)(\])
-  patterns: 
-  - captures: 
-      "0": 
+  patterns:
+  - captures:
+      "0":
         name: meta.tag.bbcode
-      "1": 
+      "1":
         name: punctuation.definition.tag.bbcode
     begin: (\[\*\])
     contentName: markup.list.unnumbered.bbcode
     end: (?=\[\*\]|\[/(?i:list)\])
-    patterns: 
+    patterns:
     - include: $self
-- endCaptures: 
-    "0": 
+- endCaptures:
+    "0":
       name: meta.tag.bbcode
-    "1": 
+    "1":
       name: punctuation.definition.tag.bbcode
-    "2": 
+    "2":
       name: punctuation.definition.tag.bbcode
   begin: (\[)(?i:list)=(1|a)(\])
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: meta.tag.bbcode
-    "1": 
+    "1":
       name: punctuation.definition.tag.bbcode
-    "2": 
+    "2":
       name: constant.other.list-type.bbcode
-    "3": 
+    "3":
       name: punctuation.definition.tag.bbcode
   end: (\[/)(?i:list)(\])
-  patterns: 
-  - captures: 
-      "0": 
+  patterns:
+  - captures:
+      "0":
         name: meta.tag.bbcode
-      "1": 
+      "1":
         name: punctuation.definition.tag.bbcode
     begin: (\[\*\])
     contentName: markup.list.numbered.bbcode
     end: (?=\[\*\]|\[/(?i:list)\])
-    patterns: 
+    patterns:
     - include: $self
-- captures: 
-    "0": 
+- captures:
+    "0":
       name: meta.tag.bbcode
-    "1": 
+    "1":
       name: punctuation.definition.tag.bbcode
-    "2": 
+    "2":
       name: punctuation.definition.tag.bbcode
   begin: (\[)(?i:quote)(?:=[^\]]+)?(\])
   contentName: markup.quote.bbcode
   end: (\[/)(?i:quote)(\])
-  patterns: 
+  patterns:
   - include: $self
-- captures: 
-    "0": 
+- captures:
+    "0":
       name: meta.tag.bbcode
-    "1": 
+    "1":
       name: punctuation.definition.tag.bbcode
-    "2": 
+    "2":
       name: punctuation.definition.tag.bbcode
   begin: (\[)(?i:code)(\])
   contentName: markup.raw.block.bbcode
   end: (\[/)(?i:code)(\])
-- captures: 
-    "0": 
+- captures:
+    "0":
       name: meta.tag.bbcode
-    "1": 
+    "1":
       name: punctuation.definition.tag.bbcode
-    "2": 
+    "2":
       name: punctuation.definition.tag.bbcode
   begin: (\[)(?i:i)(\])
   contentName: markup.italic.bbcode
   end: (\[/)(?i:i)(\])
-  patterns: 
+  patterns:
   - include: $self
-- captures: 
-    "0": 
+- captures:
+    "0":
       name: meta.tag.bbcode
-    "1": 
+    "1":
       name: punctuation.definition.tag.bbcode
-    "2": 
+    "2":
       name: punctuation.definition.tag.bbcode
   begin: (\[)(?i:b)(\])
   contentName: markup.bold.bbcode
   end: (\[/)(?i:b)(\])
-  patterns: 
+  patterns:
   - include: $self
-- captures: 
-    "0": 
+- captures:
+    "0":
       name: meta.tag.bbcode
-    "1": 
+    "1":
       name: punctuation.definition.tag.bbcode
-    "2": 
+    "2":
       name: punctuation.definition.tag.bbcode
   begin: (\[)(?i:u)(\])
   contentName: markup.underline.bbcode
   end: (\[/)(?i:u)(\])
-  patterns: 
+  patterns:
   - include: $self
-- captures: 
-    "0": 
+- captures:
+    "0":
       name: meta.tag.bbcode
-    "1": 
+    "1":
       name: punctuation.definition.tag.bbcode
-    "2": 
+    "2":
       name: punctuation.definition.tag.bbcode
   begin: (\[)(?i:strike)(\])
   contentName: markup.other.strikethrough.bbcode
   end: (\[/)(?i:strike)(\])
-  patterns: 
+  patterns:
   - include: $self
-- endCaptures: 
-    "0": 
+- endCaptures:
+    "0":
       name: meta.tag.bbcode
-    "1": 
+    "1":
       name: punctuation.definition.tag.bbcode
-    "2": 
+    "2":
       name: punctuation.definition.tag.bbcode
   begin: |-
     (?x)(\[)(?i:color)=(
@@ -146,28 +146,28 @@ patterns:
                         |([^\]]+))
                     (\])
   contentName: markup.other.colored.bbcode
-  beginCaptures: 
-    "6": 
+  beginCaptures:
+    "6":
       name: invalid.illegal.expected-a-color.bbcode
-    "7": 
+    "7":
       name: punctuation.definition.tag.bbcode
-    "0": 
+    "0":
       name: meta.tag.bbcode
-    "1": 
+    "1":
       name: punctuation.definition.tag.bbcode
-    "2": 
+    "2":
       name: constant.other.named-color.bbcode
-    "3": 
+    "3":
       name: constant.other.rgb-value.bbcode
   end: (\[/)(?i:color)(\])
-  patterns: 
+  patterns:
   - include: $self
-- endCaptures: 
-    "0": 
+- endCaptures:
+    "0":
       name: meta.tag.bbcode
-    "1": 
+    "1":
       name: punctuation.definition.tag.bbcode
-    "2": 
+    "2":
       name: punctuation.definition.tag.bbcode
   begin: |-
     (?x)(\[)(?i:size)=
@@ -175,97 +175,97 @@ patterns:
                          |([^\]]+))
                      (\])
   contentName: markup.other.resized.bbcode
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: meta.tag.bbcode
-    "1": 
+    "1":
       name: punctuation.definition.tag.bbcode
-    "2": 
+    "2":
       name: constant.numeric.size.bbcode
-    "3": 
+    "3":
       name: invalid.illegal.expected-a-size.bbcode
-    "4": 
+    "4":
       name: punctuation.definition.tag.bbcode
   end: (\[/)(?i:size)(\])
-  patterns: 
+  patterns:
   - include: $self
 - name: meta.link.inline.bbcode
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: meta.tag.bbcode
-    "1": 
+    "1":
       name: punctuation.definition.tag.bbcode
-    "2": 
+    "2":
       name: punctuation.definition.tag.bbcode
   begin: (\[)(?i:url)=([^\]]+)(\])
   contentName: string.other.link.title.bbcode
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: meta.tag.bbcode
-    "1": 
+    "1":
       name: punctuation.definition.tag.bbcode
-    "2": 
+    "2":
       name: markup.underline.link.bbcode
-    "3": 
+    "3":
       name: punctuation.definition.tag.bbcode
   end: (\[/)(?i:url)(\])
-  patterns: 
+  patterns:
   - include: $self
 - name: meta.link.inline.bbcode
-  captures: 
-    "0": 
+  captures:
+    "0":
       name: meta.tag.bbcode
-    "1": 
+    "1":
       name: punctuation.definition.tag.bbcode
-    "2": 
+    "2":
       name: punctuation.definition.tag.bbcode
   begin: (\[)(?i:url)(\])
   contentName: markup.underline.link.bbcode
   end: (\[/)(?i:url)(\])
-  patterns: 
+  patterns:
   - match: "[\\[]]+"
 - name: meta.link.inline.bbcode
-  captures: 
-    "0": 
+  captures:
+    "0":
       name: meta.tag.bbcode
-    "1": 
+    "1":
       name: punctuation.definition.tag.bbcode
-    "2": 
+    "2":
       name: punctuation.definition.tag.bbcode
   begin: (\[)(?i:email)(\])
   contentName: markup.underline.link.email.bbcode
   end: (\[/)(?i:email)(\])
-  patterns: 
+  patterns:
   - match: "[\\[]]+"
 - name: meta.link.image.bbcode
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: meta.tag.bbcode
-    "1": 
+    "1":
       name: punctuation.definition.tag.bbcode
-    "2": 
+    "2":
       name: punctuation.definition.tag.bbcode
   begin: (\[)(?i:img)(:((?i:right|left|top))|([^\]]+))?(\])
   contentName: markup.underline.link.image.bbcode
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: meta.tag.bbcode
-    "1": 
+    "1":
       name: punctuation.definition.tag.bbcode
-    "3": 
+    "3":
       name: constant.other.alignment.bbcode
-    "4": 
+    "4":
       name: invalid.illegal.expected-an-alignment.bbcode
-    "5": 
+    "5":
       name: punctuation.definition.tag.bbcode
   end: (\[/)(?i:img)(\])
-  patterns: 
+  patterns:
   - match: "[\\[]]+?"
 - name: constant.other.smiley.bbcode
-  captures: 
-    "3": 
+  captures:
+    "3":
       name: punctuation.definition.constant.bbcode
-    "5": 
+    "5":
       name: punctuation.definition.constant.bbcode
   match: |-
     (?x)

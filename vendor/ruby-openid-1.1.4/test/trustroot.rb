@@ -27,7 +27,7 @@ class TrustRootTestCase < Test::Unit::TestCase
   end
 
   def test_parse_good
-    
+
     def assert_good(s)
       tr = OpenID::TrustRoot.parse(s)
       assert_not_nil(tr)
@@ -71,7 +71,7 @@ class TrustRootTestCase < Test::Unit::TestCase
   end
 
   def test_validate
-    
+
     def assert_valid(s, url, expected)
       tr = OpenID::TrustRoot.parse(s)
       assert_not_nil(tr)

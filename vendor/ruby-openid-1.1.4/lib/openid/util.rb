@@ -47,7 +47,7 @@ module OpenID
   # Code returned by OpenID::OpenIDConsumer.complete_auth when the
   # OpenIDConsumer instance is in immediate mode and ther server sends back a
   # URL for the user to login with.
-  SETUP_NEEDED = 'setup needed'  
+  SETUP_NEEDED = 'setup needed'
 
   # Code returned by OpenID::OpenIDConsumer.begin_auth when it is unable
   # to fetch the URL given by the user.
@@ -77,7 +77,7 @@ module OpenID
     def Util.sha1(s)
       Digest::SHA1.digest(s)
     end
-   
+
     def Util.to_base64(s)
       Base64.encode64(s).gsub("\n", "")
     end
@@ -85,7 +85,7 @@ module OpenID
     def Util.from_base64(s)
       Base64.decode64(s)
     end
- 
+
     def Util.kvform(hash)
       form = ""
       hash.each do |k,v|
@@ -122,7 +122,7 @@ module OpenID
         num <<= 32
         num |= x
       end
-      num    
+      num
     end
 
     def Util.num_to_base64(l)
@@ -152,27 +152,27 @@ module OpenID
       end
       a.join("&")
     end
-    
+
     def Util.parse_query(qs)
       query = {}
       CGI::parse(qs).each {|k,v| query[k] = v[0]}
       return query
     end
-    
+
     def Util.append_args(url, args)
       url = url.dup
       url if args.length == 0
       url << (url.include?("?") ? "&" : "?")
       url << Util.urlencode(args)
     end
-    
+
     def Util.strxor(s1, s2)
       raise ArgumentError if s1.length != s2.length
       length = [s1.length, s2.length].min - 1
       a = (0..length).collect {|i| (s1[i]^s2[i]).chr}
       a.join("")
     end
-    
+
     # Sign the given fields from the reply with the specified key.
     # Return [signed, sig]
     def Util.sign_reply(reply, key, signed_fields, prefix="openid.")
@@ -219,10 +219,10 @@ module OpenID
       rbytes = Util::num_to_str(r)
       nbytes = rbytes.length
       nbytes -= 1 if rbytes[0].chr == "\000"
-            
+
       bytes = "\000" + Util::get_random_bytes(nbytes)
       n = Util::str_to_num(bytes)
-      
+
       return start + (n % r) * step
     end
 

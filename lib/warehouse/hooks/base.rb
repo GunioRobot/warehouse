@@ -16,23 +16,23 @@ module Warehouse
       def self.properties
         @properties ||= new(nil)
       end
-      
+
       def active
         @instance && @instance.active
       end
-      
+
       def active?
         @instance && @instance.active?
       end
-      
+
       def active=(value)
         @instance && @instance.active = value
       end
-      
+
       def label
         @instance && @instance.label
       end
-      
+
       def label=(value)
         @instance && @instance.label = value
       end
@@ -51,7 +51,7 @@ module Warehouse
         end
         @commit.dirs_changed.split(/\n/).any? { |path| path =~ options[:prefix] }
       end
-      
+
       def run!
         init if respond_to?(:init) # plugin-specific startup stuff
         run

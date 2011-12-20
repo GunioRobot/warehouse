@@ -8,7 +8,7 @@ context "Command svn access config" do
     FileUtils.mkdir_p File.dirname(@@config)
     FileUtils.rm_rf @@config
   end
-  
+
   specify "should build config file" do
     expected = <<-END
 [repo1:/]
@@ -21,7 +21,7 @@ rick = r
 END
     repo1 = {:id => 1, :subdomain => 'repo1', :path => 'foo/bar/repo1'}
     repo2 = {:id => 2, :subdomain => 'repo2', :path => 'foo/bar/repo2'}
-    
+
     @command.expects(:grouped_permission_paths_for).with([repo1, repo2]).returns(
       {'1' => {'' => [
           {:path => '', :full_access => 0},
@@ -33,7 +33,7 @@ END
         ]}
       }
     )
-    
+
     @command.build_config_for [repo1, repo2], @@config
     File.exist?(@@config).should == true
     IO.read(@@config).strip.should == expected.strip

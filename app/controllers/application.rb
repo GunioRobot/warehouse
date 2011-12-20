@@ -1,11 +1,11 @@
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   helper_method :current_repository, :logged_in?, :current_user, :admin?, :controller_path, :repository_admin?, :repository_member?, :repository_subdomain, :hosted_url, :hosted_url_for
-  
+
   session(Warehouse.session_options) unless Warehouse.domain.blank?
-  
+
   around_filter :set_context
-  
+
   before_filter :check_for_valid_domain
   before_filter :check_for_repository
 
@@ -18,21 +18,21 @@ class ApplicationController < ActionController::Base
   def logged_in?
     !!current_user
   end
-  
+
   def admin?
     logged_in? && current_user.admin?
   end
-  
+
   protected
     def repository_member_required
       repository_member? || access_denied_message("You must be a member of this repository to visit this page.")
     end
-    
+
     # specifies a controller action where a repository admin is required.
     def repository_admin_required
       repository_admin? || access_denied_message("You must be an administrator for this repository to visit this page.")
     end
-    
+
     # specifies a controller action that only warehouse administrators are allowed
     def admin_required
       admin? || access_denied_message("You must be an administrator to visit this page.")
@@ -85,7 +85,7 @@ class ApplicationController < ActionController::Base
       return nil if @node.nil?
       @node.dir? ? @node.path : File.dirname(@node.path)
     end
-    
+
     def retrieve_repository_member
       return true if admin?
       return nil unless current_repository
@@ -93,39 +93,39 @@ class ApplicationController < ActionController::Base
       return nil unless logged_in?
       current_repository.member?(current_user, node_directory_path)
     end
-    
+
     def retrieve_repository_admin
       return true if admin?
       return nil unless current_repository
       return nil unless current_repository.public? || logged_in?
       current_repository.admin?(current_user)
     end
-    
+
     def current_user=(value)
       session[:user_id] = value ? value.id : nil
       @current_user     = value
     end
-    
+
     def retrieve_current_user
-      @current_user || 
+      @current_user ||
         authenticate_with_http_basic { |u, p| User.find_by_token(u) } ||
-        (cookies[:login_token] && User.find_by_id_and_token(*cookies[:login_token].split(";"))) || 
+        (cookies[:login_token] && User.find_by_id_and_token(*cookies[:login_token].split(";"))) ||
         (session[:user_id] && User.find_by_id(session[:user_id]))
     end
-    
+
     def retrieve_current_repository
       repository_subdomain.blank? ? nil : Repository.find_by_subdomain(repository_subdomain)
     end
-    
+
     def installed?
       !Warehouse.domain.blank? && Repository.count > 0
     end
-    
+
     def install
       reset_session
       redirect_to installer_path
     end
-  
+
     def check_for_repository
       return true if current_repository
       if installed?
@@ -135,7 +135,7 @@ class ApplicationController < ActionController::Base
       end
       false
     end
-    
+
     def check_for_valid_domain
       if (Warehouse.domain.blank? && Repository.count > 0) || (!Warehouse.domain.blank? && request.host != Warehouse.domain && request.host.gsub(/^[\w-]+\./, '') != Warehouse.domain)
         status_message :error, "Invalid domain '#{request.host}'.", 'shared/domain'
@@ -153,7 +153,7 @@ class ApplicationController < ActionController::Base
       repository, name = extract_repository_and_args(args)
       hosted_url_for repository, send("#{name}_path", *args)
     end
-    
+
     def hosted_url_for(repository, *args)
       unless repository.is_a?(Repository) || repository.nil?
         args.unshift repository
@@ -182,13 +182,13 @@ class ApplicationController < ActionController::Base
           ]
         end
     end
-    
+
     def hosted_url_for(repository, *args)
       args.unshift repository unless repository.is_a?(Repository) || repository.nil?
       url_for(*args)
     end
   end
-    
+
     def extract_repository_and_args(args)
       if args.first.is_a?(Symbol)
         [nil, args.shift]
@@ -202,7 +202,7 @@ class ApplicationController < ActionController::Base
     def current_cache
       @cache ||= {}
     end
-    
+
     # checks if the given name has been cached.  If so,
     # read into #current_cache
     def cached_in?(name, options = nil)
@@ -214,7 +214,7 @@ class ApplicationController < ActionController::Base
         yield
       end
     end
-    
+
     def api_format?
       request.format.atom? || request.format.xml?
     end

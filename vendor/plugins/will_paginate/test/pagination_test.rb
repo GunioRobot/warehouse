@@ -3,9 +3,9 @@ require File.dirname(__FILE__) + '/../init'
 
 class PaginationTest < ActiveRecordTestCase
   fixtures :developers
-  
+
   class PaginationController < ActionController::Base
-    
+
     def list_developers
       @developers = Developer.paginate :page => params[:page], :per_page => (params[:per_page] || 4).to_i
 
@@ -27,7 +27,7 @@ class PaginationTest < ActiveRecordTestCase
     def rescue_errors(e) raise e end
     def rescue_action(e) raise e end
   end
-  
+
   def setup
     @controller = PaginationController.new
     @request    = ActionController::TestRequest.new
@@ -56,7 +56,7 @@ class PaginationTest < ActiveRecordTestCase
   def test_will_paginate_with_options
     get :list_developers, :page => 2, :class => 'will_paginate', :prev_label => 'Prev', :next_label => 'Next'
     assert_response :success
-    
+
     entries = assigns :developers
     assert entries
     assert_equal 4, entries.size
@@ -74,7 +74,7 @@ class PaginationTest < ActiveRecordTestCase
   def test_will_paginate_windows
     get :list_developers, :page => 6, :per_page => 1, :inner_window => 2
     assert_response :success
-    
+
     entries = assigns :developers
     assert entries
     assert_equal 1, entries.size

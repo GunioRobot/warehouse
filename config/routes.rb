@@ -7,7 +7,7 @@ ActionController::Routing::Routes.draw do |map|
   map.diff "changesets/diff/:rev/*paths", :controller => "changesets", :action => "diff", :rev => /r\d+/
 
   map.resources :changesets, :has_many => :changes, :collection => { :public => :get }
-  
+
   map.with_options :path_prefix => 'admin' do |admin|
     admin.resources :bookmarks
     admin.resources :plugins
@@ -32,7 +32,7 @@ ActionController::Routing::Routes.draw do |map|
     b.text        "text/*paths",  :action => "text"
     b.raw         "raw/*paths",   :action => "raw"
   end
-  
+
   map.with_options :controller => "sessions" do |s|
     s.login   "login",        :action => "create"
     s.logout  "logout",       :action => "destroy"
@@ -46,7 +46,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.installer "install", :controller => "install", :action => "index",   :conditions => { :method => :get  }
   map.connect   "install", :controller => "install", :action => "install", :conditions => { :method => :post }
-  
+
   if RAILS_ENV == "development"
     map.connect "test_install", :controller => "install", :action => "test_install"
   end

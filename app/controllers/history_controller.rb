@@ -12,7 +12,7 @@ class HistoryController < ApplicationController
       @users = User.find_all_by_logins(@changesets.collect(&:author).uniq).index_by(&:login)
     end
   end
-  
+
   protected
     def find_node
       full_path = if params[:paths].last.to_s =~ /\.atom$/

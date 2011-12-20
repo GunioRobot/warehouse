@@ -1,9 +1,9 @@
---- 
+---
 name: Javascript YUI
 scopeName: source.js.yui
 uuid: 62E7EF93-5574-4063-BF18-AD38620236B9
 foldingStartMarker: (^.*{[^}]*$|^.*\([^\)]*$|^.*/\*(?!.*\*/).*$)
-patterns: 
+patterns:
 - name: support.class.js.yui
   match: \b(YAHOO|YAHOO_config)\b
 - name: support.class.js.yui

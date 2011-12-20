@@ -1,7 +1,7 @@
 Gems
 ====
 
-This is a small plugin that helps with Ruby Gem management for your application.  
+This is a small plugin that helps with Ruby Gem management for your application.
 It will automatically include all gem/lib paths into the $LOAD_PATH on startup.
 
 To freeze gems:

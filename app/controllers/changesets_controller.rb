@@ -6,7 +6,7 @@ class ChangesetsController < ApplicationController
   before_filter :find_node, :only => :diff
 
   caches_action_content :index, :show, :public
-  
+
   helper_method :previous_changeset, :next_changeset
   expiring_attr_reader :changeset_paths, :find_changeset_paths
 
@@ -27,13 +27,13 @@ class ChangesetsController < ApplicationController
       Changeset.paginate(:conditions => ['repository_id in (?)', @repositories.collect(&:id)], :page => params[:page], :order => 'changesets.changed_at desc')
     respond_for_changesets
   end
-  
+
   def global_index
     @repositories = current_user.repositories
     @changesets   = Changeset.paginate_by_paths(current_user.repositories.paths, :page => params[:page], :order => 'changesets.changed_at desc')
     respond_for_changesets
   end
-  
+
   def show
     @changeset = current_repository.changesets.find_by_paths(changeset_paths, :conditions => ['revision = ?', params[:id]])
     unless @changeset
@@ -47,7 +47,7 @@ class ChangesetsController < ApplicationController
   end
 
   def action_url_to_id
-    super + 
+    super +
       if (action_name == 'index' && repository_subdomain.blank? && logged_in?) || (action_name != 'public' && changeset_paths != :all)
         "_user_#{current_user.id}"
       else
@@ -61,15 +61,15 @@ class ChangesetsController < ApplicationController
 
   protected
     %w(previous_changeset next_changeset changeset_paths).each { |m| expiring_attr_reader m, "find_#{m}" }
-    
+
     def find_previous_changeset
       current_repository.changesets.find_by_paths(changeset_paths, :conditions => ['changed_at < ?', @changeset.changed_at], :order => 'changed_at desc')
     end
-    
+
     def find_next_changeset
       current_repository.changesets.find_by_paths(changeset_paths, :conditions => ['changed_at > ?', @changeset.changed_at], :order => 'changed_at')
     end
-    
+
     def find_changeset_paths
       if current_repository.public? || admin? || repository_admin?
         :all
@@ -91,7 +91,7 @@ class ChangesetsController < ApplicationController
     end
 
     def repository_subdomain_or_login_required
-      if repository_subdomain.blank? 
+      if repository_subdomain.blank?
         if logged_in?
           true
         else
@@ -117,7 +117,7 @@ class ChangesetsController < ApplicationController
       return true if installed? && repository_subdomain.blank? && @@global_actions.include?(action_name)
       super
     end
-    
+
     def check_for_changeset_rev
       return unless params[:rev]
       if num = params[:rev].scan(/\d+/).first

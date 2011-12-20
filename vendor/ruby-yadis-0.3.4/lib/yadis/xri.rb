@@ -24,7 +24,7 @@ module XRI
     iri.insert(0, 'xri://') if not iri.match('^xri://')
     return escape_for_iri(iri)
   end
-  
+
   # Note this is not not idempotent, so do not apply this more than once.
   # XRI Syntax section 2.3.2
   def XRI.escape_for_iri(xri)
@@ -46,7 +46,7 @@ module XRI
   def XRI.to_uri_normal(xri)
     return iri_to_uri(to_iri_normal(xri))
   end
-  
+
   # RFC 3987 section 3.1
   def XRI.iri_to_uri(iri)
     uri = iri.dup
@@ -72,11 +72,11 @@ module XRI
     else
       root = authority.split(/[!*]/)[0]
     end
-    
+
     make_xri(root)
   end
 
-  
+
   def make_xri(xri)
     if xri.index('xri://') != 0
       xri = 'xri://' + xri

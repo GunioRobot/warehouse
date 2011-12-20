@@ -1,13 +1,13 @@
---- 
+---
 name: Postscript
-fileTypes: 
+fileTypes:
 - ps
 - eps
 firstLineMatch: ^%!PS
 scopeName: source.postscript
-repository: 
-  string_content: 
-    patterns: 
+repository:
+  string_content:
+    patterns:
     - name: constant.numeric.octal.postscript
       match: \\[0-7]{1,3}
     - name: constant.character.escape.postscript
@@ -16,81 +16,81 @@ repository:
       match: \\
     - begin: \(
       end: \)
-      patterns: 
+      patterns:
       - include: "#string_content"
 uuid: B89483CD-6AE0-4517-BE2C-82F8083B7359
 foldingStartMarker: /\*\*|\{\s*$
-patterns: 
+patterns:
 - name: string.other.postscript
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.postscript
   begin: \(
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.postscript
   end: \)
-  patterns: 
+  patterns:
   - include: "#string_content"
 - name: meta.Document-Structuring-Comment.postscript
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: keyword.other.DSC.postscript
-    "3": 
+    "3":
       name: string.unquoted.DSC.postscript
   match: ^(%%(BeginBinary:|BeginCustomColor:|BeginData:|BeginDefaults|BeginDocument:|BeginEmulation:|BeginExitServer:|BeginFeature:|BeginFile:|BeginFont:|BeginObject:|BeginPageSetup:|BeginPaperSize:|BeginPreview:|BeginProcSet|BeginProcessColor:|BeginProlog|BeginResource:|BeginSetup|BoundingBox:|CMYKCustomColor:|ChangeFont:|Copyright:|CreationDate:|Creator:|DocumentCustomColors:|DocumentData:|DocumentFonts:|DocumentMedia:|DocumentNeededFiles:|DocumentNeededFonts:|DocumentNeededProcSets:|DocumentNeededResources:|DocumentPaperColors:|DocumentPaperForms:|DocumentPaperSizes:|DocumentPaperWeights:|DocumentPrinterRequired:|DocumentProcSets:|DocumentProcessColors:|DocumentSuppliedFiles:|DocumentSuppliedFonts:|DocumentSuppliedProcSets:|DocumentSuppliedResources:|EOF|Emulation:|EndBinary:|EndComments|EndCustomColor:|EndData:|EndDefaults|EndDocument:|EndEmulation:|EndExitServer:|EndFeature:|EndFile:|EndFont:|EndObject:|EndPageSetup:|EndPaperSize:|EndPreview:|EndProcSet|EndProcessColor:|EndProlog|EndResource:|EndSetup|ExecuteFile:|Extensions:|Feature:|For:|IncludeDocument:|IncludeFeature:|IncludeFile:|IncludeFont:|IncludeProcSet:|IncludeResource:|LanguageLevel:|OperatorIntervention:|OperatorMessage:|Orientation:|Page:|PageBoundingBox:|PageCustomColors|PageCustomColors:|PageFiles:|PageFonts:|PageMedia:|PageOrder:|PageOrientation:|PageProcessColors|PageProcessColors:|PageRequirements:|PageResources:|PageTrailer|Pages:|PaperColor:|PaperForm:|PaperSize:|PaperWeight:|ProofMode:|RGBCustomColor:|Requirements:|Routing:|Title:|Trailer|VMlocation:|VMusage:|Version|Version:|\+|\?BeginFeatureQuery:|\?BeginFileQuery:|\?BeginFontListQuery:|\?BeginFontQuery:|\?BeginPrinterQuery:|\?BeginProcSetQuery:|\?BeginQuery:|\?BeginResourceListQuery:|\?BeginResourceQuery:|\?BeginVMStatus:|\?EndFeatureQuery:|\?EndFileQuery:|\?EndFontListQuery:|\?EndFontQuery:|\?EndPrinterQuery:|\?EndProcSetQuery:|\?EndQuery:|\?EndResourceListQuery:|\?EndResourceQuery:|\?EndVMStatus:))\s*(.*)$\n?
 - name: comment.line.percentage.postscript
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.comment.postscript
   match: (%).*$\n?
 - name: meta.dictionary.postscript
-  captures: 
-    "0": 
+  captures:
+    "0":
       name: punctuation.definition.dictionary.postscript
   begin: \<\<
   end: \>\>
-  patterns: 
+  patterns:
   - include: $self
 - name: meta.array.postscript
-  captures: 
-    "0": 
+  captures:
+    "0":
       name: punctuation.definition.array.postscript
   begin: \[
   end: \]
-  patterns: 
+  patterns:
   - include: $self
 - name: meta.procedure.postscript
-  captures: 
-    "0": 
+  captures:
+    "0":
       name: punctuation.definition.procedure.postscript
   begin: "{"
   end: "}"
-  patterns: 
+  patterns:
   - include: $self
 - name: string.other.base85.postscript
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.postscript
   begin: \<\~
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.postscript
   end: \~\>
-  patterns: 
+  patterns:
   - match: "[!-z\\s]+"
   - name: invalid.illegal.base85.char.postscript
     match: .
 - name: string.other.hexadecimal.postscript
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.postscript
   begin: \<
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.postscript
   end: \>
-  patterns: 
+  patterns:
   - match: "[0-9A-Fa-f\\s]+"
   - name: invalid.illegal.hexadecimal.char.postscript
     match: .

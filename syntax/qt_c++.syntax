@@ -1,6 +1,6 @@
---- 
+---
 name: Qt C++
-fileTypes: 
+fileTypes:
 - cpp
 - h
 firstLineMatch: -\*- C\+\+ -\*-
@@ -10,7 +10,7 @@ foldingStartMarker: "(?x)\n\
   \t\t /\\*\\*(?!\\*)\n\
   \t\t|^(?![^{]*?//|[^{]*?/\\*(?!.*?\\*/.*?\\{)).*?\\{\\s*($|//|/\\*(?!.*?\\*/.*\\S))\n\
   \t"
-patterns: 
+patterns:
 - name: support.other.macro.qt
   match: \bQ_(CLASSINFO|ENUMS|FLAGS|INTERFACES|OBJECT|PROPERTY)\b
 - name: support.function.qt

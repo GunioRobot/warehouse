@@ -8,15 +8,15 @@ class Permission < ActiveRecord::Base
   validates_presence_of :repository_id
   attr_accessible :admin, :path, :full_access, :user, :user_id
   validate :uniqueness_of_user_paths
-  
+
   def self.clean_path(path)
     path.to_s.gsub(/^\/|\/$/, '')
   end
-  
+
   def clean_path
     read_attribute(:path)
   end
-  
+
   def path
     "/#{clean_path}"
   end
@@ -45,7 +45,7 @@ class Permission < ActiveRecord::Base
     m.save
     m
   end
-  
+
   # updates existing paths, then passes on to #grant
   def self.set(repository, user, options = {})
     return if options.blank?
@@ -63,7 +63,7 @@ class Permission < ActiveRecord::Base
       grant(repository, options.merge(:user => user)) unless options[:paths].blank?
     end
   end
-  
+
   protected
     def uniqueness_of_user_paths
       path_query = path.blank? ? "path = ?" : 'path = ?'

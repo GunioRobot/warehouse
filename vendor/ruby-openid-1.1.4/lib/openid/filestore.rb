@@ -13,9 +13,9 @@ module OpenID
   # Methods of this object may raise SystemCallError if filestystem
   # related errors are encountered.
   class FilesystemStore < Store
-  
+
     @@FILENAME_ALLOWED = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.-".split("")
-  
+
     # Create a FilesystemStore instance, putting all data in +directory+.
     def initialize(directory)
       p_dir = Pathname.new(directory)
@@ -24,7 +24,7 @@ module OpenID
       @temp_dir = p_dir.join('temp')
       @auth_key_name = p_dir.join('auth_key')
       @max_nonce_age = 6 * 60 * 60
-      
+
       self.ensure_dir(@nonce_dir)
       self.ensure_dir(@association_dir)
       self.ensure_dir(@temp_dir)
@@ -36,13 +36,13 @@ module OpenID
     def read_auth_key
       f = nil
       begin
-        f = File.open(@auth_key_name)      
+        f = File.open(@auth_key_name)
       rescue Errno::ENOENT
         return nil
       else
         return f.read
       ensure
-        f.close unless f.nil?      
+        f.close unless f.nil?
       end
     end
 
@@ -66,14 +66,14 @@ module OpenID
           end
         rescue Errno::EEXIST
           raise if read_auth_key.nil?
-        end      
+        end
       ensure
         self.remove_if_present(tmp)
       end
 
       auth_key
     end
-    
+
     # Retrieve the auth key from the file specified by
     # @auth_key_file, creating it if it does not exist
     def get_auth_key
@@ -81,18 +81,18 @@ module OpenID
       if auth_key.nil?
         auth_key = create_auth_key
       end
-      
+
       if auth_key.length != @@AUTH_KEY_LEN
         raise StandardError.new("Bad auth key - wrong length")
       end
-      
+
       auth_key
     end
 
     # Create a unique filename for a given server url and handle. The
     # filename that is returned will contain the domain name from the
     # server URL for ease of human inspection of the data dir.
-    def get_association_filename(server_url, handle)      
+    def get_association_filename(server_url, handle)
       filename = self.filename_from_url(server_url)
       filename += '-' + safe64(handle)
       @association_dir.join(filename)
@@ -103,7 +103,7 @@ module OpenID
       assoc_s = OpenID::Association.serialize(association)
       filename = get_association_filename(server_url, association.handle)
       f, tmp = mktemp
-    
+
       begin
         begin
           f.write(assoc_s)
@@ -111,45 +111,45 @@ module OpenID
         ensure
           f.close
         end
-        
+
         begin
           File.rename(tmp, filename)
         rescue Errno::EEXIST
-        
+
           begin
             File.unlink(filename)
           rescue Errno::ENOENT
             # do nothing
           end
-          
+
           File.rename(tmp, filename)
         end
-        
+
       rescue
         self.remove_if_present(tmp)
         raise
       end
     end
-    
+
     # Retrieve an association
     def get_association(server_url, handle=nil)
       unless handle.nil?
         filename = get_association_filename(server_url, handle)
         return _get_association(filename)
       end
-      
+
       # search though existing files looking for a match
       prefix = filename_from_url(server_url)
       assoc_filenames = Dir.entries(@association_dir)
       assoc_filenames = assoc_filenames.find_all { |f| f.index(prefix) == 0 }
-      
+
       assocs = assoc_filenames.collect do |f|
         _get_association(@association_dir.join(f))
       end
 
       assocs = assocs.find_all { |a| not a.nil? }
       assocs = assocs.sort_by { |a| a.issued }
-      
+
       return nil if assocs.empty?
       return assocs[-1]
     end
@@ -165,9 +165,9 @@ module OpenID
         ensure
           assoc_file.close
         end
-        
+
         begin
-          association = OpenID::Association.deserialize(assoc_s)      
+          association = OpenID::Association.deserialize(assoc_s)
         rescue
           self.remove_if_present(filename)
           return nil
@@ -186,7 +186,7 @@ module OpenID
     # Remove an association if it exists, otherwise do nothing.
     def remove_association(server_url, handle)
       assoc = get_association(server_url, handle)
-      
+
       if assoc.nil?
         return false
       else
@@ -195,13 +195,13 @@ module OpenID
       end
     end
 
-    # Mark this nonce as present    
+    # Mark this nonce as present
     def store_nonce(nonce)
       filename = @nonce_dir.join(nonce)
       File.open(filename, "w").close
     end
 
-    # Return whether this nonce is present.  As a side-effect, mark it 
+    # Return whether this nonce is present.  As a side-effect, mark it
     # as no longer present.
     def use_nonce(nonce)
       filename = @nonce_dir.join(nonce)
@@ -214,7 +214,7 @@ module OpenID
           File.unlink(filename)
         rescue Errno::ENOENT
           return false
-        end      
+        end
         nonce_age = Time.now.to_f - st.mtime.to_f
         nonce_age <= @max_nonce_age
       end
@@ -224,7 +224,7 @@ module OpenID
     def clean
       nonces = Dir[@nonce_dir.join("*")]
       now = Time.now
-      
+
       nonces.each do |nonce|
         filename = nonce_dir.join(nonce)
         begin
@@ -255,7 +255,7 @@ module OpenID
             self.remove_if_present(af)
             next
           else
-            self.remove_if_present(af) if association.expires_in == 0          
+            self.remove_if_present(af) if association.expires_in == 0
           end
         end
       end
@@ -263,7 +263,7 @@ module OpenID
 
     protected
 
-    # Create a temporary file and return the File object and filename.    
+    # Create a temporary file and return the File object and filename.
     def mktemp
       f = Tempfile.new('tmp', @temp_dir)
       [f, f.path]
@@ -277,7 +277,7 @@ module OpenID
           filename << c
         else
           filename << sprintf("_%02X", c[0])
-        end    
+        end
       end
       filename.join("")
     end
@@ -300,13 +300,13 @@ module OpenID
       end
       return true
     end
-  
+
     # ensure that a path exists
 
     def ensure_dir(dir_name)
       FileUtils::mkdir_p(dir_name)
     end
-    
+
   end
 
 end

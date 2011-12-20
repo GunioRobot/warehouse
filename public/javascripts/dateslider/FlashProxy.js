@@ -18,7 +18,7 @@ function FlashProxy(uid, proxySwfName)
  * Call a function in your Flash content.  Arguments should be:
  * 1. ActionScript function name to call,
  * 2. any number of additional arguments of type object,
- *    array, string, number, boolean, date, null, or undefined. 
+ *    array, string, number, boolean, date, null, or undefined.
  */
 FlashProxy.prototype.call = function()
 {

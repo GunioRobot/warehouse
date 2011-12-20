@@ -1,39 +1,39 @@
---- 
+---
 name: FXScript
-fileTypes: 
+fileTypes:
 - fxscript
 scopeName: source.fxscript
 uuid: 43751327-3FD1-4BE7-AD05-136FC552BABA
 foldingStartMarker: (^|(?<=;)[ \t]*)on[ \t]+(\w+)[ \t]*
-patterns: 
+patterns:
 - name: meta.function.fxscript
-  captures: 
-    "2": 
+  captures:
+    "2":
       name: entity.name.function.fxscript
   begin: (^|(?<=;)[ \t]*)on[ \t]+(\w+)[ \t]*(?=\([^\)]*\))
   end: end(;|;?[ \t]*\n|;?[ \t]*//.*[ \t]*\n)
-  patterns: 
+  patterns:
   - begin: \((?=(?i:clip|color|float|image|point|string|value|point3d))
     end: \)
-    patterns: 
-    - captures: 
-        "1": 
+    patterns:
+    - captures:
+        "1":
           name: support.type.fxscript
-        "2": 
+        "2":
           name: variable.parameter.function.fxscript
       match: ((?i:clip|color|float|image|point|string|value|point3d))[ \t]+([^,)]+)
   - include: $self
 - name: keyword.other.input-control.fxscript
   begin: (^|(?<=;)[ \t]*)input[ \t]*
   end: \n
-  patterns: 
+  patterns:
   - include: $self
-  - captures: 
-      "1": 
+  - captures:
+      "1":
         name: variable.other.global.fxscript
-      "2": 
+      "2":
         name: string.quoted.double.fxscript
-      "3": 
+      "3":
         name: support.type.fxscript
     match: \b(\w+),[ \t]+("[^"]+"),[ \t]+(?i:Angle|CheckBox|Clip|Color|FontList|Label|Point|Popup|RadioGroup|Slider|Text),?
   comment: Input Controls
@@ -47,8 +47,8 @@ patterns:
 - name: keyword.operator.arithmetic.fxscrpt
   match: "!|\\$|%|&|\\*|\\-\\-|\\-|\\+\\+|\\+|~|==|=|!=|!==|<=|>=|<|>|!|&&|\\|\\||\\?\\:|\\*=|/=|%=|\\+=|\\-=|&=|\\^="
 - name: comment.line.double-slash.fxscript
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.comment.fxscript
   match: (//).*$\n?
 - name: support.constant.colorspace.fxscript
@@ -73,32 +73,32 @@ patterns:
   match: (?i:kbold|kbolditalic|kcenterjustify|kitalic|kleftjustify|kplain|krightjustify)
 - name: support.constant.shapes.fxscript
   match: (?i:kDiamond|kRound|kSquare)
-- captures: 
-    "6": 
+- captures:
+    "6":
       name: entity.name.function.color.chroma-u.fxscript
-    "7": 
+    "7":
       name: entity.name.function.color.chroma-v.fxscript
-    "1": 
+    "1":
       name: entity.name.function.color.alpha.fxscript
-    "2": 
+    "2":
       name: entity.name.function.color.red.fxscript
-    "3": 
+    "3":
       name: entity.name.function.color.green.fxscript
-    "4": 
+    "4":
       name: entity.name.function.color.blue.fxscript
-    "5": 
+    "5":
       name: entity.name.function.color.luma.fxscript
   match: \b\w+\.(?i:(a)|(r)|(g)|(b)|(y)|(u)|(v))\b
 - name: string.quoted.double.fxscript
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.fxscript
   begin: "\""
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.fxscript
   end: "\""
-  patterns: 
+  patterns:
   - name: constant.character.escape.fxscript
     match: \\.
 - name: support.function.composite.fxscript

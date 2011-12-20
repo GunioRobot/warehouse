@@ -1,40 +1,40 @@
---- 
+---
 name: Regular Expressions (Oniguruma)
-fileTypes: 
+fileTypes:
 - re
 scopeName: source.regexp.oniguruma
-repository: 
-  character-class: 
-    patterns: 
+repository:
+  character-class:
+    patterns:
     - name: constant.character.character-class.regexp
       match: \\[wWsSdDhH]|\.
     - name: constant.character.escape.backslash.regexp
       match: \\.
     - name: constant.other.character-class.set.regexp
-      endCaptures: 
-        "1": 
+      endCaptures:
+        "1":
           name: punctuation.definition.character-class.regexp
       begin: (\[)(\^)?
-      beginCaptures: 
-        "1": 
+      beginCaptures:
+        "1":
           name: punctuation.definition.character-class.regexp
-        "2": 
+        "2":
           name: keyword.operator.negation.regexp
       end: (\])
-      patterns: 
+      patterns:
       - include: "#character-class"
       - name: constant.other.character-class.range.regexp
-        captures: 
-          "2": 
+        captures:
+          "2":
             name: constant.character.escape.backslash.regexp
-          "4": 
+          "4":
             name: constant.character.escape.backslash.regexp
         match: (.|(\\.))\-([^\]]|(\\.))
       - name: keyword.operator.intersection.regexp
         match: "&&"
 uuid: D609BF3F-BEDB-41AE-BA6F-903CC77A7BB3
 foldingStartMarker: (/\*|\{|\()
-patterns: 
+patterns:
 - name: keyword.control.anchor.regexp
   match: \\[bBAZzG]|\^|\$
 - name: constant.character.numeric.regexp
@@ -42,12 +42,12 @@ patterns:
 - name: keyword.other.back-reference.regexp
   match: \\[1-9]\d*
 - name: keyword.other.back-reference.named.regexp
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: keyword.other.back-reference.named.regexp
-    "2": 
+    "2":
       name: entity.name.section.back-reference
-    "3": 
+    "3":
       name: keyword.other.back-reference.named.regexp
   match: (\\k\<)([a-z]\w*)(\>)
 - name: constant.other.character-class.posix.regexp
@@ -65,42 +65,42 @@ patterns:
 - name: keyword.other.option-toggle.regexp
   match: \(\?[imx-]+\)
 - name: meta.group.assertion.regexp
-  endCaptures: 
-    "1": 
+  endCaptures:
+    "1":
       name: punctuation.definition.group.regexp
   begin: (\()((\?=)|(\?!)|(\?<=)|(\?<!))
-  beginCaptures: 
-    "6": 
+  beginCaptures:
+    "6":
       name: meta.assertion.negative-look-behind.regexp
-    "1": 
+    "1":
       name: punctuation.definition.group.regexp
-    "3": 
+    "3":
       name: meta.assertion.look-ahead.regexp
-    "4": 
+    "4":
       name: meta.assertion.negative-look-ahead.regexp
-    "5": 
+    "5":
       name: meta.assertion.look-behind.regexp
   end: (\))
-  patterns: 
+  patterns:
   - include: $self
 - name: meta.group.regexp
-  endCaptures: 
-    "1": 
+  endCaptures:
+    "1":
       name: punctuation.definition.group.regexp
   begin: (\()((\?(>|[imx-]*:))|(\?<)([a-z]\w*)(>))?
-  beginCaptures: 
-    "6": 
+  beginCaptures:
+    "6":
       name: entity.name.section.group.regexp
-    "7": 
+    "7":
       name: keyword.other.group-options.regexp
-    "1": 
+    "1":
       name: punctuation.definition.group.regexp
-    "3": 
+    "3":
       name: keyword.other.group-options.regexp
-    "5": 
+    "5":
       name: keyword.other.group-options.regexp
   end: (\))
-  patterns: 
+  patterns:
   - include: $self
 - include: "#character-class"
 foldingStopMarker: (\*/|\}|\))

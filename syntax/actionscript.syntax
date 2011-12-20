@@ -1,11 +1,11 @@
---- 
+---
 name: ActionScript
-fileTypes: 
+fileTypes:
 - as
 scopeName: source.actionscript
 uuid: E5A6EC91-6EE4-11D9-BAB4-000D93589AF6
 foldingStartMarker: (/\*\*|\{\s*$)
-patterns: 
+patterns:
 - name: support.class.actionscript
   match: \b(R(ecordset|DBMSResolver|adioButton(Group)?)|X(ML(Socket|Node|Connector)?|UpdateResolverDataHolder)|M(M(Save|Execute)|icrophoneMicrophone|o(use|vieClip(Loader)?)|e(nu(Bar)?|dia(Controller|Display|Playback))|ath)|B(yName|inding|utton)|S(haredObject|ystem|crollPane|t(yleSheet|age|ream)|ound|e(ndEvent|rviceObject)|OAPCall|lide)|N(umericStepper|et(stream|S(tream|ervices)|Connection|Debug(Config)?))|C(heckBox|o(ntextMenu(Item)?|okie|lor|m(ponentMixins|boBox))|ustomActions|lient|amera)|T(ypedValue|ext(Snapshot|Input|F(ield|ormat)|Area)|ree|AB)|Object|D(ownload|elta(Item|Packet)?|at(e(Chooser|Field)?|a(G(lue|rid)|Set|Type)))|U(RL|TC|IScrollBar)|P(opUpManager|endingCall|r(intJob|o(duct|gressBar)))|E(ndPoint|rror)|Video|Key|F(RadioButton|GridColumn|MessageBox|BarChart|S(croll(Bar|Pane)|tyleFormat|plitView)|orm|C(heckbox|omboBox|alendar)|unction|T(icker|ooltip(Lite)?|ree(Node)?)|IconButton|D(ataGrid|raggablePane)|P(ieChart|ushButton|ro(gressBar|mptBox))|L(i(stBox|neChart)|oadingBox)|AdvancedMessageBox)|W(indow|SDLURL|ebService(Connector)?)|L(ist|o(calConnection|ad(er|Vars)|g)|a(unch|bel))|A(sBroadcaster|cc(ordion|essibility)|S(Set(Native|PropFlags)|N(ew|ative)|C(onstructor|lamp(2)?)|InstanceOf)|pplication|lert|rray))\b
 - name: support.function.actionscript
@@ -21,40 +21,40 @@ patterns:
 - name: constant.numeric.actionscript
   match: \b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\.?[0-9]*)|(\.[0-9]+))((e|E)(\+|-)?[0-9]+)?)(L|l|UL|ul|u|U|F|f)?\b
 - name: string.quoted.double.actionscript
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.actionscript
   begin: "\""
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.actionscript
   end: "\""
-  patterns: 
+  patterns:
   - name: constant.character.escape.actionscript
     match: \\.
 - name: string.quoted.single.actionscript
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.actionscript
   begin: "'"
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.actionscript
   end: "'"
-  patterns: 
+  patterns:
   - name: constant.character.escape.actionscript
     match: \\.
 - name: support.constant.actionscript
   match: \b(BACKSPACE|CAPSLOCK|CONTROL|DELETEKEY|DOWN|END|ENTER|HOME|INSERT|LEFT|LN10|LN2|LOG10E|LOG2E|MAX_VALUE|MIN_VALUE|NEGATIVE_INFINITY|NaN|PGDN|PGUP|PI|POSITIVE_INFINITY|RIGHT|SPACE|SQRT1_2|SQRT2|UP)\b
 - name: comment.block.actionscript
-  captures: 
-    "0": 
+  captures:
+    "0":
       name: punctuation.definition.comment.actionscript
   begin: /\*
   end: \*/
 - name: comment.line.double-slash.actionscript
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.comment.actionscript
   match: (//).*$\n?
 - name: keyword.operator.actionscript
@@ -62,35 +62,35 @@ patterns:
 - name: keyword.operator.symbolic.actionscript
   match: "[-!%&*+=/?:]"
 - name: meta.preprocessor.actionscript
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.preprocessor.actionscript
   match: ^[ \t]*(#)[a-zA-Z]+
 - name: meta.function.actionscript
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.parameters.end.actionscript
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: storage.type.function.asp
-    "2": 
+    "2":
       name: entity.name.function.asp
-    "3": 
+    "3":
       name: punctuation.definition.parameters.begin.actionscript
   begin: \b(function)\s+([a-zA-Z_]\w*)\s*(\()
   end: \)
-  patterns: 
+  patterns:
   - name: variable.parameter.function.asp
     match: "[^,)\\n]+"
 - name: meta.class.actionscript
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: storage.type.class.actionscript
-    "2": 
+    "2":
       name: entity.name.type.class.actionscript
-    "3": 
+    "3":
       name: storage.modifier.extends.actionscript
-    "4": 
+    "4":
       name: entity.other.inherited-class.actionscript
   match: \b(class)\s+([a-zA-Z_](?:\w|\.)*)(?:\s+(extends)\s+([a-zA-Z_](?:\w|\.)*))?
 foldingStopMarker: (\*\*/|^\s*\})

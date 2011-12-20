@@ -1,111 +1,111 @@
---- 
+---
 name: Objective-C
-fileTypes: 
+fileTypes:
 - m
 - h
 bundleUUID: 4679484F-6227-11D9-BFB1-000D93589AF6
 scopeName: source.objc
-repository: 
-  protocol_type_qualifier: 
+repository:
+  protocol_type_qualifier:
     name: storage.modifier.protocol.objc
     match: \b(in|out|inout|oneway|bycopy|byref)\b
-  bracketed_content: 
+  bracketed_content:
     name: meta.bracketed.objc
-    captures: 
-      "0": 
+    captures:
+      "0":
         name: punctuation.section.scope.objc
     begin: \[
     end: \]
-    patterns: 
+    patterns:
     - name: meta.function-call.objc
       begin: (?=\w)(?<=[\w\])"] )(\w+(?:(:)|(?=\])))
-      beginCaptures: 
-        "1": 
+      beginCaptures:
+        "1":
           name: support.function.any-method.objc
-        "2": 
+        "2":
           name: punctuation.separator.arguments.objc
       end: (?=\])
-      patterns: 
+      patterns:
       - name: support.function.any-method.name-of-parameter.objc
-        captures: 
-          "1": 
+        captures:
+          "1":
             name: punctuation.separator.arguments.objc
         match: \b\w+(:)
       - include: "#special_variables"
       - include: $base
     - include: "#special_variables"
     - include: $base
-  protocol_list: 
+  protocol_list:
     name: meta.protocol-list.objc
-    endCaptures: 
-      "1": 
+    endCaptures:
+      "1":
         name: punctuation.section.scope.end.objc
     begin: (<)
-    beginCaptures: 
-      "1": 
+    beginCaptures:
+      "1":
         name: punctuation.section.scope.begin.objc
     end: (>)
-    patterns: 
+    patterns:
     - name: support.other.protocol.objc
       match: \bNS(GlyphStorage|M(utableCopying|enuItem)|C(hangeSpelling|o(ding|pying|lorPicking(Custom|Default)))|T(oolbarItemValidations|ext(Input|AttachmentCell))|I(nputServ(iceProvider|erMouseTracker)|gnoreMisspelledWords)|Obj(CTypeSerializationCallBack|ect)|D(ecimalNumberBehaviors|raggingInfo)|U(serInterfaceValidations|RL(HandleClient|DownloadDelegate|ProtocolClient|AuthenticationChallengeSender))|Validated(ToobarItem|UserInterfaceItem)|Locking)\b
-  method: 
+  method:
     name: meta.function.objc
     begin: ^(-|\+)\s*
     end: (?=\{)|;
-    patterns: 
+    patterns:
     - name: meta.return-type.objc
-      captures: 
-        "1": 
+      captures:
+        "1":
           name: punctuation.definition.type.objc
-        "2": 
+        "2":
           name: entity.name.function.objc
       begin: (\()
       end: (\))\s*(\w+\b)
-      patterns: 
+      patterns:
       - include: "#protocol_list"
       - include: "#protocol_type_qualifier"
       - include: $base
     - name: entity.name.function.name-of-parameter.objc
       match: \b\w+(?=:)
     - name: meta.argument-type.objc
-      endCaptures: 
-        "1": 
+      endCaptures:
+        "1":
           name: punctuation.definition.type.objc
-        "2": 
+        "2":
           name: variable.parameter.function.objc
       begin: ((:))\s*(\()
-      beginCaptures: 
-        "1": 
+      beginCaptures:
+        "1":
           name: entity.name.function.name-of-parameter.objc
-        "2": 
+        "2":
           name: punctuation.separator.arguments.objc
-        "3": 
+        "3":
           name: punctuation.definition.type.objc
       end: (\))\s*(\w+\b)?
-      patterns: 
+      patterns:
       - include: "#protocol_list"
       - include: "#protocol_type_qualifier"
       - include: $base
     - include: "#comment"
-  comment: 
-    patterns: 
+  comment:
+    patterns:
     - name: comment.block.objc
-      captures: 
-        "0": 
+      captures:
+        "0":
           name: punctuation.definition.comment.objc
       begin: /\*
       end: \*/
     - name: comment.line.double-slash.c++
       begin: //
-      beginCaptures: 
-        "0": 
+      beginCaptures:
+        "0":
           name: punctuation.definition.comment.objc
       end: $\n?
-      patterns: 
+      patterns:
       - name: punctuation.separator.continuation.c++
         match: (?>\\\s*\n)
-  special_variables: 
-    patterns: 
+  special_variables:
+    patterns:
     - name: variable.other.selector.objc
       match: \b_cmd\b
     - name: variable.language.objc
@@ -116,99 +116,99 @@ foldingStartMarker: "(?x)\n\
   \t\t|^(?![^{]*?//|[^{]*?/\\*(?!.*?\\*/.*?\\{)).*?\\{\\s*($|//|/\\*(?!.*?\\*/.*\\S))\n\
   \t\t|^@(interface|protocol|implementation)\\b\n\
   \t"
-patterns: 
+patterns:
 - name: meta.interface-or-protocol.objc
-  captures: 
-    "6": 
+  captures:
+    "6":
       name: punctuation.definition.entity.other.inherited-class.objc
-    "7": 
+    "7":
       name: entity.other.inherited-class.objc
-    "8": 
+    "8":
       name: meta.divider.objc
-    "9": 
+    "9":
       name: meta.inherited-class.objc
-    "1": 
+    "1":
       name: storage.type.objc
-    "2": 
+    "2":
       name: punctuation.definition.storage.type.objc
-    "4": 
+    "4":
       name: entity.name.type.objc
   begin: ((@)(interface|protocol))(?!.+;)\s+([A-Za-z][A-Za-z0-9]*)\s*((:)(?:\s*)([A-Za-z][A-Za-z0-9]*))?(\s|\n)?
   contentName: meta.scope.interface.objc
   end: ((@)end)\b
-  patterns: 
+  patterns:
   - include: "#protocol_list"
   - include: "#method"
   - include: $base
 - name: meta.implementation.objc
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: storage.type.objc
-    "2": 
+    "2":
       name: punctuation.definition.storage.type.objc
-    "4": 
+    "4":
       name: entity.name.type.objc
-    "5": 
+    "5":
       name: entity.other.inherited-class.objc
   begin: ((@)(implementation))\s+([A-Za-z][A-Za-z0-9]*)\s*(?::\s*([A-Za-z][A-Za-z0-9]*))?
   contentName: meta.scope.implementation.objc
   end: ((@)end)\b
-  patterns: 
+  patterns:
   - include: "#special_variables"
   - include: "#method"
   - include: $base
 - name: string.quoted.double.objc
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.objc
   begin: "@\""
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.objc
   end: "\""
-  patterns: 
+  patterns:
   - name: constant.character.escape.objc
     match: \\(\\|[abefnrtv'"?]|[0-3]\d{,2}|[4-7]\d?|x[a-zA-Z0-9]+)
   - name: invalid.illegal.unknown-escape.objc
     match: \\.
 - name: meta.id-with-protocol.objc
   begin: (id)\s?(?=<)
-  beginCaptures: 
-    "1": 
+  beginCaptures:
+    "1":
       name: storage.type.objc
   end: (?<=>)
-  patterns: 
+  patterns:
   - include: "#protocol_list"
 - name: keyword.control.macro.objc
   match: \b(NS_DURING|NS_HANDLER|NS_ENDHANDLER)\b
 - name: keyword.control.exception.objc
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.keyword.objc
   match: (@)(try|catch|finally|throw)\b
 - name: keyword.control.synchronize.objc
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.keyword.objc
   match: (@)(synchronized)\b
 - name: keyword.other.objc
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.keyword.objc
   match: (@)(defs|encode)\b
 - name: storage.type.objc
-  captures: 
-    "2": 
+  captures:
+    "2":
       name: meta.id-type.objc
   match: \b(IBOutlet|IBAction|BOOL|SEL|id(?!\s?<)|unichar|IMP|Class)\b
 - name: storage.type.objc
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.storage.type.objc
   match: (@)(class|selector|protocol)\b
 - name: storage.modifier.objc
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.storage.modifier.objc
   match: (@)(synchronized|public|private|protected)\b
 - name: constant.language.objc

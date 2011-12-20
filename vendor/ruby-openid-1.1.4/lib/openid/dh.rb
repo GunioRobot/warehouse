@@ -13,7 +13,7 @@ module OpenID
     @@DEFAULT_GEN = 2
 
     attr_reader :p, :g, :public
-    
+
     def DiffieHellman.from_base64(p=nil, g=nil)
       unless p.nil?
         p = OpenID::Util.base64_to_num(p)
@@ -27,7 +27,7 @@ module OpenID
     def initialize(p=nil, g=nil)
       @p = p.nil? ? @@DEFAULT_MOD : p
       @g = g.nil? ? @@DEFAULT_GEN : g
-      
+
       @private = OpenID::Util.rand(@p-2) + 1
       @public = OpenID::Util.powermod(@g, @private, @p)
     end

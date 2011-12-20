@@ -1,13 +1,13 @@
 require 'digest/md5'
 class User < ActiveRecord::Base
-  include PermissionMethods  
+  include PermissionMethods
   attr_accessor :avatar_data
 
   has_many :permissions, :conditions => ['active = ?', true] do
     def for_repository(repository)
       find_all_by_repository_id(repository.id)
     end
-    
+
     def paths_for(repository)
       return :all if proxy_owner.admin? || repository.public?
       paths = for_repository(repository).collect! &:clean_path
@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
       root_paths.empty? ? all_paths : :all
     end
   end
-  
+
   has_many :all_permissions, :class_name => 'Permission', :foreign_key => 'user_id', :dependent => :delete_all
   has_many :repositories, :through => :permissions, :select => "repositories.*, #{Permission.join_fields}", :order => 'repositories.name, permissions.path' do
     def paths
@@ -34,10 +34,10 @@ class User < ActiveRecord::Base
       repo_paths
     end
   end
-  
+
   has_many :administered_repositories, :through => :permissions, :source => :repository, :conditions => ['permissions.admin = ?', true],
     :select => "repositories.*, #{Permission.join_fields}", :order => 'repositories.name, permissions.path'
-  
+
   attr_accessor :password
   validates_format_of       :email, :with => /(\A(\s*)\Z)|(\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z)/i, :allow_nil => true
   validates_confirmation_of :password, :allow_nil => true
@@ -82,12 +82,12 @@ class User < ActiveRecord::Base
   def reset_token
     write_attribute :token, TokenGenerator.generate_random(TokenGenerator.generate_simple)
   end
-  
+
   def reset_token!
     reset_token
     save
   end
-  
+
   def identity_path
     identity_url.gsub(/^[^\/]+\/+/, '').chomp('/')
   end
@@ -104,24 +104,24 @@ class User < ActiveRecord::Base
       when 'basic' then password.crypt(TokenGenerator.generate_simple(2))
     end
   end
-  
+
   def self.password_matches?(user, password)
-    user.crypted_password == 
+    user.crypted_password ==
       case Warehouse.authentication_scheme
         when 'plain' then password
         when 'md5'   then user.encrypt_password(password)
         when 'basic' then password.crypt(user.crypted_password[0,2])
       end
   end
-  
+
   def encrypt_password(password = nil)
     self.class.encrypt_password self, password
   end
-  
+
   def encrypt_password!(password = nil)
     self.crypted_password = self.class.encrypt_password(self, password)
   end
-  
+
   def password_matches?(password)
     self.class.password_matches? self, password
   end
@@ -137,7 +137,7 @@ class User < ActiveRecord::Base
       encrypt_password! unless password.blank?
       email.downcase!   unless email.blank?
     end
-    
+
     def presence_of_identity_url_or_email
       if identity_url.blank? && (email.blank? || login.blank?)
         errors.add_to_base "Requires at least an email and login"

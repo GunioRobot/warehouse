@@ -10,14 +10,14 @@ module Svn
   @@dirty_runs = 0
   def self.sweep_garbage!
     GC.start if (@@dirty_runs = (@@dirty_runs + 1) % 10).zero?
-  end 
+  end
 
   module Fs
     class FileSystem
       def root_with_gc(rev = nil)
         Svn.sweep_garbage!
         root_without_gc(rev)
-      end      
+      end
       alias_method :root_without_gc, :root
       alias_method :root, :root_with_gc
     end
@@ -53,7 +53,7 @@ module Svn
         Svn.sweep_garbage!
         add_file_without_gc(*args)
       end
-      
+
       alias_method :add_file_without_gc, :add_file
       alias_method :add_file, :add_file_with_gc
     end

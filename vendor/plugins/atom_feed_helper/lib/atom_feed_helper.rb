@@ -15,7 +15,7 @@ module AtomFeedHelper
   #       # GET /posts.atom
   #       def index
   #         @posts = Post.find(:all)
-  #         
+  #
   #         respond_to do |format|
   #           format.html
   #           format.atom
@@ -27,12 +27,12 @@ module AtomFeedHelper
   #     atom_feed(:tag_uri => "2008") do |feed|
   #       feed.title("My great blog!")
   #       feed.updated((@posts.first.created_at))
-  #     
+  #
   #       for post in @posts
   #         feed.entry(post) do |entry|
   #           entry.title(post.title)
   #           entry.content(post.body, :type => 'html')
-  #     
+  #
   #           entry.author do |author|
   #             author.name("DHH")
   #           end
@@ -54,15 +54,15 @@ module AtomFeedHelper
     else
       options[:schema_date] = options[:schema_date].strftime("%Y-%m-%d") if options[:schema_date].respond_to?(:strftime)
     end
-    
+
     xml = options[:xml] || eval("xml", block.binding)
     xml.instruct!
 
     xml.feed "xml:lang" => options[:language] || "en-US", "xmlns" => 'http://www.w3.org/2005/Atom' do
-      xml.id("tag:#{request.host},#{options[:schema_date]}:#{request.request_uri.split(".")[0]}")      
+      xml.id("tag:#{request.host},#{options[:schema_date]}:#{request.request_uri.split(".")[0]}")
       xml.link(:rel => 'alternate', :type => 'text/html', :href => options[:root_url] || (request.protocol + request.host_with_port))
       xml.link(:rel => 'self', :type => 'application/atom+xml', :href => options[:url] || request.url)
-      
+
       yield AtomFeedBuilder.new(xml, self, options)
     end
   end
@@ -72,7 +72,7 @@ module AtomFeedHelper
     def initialize(xml, view, feed_options = {})
       @xml, @view, @feed_options = xml, view, feed_options
     end
-    
+
     # Accepts a Date or Time object and inserts it in the proper format. If nil is passed, current time in UTC is used.
     def updated(date_or_time = nil)
       @xml.updated((date_or_time || Time.now.utc).xmlschema)
@@ -86,7 +86,7 @@ module AtomFeedHelper
     # * <tt>:published</tt>: Time first published. Defaults to the updated_at attribute on the record if one such exists.
     # * <tt>:url</tt>: The URL for this entry. Defaults to the polymorphic_url for the record.
     def entry(record, options = {})
-      @xml.entry do 
+      @xml.entry do
         @xml.id("tag:#{@view.request.host},#{@feed_options[:schema_date]}:#{record.class}/#{record.id}")
 
         if options[:published] || (record.respond_to?(:created_at) && record.created_at)

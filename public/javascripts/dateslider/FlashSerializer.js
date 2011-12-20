@@ -1,6 +1,6 @@
 /**
  * The FlashSerializer serializes JavaScript variables of types object, array, string,
- * number, date, boolean, null or undefined into XML. 
+ * number, date, boolean, null or undefined into XML.
  */
 
 /**
@@ -78,9 +78,9 @@ FlashSerializer.prototype.serialize = function(args)
 FlashSerializer.prototype._serializeXML = function(obj)
 {
     var doc = new Object();
-    doc.xml = '<fp>'; 
+    doc.xml = '<fp>';
     this._serializeNode(obj, doc, null);
-    doc.xml += '</fp>'; 
+    doc.xml += '</fp>';
     return doc.xml;
 }
 

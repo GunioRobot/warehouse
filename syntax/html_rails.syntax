@@ -1,6 +1,6 @@
---- 
+---
 name: HTML (Rails)
-fileTypes: 
+fileTypes:
 - rhtml
 - html.erb
 - xml.erb
@@ -13,23 +13,23 @@ foldingStartMarker: |-
   		|<!--(?!.*-->)
   		|\{\s*($|\?>\s*$|//|/\*(.*\*/\s*$|(?!.*?\*/)))
   		)
-patterns: 
+patterns:
 - name: comment.block.erb
-  captures: 
-    "0": 
+  captures:
+    "0":
       name: punctuation.definition.comment.erb
   begin: <%+#
   end: "%>"
 - name: source.ruby.rails.embedded.html
-  captures: 
-    "0": 
+  captures:
+    "0":
       name: punctuation.section.embedded.ruby
   begin: <%+(?!>)=?
   end: -?%>
-  patterns: 
+  patterns:
   - name: comment.line.number-sign.ruby
-    captures: 
-      "1": 
+    captures:
+      "1":
         name: punctuation.definition.comment.ruby
     match: (#).*?(?=-?%>)
   - include: source.ruby.rails

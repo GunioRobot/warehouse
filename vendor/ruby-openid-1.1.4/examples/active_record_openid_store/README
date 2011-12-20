@@ -33,7 +33,7 @@ this:
 5) That's it! All your OpenID state will now be stored in the database.
 
 
-==What about garbage collection? 
+==What about garbage collection?
 
 You may garbage collect unused nonces and expired associations using
 the gc instance method of ActiveRecordOpenIDStore.  Hook it up to a

@@ -18,14 +18,14 @@ context "History Controller" do
     repositories(:sample).stubs(:public?).returns(false)
     repositories(:sample).expects(:node).with('').returns(stub_node)
   end
-  
+
   specify "should show html browser history" do
     login_as :rick
     get :index, :paths => []
     @request.format.html?.should == true
     assert_template 'index'
   end
-  
+
   specify "should show atom browser history" do
     login_as :rick
     get :index, :paths => ['changesets.atom']
@@ -56,7 +56,7 @@ context "History Controller (permissions)" do
       alias_method_chain :repository_member_required, :testing
     end
   end
-  
+
   specify "should accept anonymous public repo" do
     @controller.stubs(:current_repository).returns(repositories(:sample))
     @controller.stubs(:current_user).returns(nil)
@@ -65,7 +65,7 @@ context "History Controller (permissions)" do
     get :index, :paths => []
     assert_match /^passed/, @response.body
   end
-  
+
   specify "should accept anonymous to public repo" do
     @controller.stubs(:current_repository).returns(repositories(:sample))
     @controller.stubs(:current_user).returns(nil)
@@ -74,7 +74,7 @@ context "History Controller (permissions)" do
     get :index, :paths => []
     assert_match /^passed/, @response.body
   end
-  
+
   specify "should accept full admin to repo" do
     @controller.stubs(:current_repository).returns(repositories(:sample))
     @controller.stubs(:current_user).returns(users(:rick))
@@ -83,7 +83,7 @@ context "History Controller (permissions)" do
     get :index, :paths => []
     assert_match /^passed/, @response.body
   end
-  
+
   specify "should accept member to repo" do
     @controller.stubs(:current_repository).returns(repositories(:sample))
     @controller.stubs(:current_user).returns(stub(:id => users(:rick).id, :admin? => false))
@@ -92,7 +92,7 @@ context "History Controller (permissions)" do
     get :index, :paths => []
     assert_match /^passed/, @response.body
   end
-  
+
   specify "should require valid path for member to repo" do
     Permission.update_all ['path = ?', 'public']
     @controller.stubs(:current_repository).returns(repositories(:sample))
@@ -102,7 +102,7 @@ context "History Controller (permissions)" do
     get :index, :paths => []
     assert_match /^error/, @response.body
   end
-  
+
   specify "should accept exact path for member to repo" do
     Permission.update_all ['path = ?', 'public']
     @controller.stubs(:current_repository).returns(repositories(:sample))
@@ -112,7 +112,7 @@ context "History Controller (permissions)" do
     get :index, :paths => %w(public)
     assert_match /^passed/, @response.body
   end
-  
+
   specify "should accept sub path for member to repo" do
     Permission.update_all ['path = ?', 'public']
     @controller.stubs(:current_repository).returns(repositories(:sample))
@@ -122,7 +122,7 @@ context "History Controller (permissions)" do
     get :index, :paths => %w(public/foo)
     assert_match /^passed/, @response.body
   end
-  
+
   specify "should accept sub file for member to repo" do
     Permission.update_all ['path = ?', 'public']
     @controller.stubs(:current_repository).returns(repositories(:sample))

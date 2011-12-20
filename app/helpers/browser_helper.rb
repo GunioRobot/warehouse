@@ -10,16 +10,16 @@ module BrowserHelper
     rev = "r#{rev}" unless rev.nil? || rev =~ /^r/
     rev ? hosted_url(:rev_browser, :paths => paths, :rev => rev) : hosted_url(:browser, :paths => paths)
   end
-  
+
   def link_to_blame(text, node)
     link_to text, url_for_blame(node), :id => (Object.const_defined?(:Uv) ? :blame : nil)
   end
-  
+
   def url_for_blame(node)
     paths = node.respond_to?(:paths) ? node.paths : node.to_s.split('/')
     hosted_url(:blame, :paths => paths)
   end
-  
+
   def link_to_crumbs(path, rev = nil)
     pieces    = path.split '/'
     name      = pieces.pop
@@ -33,7 +33,7 @@ module BrowserHelper
     end
     crumbs.unshift(home_link).join << %(<li id="current">#{name}</li>)
   end
-  
+
   def css_class_for(node)
     node.dir? ? 'folder' : CSS_CLASSES[File.extname(node.name)] || 'file'
   end

@@ -1,5 +1,5 @@
 <li id="hook-<%= hook.plugin_name %>" class="listitem">
-  <% remote_sheet_form_for :hook, hook.properties, :url => hosted_url(:hooks, :name => hook.plugin_name), 
+  <% remote_sheet_form_for :hook, hook.properties, :url => hosted_url(:hooks, :name => hook.plugin_name),
          :trigger => "hooknew-#{hook.plugin_name}", :html => {:id => "hooksheet-#{hook.plugin_name}", :style => 'display:none'} do |s| %>
     <h2>Add <%= hook.title %> Instance</h2>
     <%= s.text_field "Label:", :label %>

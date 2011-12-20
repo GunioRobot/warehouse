@@ -8,7 +8,7 @@ module Tinder
       @id = id
       @name = name
     end
-    
+
     # Join the room. Pass +true+ to join even if you've already joined.
     def join(force = false)
       @room = returning(get("room/#{id}")) do |room|
@@ -20,7 +20,7 @@ module Tinder
       end if @room.nil? || force
       true
     end
-    
+
     # Leave a room
     def leave
       returning verify_response(post("room/#{id}/leave"), :redirect) do
@@ -40,7 +40,7 @@ module Tinder
       link = (Hpricot(@room.body)/"#guest_access h4").first
       link.inner_html if link
     end
-    
+
     def guest_access_enabled?
       !guest_url.nil?
     end
@@ -60,7 +60,7 @@ module Tinder
     def topic=(topic)
       topic if verify_response(post("room/#{id}/change_topic", { 'room' => { 'topic' => topic }}, :ajax => true), :success)
     end
-    
+
     # Lock the room to prevent new users from entering and to disable logging
     def lock
       verify_response(post("room/#{id}/lock", {}, :ajax => true), :success)
@@ -80,17 +80,17 @@ module Tinder
       join
       send message
     end
-    
+
     def paste(message)
       join
       send message, { :paste => true }
     end
-    
+
     # Get the list of users currently chatting for this room
     def users
       @campfire.users name
     end
-    
+
     # Get and array of the messages that have been posted to the room since you joined. Each
     # messages is a hash with:
     # * +:person+: the display name of the person that posted the message
@@ -142,12 +142,12 @@ module Tinder
       end
       messages
     end
-    
+
     # Get the dates for the available transcripts for this room
     def available_transcripts
       @campfire.available_transcripts(id)
     end
-    
+
     # Get the transcript for the given date (Returns a hash in the same format as #listen)
     #
     #   room.transcript(room.available_transcripts.first)

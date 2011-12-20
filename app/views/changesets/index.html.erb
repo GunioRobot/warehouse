@@ -1,5 +1,5 @@
 <% if repository_admin? && current_repository && current_repository.sync? -%>
-<div class="info">Revisions <%= current_repository.revisions_to_sync.inspect.sub(/\.\./, '-') %> need to be synced.  You can do this from the command line or you can 
+<div class="info">Revisions <%= current_repository.revisions_to_sync.inspect.sub(/\.\./, '-') %> need to be synced.  You can do this from the command line or you can
   do this in the administration user interface.  Command line syncing is much faster.</div>
 <% end -%>
 
@@ -14,7 +14,7 @@
   <% end %>
   <% if false %>
   <p id="views">
-    <a href="#" id="detail-view">Details</a> | 
+    <a href="#" id="detail-view">Details</a> |
     <a href="#" id="list-view">List</a>
   </p>
   <% end %>
@@ -32,7 +32,7 @@
         <span class="change-number"><%= link_to(changeset.revision, hosted_url(changeset.repository, :changeset, :id => changeset.revision)) %></span>
       </p>
     </div>
-    <div class="cs-log clearfix">      
+    <div class="cs-log clearfix">
        <%= simple_format(h(changeset.message)) %>
       <span class="timenauthor">by <%= changeset.author %>, <%= jstime changeset.changed_at %></span>
     </div>

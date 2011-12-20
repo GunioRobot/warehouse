@@ -8,7 +8,7 @@ class YADISTestCase < Test::Unit::TestCase
   end
 
   def test_priority
-    xrds = XRDS.parse(File.open('data/brian_priority.xrds').read)    
+    xrds = XRDS.parse(File.open('data/brian_priority.xrds').read)
     assert_equal(2, xrds.services.length)
     assert_equal('http://www.myopenid.com/server', xrds.services[0].uri)
     assert_equal('http://www.schtuff.com/?action=openid_server',

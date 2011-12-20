@@ -1,6 +1,6 @@
---- 
+---
 name: "Blog \xE2\x80\x94 HTML"
-fileTypes: 
+fileTypes:
 - blog.html
 firstLineMatch: "^Type: Blog Post \\(HTML\\)"
 scopeName: text.blog.html
@@ -12,14 +12,14 @@ foldingStartMarker: |-
   		|\{\{?(if|foreach|capture|literal|foreach|php|section|strip)
   		|\{\s*($|\?>\s*$|//|/\*(.*\*/\s*$|(?!.*?\*/)))
   		)
-patterns: 
+patterns:
 - name: meta.header.blog
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: keyword.other.blog
-    "2": 
+    "2":
       name: punctuation.separator.key-value.blog
-    "3": 
+    "3":
       name: string.unquoted.blog
   match: ^([Tt]itle|[Dd]ate|[Bb]asename|[Kk]eywords|[Bb]log|[Tt]ype|[Ll]ink|[Pp]ost|[Tt]ags|[Cc]omments|[Pp]ings?|[Cc]ategory|[Ss]tatus|[Ff]ormat)(:)\s*(.*)$\n?
 - name: invalid.illegal.meta.header.blog
@@ -27,7 +27,7 @@ patterns:
 - name: text.html
   begin: ^(?![A-Za-z0-9]+:)
   end: ^(?=not)possible$
-  patterns: 
+  patterns:
   - name: meta.separator.blog
     match: "^\xE2\x9C\x82-[\xE2\x9C\x82-]+$\\n"
   - include: text.html.basic

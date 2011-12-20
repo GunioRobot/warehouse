@@ -29,8 +29,8 @@ end
 # do the server side associate using the given secret and handle
 def associate(qs, assoc_secret, assoc_handle)
   q = parse_query(qs)
-  raise ArgumentError unless q['openid.mode'] == 'associate' 
-  raise ArgumentError unless q['openid.assoc_type'] == 'HMAC-SHA1' 
+  raise ArgumentError unless q['openid.mode'] == 'associate'
+  raise ArgumentError unless q['openid.assoc_type'] == 'HMAC-SHA1'
 
   if q['openid.session_type'] == 'DH-SHA1'
     raise ArgumentError unless [4,6].member?(q.length)
@@ -64,7 +64,7 @@ end
 
 
 class TestFetcher
-  
+
   attr_accessor :get_responses, :assoc_secret, :assoc_handle, :num_assocs
 
   def initialize(assoc_secret, assoc_handle)
@@ -73,7 +73,7 @@ class TestFetcher
     @assoc_handle = assoc_handle
     @num_assocs = 0
   end
-  
+
   def response(url, status, body)
     return [url, body]
   end
@@ -89,7 +89,7 @@ class TestFetcher
         return [url, response]
       end
     end
-    
+
     return [url, 'not found']
   end
 
@@ -111,17 +111,17 @@ class SuccessFlowTest < Test::Unit::TestCase
 
     assoc_secret, assoc_handle = ASSOCS[0]
     fetcher = TestFetcher.new(assoc_secret, assoc_handle)
-    
+
     run = Proc.new {
       trust_root = CONSUMER_URL
       return_to = CONSUMER_URL
       session = {}
-      
+
       consumer = OpenID::Consumer.new(session, store, fetcher)
       req = consumer.begin_without_discovery(service)
 
       # need to extract the return_to url
-      
+
       return_to = req.return_to(return_to)
 
       assert_equal(OpenID::SUCCESS, req.status)
@@ -149,11 +149,11 @@ class SuccessFlowTest < Test::Unit::TestCase
         'openid.assoc_handle' => fetcher.assoc_handle,
         'nonce' => return_to_query['nonce']
       }
-      
+
       # sign the fake response with our assoc
       assoc = store.get_association(service.server_url, fetcher.assoc_handle)
       assoc.add_signature(['mode','return_to','identity'], query)
-      
+
       # complete the auth
       resp = consumer.complete(query)
 
@@ -163,7 +163,7 @@ class SuccessFlowTest < Test::Unit::TestCase
 
       # we're testing success here, so make sure we have a success response
       assert_equal(OpenID::SUCCESS, resp.status)
-      
+
       # make sure we've got the right identity url
       assert_equal(service.consumer_id, resp.identity_url)
     }
@@ -171,7 +171,7 @@ class SuccessFlowTest < Test::Unit::TestCase
     assert_equal(0, fetcher.num_assocs)
     run.call
     assert_equal(1, fetcher.num_assocs)
-    
+
     # make sure we use the same association
     run.call
     assert_equal(1, fetcher.num_assocs)
@@ -189,7 +189,7 @@ class SuccessFlowTest < Test::Unit::TestCase
                       'http://example.com/user.html',
                       'http://example.com/user.html',
                        HTTP_SERVER_URL)
-    self._test_success(service)    
+    self._test_success(service)
   end
 
   def test_nodelegate_immediate
@@ -197,7 +197,7 @@ class SuccessFlowTest < Test::Unit::TestCase
                       'http://example.com/user.html',
                       'http://example.com/user.html',
                        HTTP_SERVER_URL)
-    self._test_success(service, true)    
+    self._test_success(service, true)
   end
 
   def test_delegate
@@ -221,14 +221,14 @@ class SuccessFlowTest < Test::Unit::TestCase
                       'http://example.com/user.html',
                       'http://example.com/user.html',
                        HTTPS_SERVER_URL)
-    self._test_success(service)    
+    self._test_success(service)
   end
 
 end
 
 
 class TestIdRes < Test::Unit::TestCase
-  
+
   def test_setup_needed
     store = OpenID::MemoryStore.new
     consumer = OpenID::GenericConsumer.new(store)
@@ -237,7 +237,7 @@ class TestIdRes < Test::Unit::TestCase
     server_url = "serlie"
     consumer_id = "consu"
     setup_url = "http://example.com/setup-here"
-    
+
     query = {
       'openid.mode' => 'id_res',
       'openid.user_setup_url' => setup_url
@@ -247,7 +247,7 @@ class TestIdRes < Test::Unit::TestCase
     ret = consumer.do_id_res(nonce, consumer_id, server_id, server_url, query)
 
     assert_equal(OpenID::SETUP_NEEDED, ret.status)
-    assert_equal(setup_url, ret.setup_url)    
+    assert_equal(setup_url, ret.setup_url)
   end
 
 end
@@ -256,7 +256,7 @@ end
 class CheckAuthHappened < Exception; end
 
 class CheckAuthDetectingConsumer < OpenID::GenericConsumer
-  
+
   def check_auth(nonce, query, server_url)
     raise CheckAuthHappened
   end
@@ -342,20 +342,20 @@ class TestCheckAuth < Test::Unit::TestCase
     assert_equal(@consumer_id, info.identity_url)
   end
 
-  def test_newer_assoc   
+  def test_newer_assoc
     lifetime = 1000
     good_issued = Time.now.to_i - 10
     good_handle = 'handle'
     good_assoc = OpenID::Association.new(good_handle, 'secret',
                                          good_issued, lifetime, 'HMAC-SHA1')
     @store.store_association(@server_url, good_assoc)
-    
+
     bad_issued = Time.now.to_i - 5
     bad_handle = 'handle2'
     bad_assoc = OpenID::Association.new(bad_handle, 'secret',
                                         bad_issued, lifetime, 'HMAC-SHA1')
     @store.store_association(@server_url, bad_assoc)
-    
+
     query = {
       'openid.return_to' => @return_to,
       'openid.identity' => @server_id,
@@ -370,7 +370,7 @@ class TestCheckAuth < Test::Unit::TestCase
     end
 
     assert_equal(OpenID::SUCCESS, info.status)
-    assert_equal(@consumer_id, info.identity_url)    
+    assert_equal(@consumer_id, info.identity_url)
   end
 
 end

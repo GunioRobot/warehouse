@@ -3,15 +3,15 @@ class UsersController < ApplicationController
   before_filter :login_required, :only   => :update
   before_filter :admin_required, :except => :update
   before_filter :strip_admin_value
-  
+
   def index
     @users = User.paginate :all, :page => params[:page], :order => 'identity_url'
   end
-  
+
   def create
     @user = User.new(params[:user])
     @user.admin = @is_admin
-    
+
     render :update do |page|
       if @user.save
         UserMailer.deliver_invitation(current_user, @user)
@@ -22,7 +22,7 @@ class UsersController < ApplicationController
       end
     end
   end
-  
+
   def update
     if params[:id].blank?
       @sheet = 'profile-form'
@@ -39,7 +39,7 @@ class UsersController < ApplicationController
     Repository.rebuild_htpasswd_for(@user)
     redirect_to(params[:to] || root_path)
   end
-  
+
   def destroy
     @user = User.find params[:id]
     @user.destroy

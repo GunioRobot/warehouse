@@ -1,36 +1,36 @@
---- 
+---
 name: Dylan
-fileTypes: 
+fileTypes:
 - dylan
 scopeName: source.dylan
 uuid: 475B8369-3520-4B4C-BBA1-1D1229C6F397
 foldingStartMarker: \b(define|begin|block)\b
-patterns: 
+patterns:
 - name: comment.block.dylan
-  captures: 
-    "0": 
+  captures:
+    "0":
       name: punctuation.definition.comment.dylan
   begin: /\*
   end: \*/
   comment: TODO -- Dylan allows nested comments.
 - name: comment.line.double-slash.dylan
   begin: //
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.comment.dylan
   end: $\n?
-  patterns: 
+  patterns:
   - name: punctuation.separator.continuation.dylan
     match: (?>\\\s*\n)
 - name: meta.function.dylan
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: keyword.control.def.dylan
-    "2": 
+    "2":
       name: storage.modifier.dylan
-    "3": 
+    "3":
       name: storage.type.function.dylan
-    "4": 
+    "4":
       name: entity.name.function.dylan
   begin: \b(define\s+)((?:sealed|inline)\s)?(method|function)\s+([A-Za-z0-9\\-]*[!?]?)\s
   end: \)
@@ -43,15 +43,15 @@ patterns:
 - name: constant.numeric.dylan
   match: \b((#x[0-9a-fA-F]*)|(([0-9]+\.?[0-9]*)|(\.[0-9]+))((e|E)(\+|-)?[0-9]+)?)\b
 - name: string.quoted.double.dylan
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.dylan
   begin: "\""
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.dylan
   end: "\""
-  patterns: 
+  patterns:
   - name: constant.character.escape.dylan
     match: \\.
 - name: support.class.dylan

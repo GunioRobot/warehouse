@@ -1,11 +1,11 @@
---- 
+---
 name: Man
-fileTypes: 
+fileTypes:
 - man
 scopeName: text.man
 uuid: E8BAC30A-16BF-498D-941D-73FBAED37891
 foldingStartMarker: ^[A-Z](?:(?:\S+\s\S+)+|\S+)$
-patterns: 
+patterns:
 - name: markup.heading.man
   match: ^[A-Z](?:(?:\S+\s\S+)+|\S+)$
 - name: markup.underline.link.man

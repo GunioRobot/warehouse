@@ -1,16 +1,16 @@
 module OpenIdAuthentication
   OPEN_ID_AUTHENTICATION_DIR = RAILS_ROOT + "/tmp/openids"
-  
+
   def self.store
     @@store
   end
-  
+
   def self.store=(value)
     @@store = value
   end
-  
+
   self.store = :db
-  
+
   def store
     OpenIdAuthentication.store
   end
@@ -24,15 +24,15 @@ module OpenIdAuthentication
       :canceled   => "OpenID verification was canceled",
       :failed     => "Sorry, the OpenID verification failed"
     }
-    
+
     def self.[](code)
       new(code)
     end
-    
+
     def initialize(code)
       @code = code
     end
-    
+
     def ===(code)
       if code == :unsuccessful && unsuccessful?
         true
@@ -40,7 +40,7 @@ module OpenIdAuthentication
         @code == code
       end
     end
-    
+
     ERROR_MESSAGES.keys.each { |state| define_method("#{state}?") { @code == state } }
 
     def successful?
@@ -50,7 +50,7 @@ module OpenIdAuthentication
     def unsuccessful?
       ERROR_MESSAGES.keys.include?(@code)
     end
-    
+
     def message
       ERROR_MESSAGES[@code]
     end
@@ -58,7 +58,7 @@ module OpenIdAuthentication
 
   def self.normalize_url(url)
     url = url.downcase
-  
+
     case url
     when %r{^https?://[^/]+/[^/]*}
       url # already normalized
@@ -106,7 +106,7 @@ module OpenIdAuthentication
         redirect_to(open_id_redirect_url(open_id_response))
       end
     end
-  
+
     def complete_open_id_authentication
       open_id_response = timeout_protection_from_identity_server { open_id_consumer.complete(params) }
       identity_url     = normalize_url(open_id_response.identity_url) if open_id_response.identity_url
@@ -119,13 +119,13 @@ module OpenIdAuthentication
         yield Result[:failed], identity_url, nil
       when OpenID::SUCCESS
         yield Result[:successful], identity_url, open_id_response.extension_response('sreg')
-      end      
+      end
     end
 
     def open_id_consumer
       OpenID::Consumer.new(session, open_id_store)
     end
-    
+
     def open_id_store
       case store
       when :db  : OpenIdAuthentication::DbStore.new
@@ -140,12 +140,12 @@ module OpenIdAuthentication
       open_id_response.add_extension_arg('sreg', 'required', [ fields[:required] ].flatten * ',') if fields[:required]
       open_id_response.add_extension_arg('sreg', 'optional', [ fields[:optional] ].flatten * ',') if fields[:optional]
     end
-    
+
     def open_id_redirect_url(open_id_response)
       open_id_response.redirect_url(
         request.protocol + request.host_with_port + "/",
         open_id_response.return_to("#{request.protocol + request.host_with_port + request.path}?open_id_complete=1")
-      )     
+      )
     end
 
     def timeout_protection_from_identity_server
@@ -155,7 +155,7 @@ module OpenIdAuthentication
         def status
           OpenID::FAILURE
         end
-        
+
         def msg
           "Identity server timed out"
         end

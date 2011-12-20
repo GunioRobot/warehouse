@@ -1,140 +1,140 @@
---- 
+---
 name: JavaScript
-fileTypes: 
+fileTypes:
 - js
 - htc
 - jsx
 scopeName: source.js
 uuid: 93E017CC-6F27-11D9-90EB-000D93589AF6
 foldingStartMarker: ^.*\bfunction\s*(\w+\s*)?\([^\)]*\)(\s*\{[^\}]*)?\s*$
-patterns: 
+patterns:
 - name: meta.class.js
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: support.class.js
-    "2": 
+    "2":
       name: support.constant.js
   match: ([a-zA-Z_?.$][\w?.$]*)\.(prototype)\s*=\s*
   comment: "match stuff like: Sound.prototype = { \xE2\x80\xA6 } when extending an object"
 - name: meta.function.prototype.js
-  captures: 
-    "6": 
+  captures:
+    "6":
       name: variable.parameter.function.js
-    "7": 
+    "7":
       name: punctuation.definition.parameters.end.js
-    "1": 
+    "1":
       name: support.class.js
-    "2": 
+    "2":
       name: support.constant.js
-    "3": 
+    "3":
       name: entity.name.function.js
-    "4": 
+    "4":
       name: storage.type.function.js
-    "5": 
+    "5":
       name: punctuation.definition.parameters.begin.js
   match: ([a-zA-Z_?.$][\w?.$]*)\.(prototype)\.([a-zA-Z_?.$][\w?.$]*)\s*=\s*(function)?\s*(\()(.*?)(\))
   comment: "match stuff like: Sound.prototype.play = function() { \xE2\x80\xA6 }"
 - name: meta.function.js
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: support.class.js
-    "2": 
+    "2":
       name: support.constant.js
-    "3": 
+    "3":
       name: entity.name.function.js
   match: ([a-zA-Z_?.$][\w?.$]*)\.(prototype)\.([a-zA-Z_?.$][\w?.$]*)\s*=\s*
   comment: "match stuff like: Sound.prototype.play = myfunc"
 - name: meta.function.js
-  captures: 
-    "6": 
+  captures:
+    "6":
       name: punctuation.definition.parameters.end.js
-    "1": 
+    "1":
       name: support.class.js
-    "2": 
+    "2":
       name: entity.name.function.js
-    "3": 
+    "3":
       name: storage.type.function.js
-    "4": 
+    "4":
       name: punctuation.definition.parameters.begin.js
-    "5": 
+    "5":
       name: variable.parameter.function.js
   match: ([a-zA-Z_?.$][\w?.$]*)\.([a-zA-Z_?.$][\w?.$]*)\s*=\s*(function)\s*(\()(.*?)(\))
   comment: "match stuff like: Sound.play = function() { \xE2\x80\xA6 }"
 - name: meta.function.js
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: entity.name.function.js
-    "2": 
+    "2":
       name: storage.type.function.js
-    "3": 
+    "3":
       name: punctuation.definition.parameters.begin.js
-    "4": 
+    "4":
       name: variable.parameter.function.js
-    "5": 
+    "5":
       name: punctuation.definition.parameters.end.js
   match: ([a-zA-Z_?$][\w?$]*)\s*=\s*(function)\s*(\()(.*?)(\))
   comment: "match stuff like: play = function() { \xE2\x80\xA6 }"
 - name: meta.function.js
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: storage.type.function.js
-    "2": 
+    "2":
       name: entity.name.function.js
-    "3": 
+    "3":
       name: punctuation.definition.parameters.begin.js
-    "4": 
+    "4":
       name: variable.parameter.function.js
-    "5": 
+    "5":
       name: punctuation.definition.parameters.end.js
   match: \b(function)\s+([a-zA-Z_$]\w*)?\s*(\()(.*?)(\))
   comment: "match regular function like: function myFunc(arg) { \xE2\x80\xA6 }"
 - name: meta.function.json.js
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: entity.name.function.js
-    "2": 
+    "2":
       name: storage.type.function.js
-    "3": 
+    "3":
       name: punctuation.definition.parameters.begin.js
-    "4": 
+    "4":
       name: variable.parameter.function.js
-    "5": 
+    "5":
       name: punctuation.definition.parameters.end.js
   match: \b([a-zA-Z_?.$][\w?.$]*)\s*:\s*\b(function)?\s*(\()(.*?)(\))
   comment: "match stuff like: foobar: function() { \xE2\x80\xA6 }"
 - name: meta.function.json.js
-  captures: 
-    "6": 
+  captures:
+    "6":
       name: punctuation.definition.string.begin.js
-    "11": 
+    "11":
       name: variable.parameter.function.js
-    "7": 
+    "7":
       name: entity.name.function.js
-    "12": 
+    "12":
       name: punctuation.definition.parameters.end.js
-    "8": 
+    "8":
       name: punctuation.definition.string.end.js
-    "9": 
+    "9":
       name: entity.name.function.js
-    "1": 
+    "1":
       name: string.quoted.single.js
-    "2": 
+    "2":
       name: punctuation.definition.string.begin.js
-    "3": 
+    "3":
       name: entity.name.function.js
-    "4": 
+    "4":
       name: punctuation.definition.string.end.js
-    "10": 
+    "10":
       name: punctuation.definition.parameters.begin.js
-    "5": 
+    "5":
       name: string.quoted.double.js
   match: (?:((')(.*?)('))|((")(.*?)(")))\s*:\s*\b(function)?\s*(\()(.*?)(\))
   comment: "Attempt to match \"foo\": function"
 - name: meta.class.instance.constructor
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: keyword.operator.new.js
-    "2": 
+    "2":
       name: entity.name.type.instance.js
   match: (new)\s+(\w+(?:\.\w*)?)
 - name: entity.name.type.object.js.firebug
@@ -144,51 +144,51 @@ patterns:
 - name: constant.numeric.js
   match: \b((0(x|X)[0-9a-fA-F]+)|([0-9]+(\.[0-9]+)?))\b
 - name: string.quoted.single.js
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.js
   begin: "'"
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.js
   end: "'"
-  patterns: 
+  patterns:
   - name: constant.character.escape.js
     match: \\(x\h{2}|[0-2][0-7]{,2}|3[0-6][0-7]?|37[0-7]?|[4-7][0-7]?|.)
 - name: string.quoted.double.js
-  endCaptures: 
-    "0": 
+  endCaptures:
+    "0":
       name: punctuation.definition.string.end.js
   begin: "\""
-  beginCaptures: 
-    "0": 
+  beginCaptures:
+    "0":
       name: punctuation.definition.string.begin.js
   end: "\""
-  patterns: 
+  patterns:
   - name: constant.character.escape.js
     match: \\(x\h{2}|[0-2][0-7]{,2}|3[0-6][0-7]|37[0-7]?|[4-7][0-7]?|.)
 - name: comment.block.documentation.js
-  captures: 
-    "0": 
+  captures:
+    "0":
       name: punctuation.definition.comment.js
   begin: /\*\*
   end: \*/
 - name: comment.block.js
-  captures: 
-    "0": 
+  captures:
+    "0":
       name: punctuation.definition.comment.js
   begin: /\*
   end: \*/
 - name: comment.line.double-slash.js
-  captures: 
-    "1": 
+  captures:
+    "1":
       name: punctuation.definition.comment.js
   match: (//).*$\n?
 - name: comment.block.html.js
-  captures: 
-    "0": 
+  captures:
+    "0":
       name: punctuation.definition.comment.html.js
-    "2": 
+    "2":
       name: punctuation.definition.comment.html.js
   match: (<!--|-->)
 - name: storage.type.js
@@ -228,15 +228,15 @@ patterns:
 - name: constant.language.js
   match: \b(Infinity|NaN|Undefined)\b
 - name: string.regexp.js
-  endCaptures: 
-    "1": 
+  endCaptures:
+    "1":
       name: punctuation.definition.string.end.js
   begin: (?<=[=(:]|^|return)\s*(/)(?![/*+{}?])
-  beginCaptures: 
-    "1": 
+  beginCaptures:
+    "1":
       name: punctuation.definition.string.begin.js
   end: (/)[igm]*
-  patterns: 
+  patterns:
   - name: constant.character.escape.js
     match: \\.
 - name: punctuation.terminator.statement.js

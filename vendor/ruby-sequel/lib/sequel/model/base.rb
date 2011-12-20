@@ -5,12 +5,12 @@ module Sequel
       @db ||= (superclass != Object) && superclass.db or
       raise SequelError, "No database associated with #{self}"
     end
-    
+
     # Sets the database associated with the Model class.
     def self.db=(db)
       @db = db
     end
-    
+
     # Called when a database is opened in order to automatically associate the
     # first opened database with model classes.
     def self.database_opened(db)
@@ -22,11 +22,11 @@ module Sequel
       @dataset || super_dataset or
       raise SequelError, "No dataset associated with #{self}"
     end
-    
+
     def self.super_dataset # :nodoc:
       superclass.dataset if superclass and superclass.respond_to? :dataset
     end
-    
+
     # Returns the columns in the result set in their original order.
     #
     # See Dataset#columns for more information.
@@ -42,7 +42,7 @@ module Sequel
       @dataset.set_model(self)
       @dataset.transform(@transform) if @transform
     end
-    
+
     # Returns the database assoiated with the object's Model class.
     def db
       @db ||= model.db
@@ -54,7 +54,7 @@ module Sequel
     def dataset
       model.dataset
     end
-    
+
     # Returns the columns associated with the object's Model class.
     def columns
       model.columns
@@ -64,7 +64,7 @@ module Sequel
     def self.serialize(*columns)
       format = columns.pop[:format] if Hash === columns.last
       format ||= :yaml
-      
+
       @transform = columns.inject({}) do |m, c|
         m[c] = format
         m

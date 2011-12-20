@@ -39,7 +39,7 @@ module OpenID
 
     # Returns a 20-byte auth key used to sign the tokens, to ensure
     # that they haven't been tampered with in transit. It must return
-    # the same key every time it is called.   
+    # the same key every time it is called.
     def get_auth_key
       raise NotImplementedError
     end
@@ -53,7 +53,7 @@ module OpenID
 
 
   class DumbStore < Store
-    
+
     def initialize(secret_phrase)
       require "digest/sha1"
       @auth_key = Digest::SHA1.hexdigest(secret_phrase)
@@ -66,7 +66,7 @@ module OpenID
     def get_association(server_url, handle=nil)
       nil
     end
-  
+
     def remove_association(server_url, handle)
       false
     end
@@ -137,13 +137,13 @@ module OpenID
       assocs = _get_server_assocs(server_url)
       assocs.set(self.deepcopy(assoc))
     end
-    
+
     def get_association(server_url, handle=nil)
       assocs = _get_server_assocs(server_url)
       return assocs.best if handle.nil?
       return assocs.get(handle)
     end
-    
+
     def remove_association(server_url, handle)
       assocs = _get_server_assocs(server_url)
       return assocs.remove(handle)
